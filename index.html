@@ -1,749 +1,857 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TheBlueRevolution — Diario de Curso</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <title>TheBlueRevolution — Diario del Camino</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg:       #060910;
-      --bg2:      #0b1120;
-      --bg3:      #101828;
-      --border:   #1a2f50;
-      --accent:   #0d6fff;
-      --accent2:  #00c6ff;
-      --glow:     #0d6fff55;
-      --text:     #c9d8f0;
-      --muted:    #4a6080;
-      --danger:   #ff3c5c;
-      --success:  #00e5a0;
-      --warn:     #f5a623;
+      --black:     #02040a;
+      --deep:      #04080f;
+      --panel:     #070d1a;
+      --panel2:    #0a1220;
+      --border:    #0e2040;
+      --border2:   #1a3560;
+      --cyan:      #00f5ff;
+      --cyan2:     #00c8e0;
+      --cyan-dim:  #007a8a;
+      --cyan-glow: #00f5ff33;
+      --cyan-glow2:#00f5ff0d;
+      --white:     #e8f4ff;
+      --grey:      #3a5070;
+      --muted:     #1e3550;
+      --danger:    #ff2060;
+      --warn:      #ffaa00;
+      --success:   #00ff9d;
+      --glitch1:   #ff00aa;
+      --glitch2:   #00f5ff;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Rajdhani', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
       font-size: 16px;
       min-height: 100vh;
       overflow-x: hidden;
+      cursor: crosshair;
     }
 
-    /* SCANLINE OVERLAY */
+    /* BG GRID */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.08) 2px,
-        rgba(0,0,0,0.08) 4px
-      );
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 0;
+      animation: gridDrift 30s linear infinite;
     }
 
-    /* GRID BG */
+    @keyframes gridDrift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+
+    /* VIGNETTE */
     body::after {
       content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(13,111,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(13,111,255,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, transparent 35%, rgba(2,4,10,0.8) 100%);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* HEADER */
+    /* SCANLINES */
+    .scanlines {
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
+      );
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* TOP GLITCH BAR */
+    .glitch-bar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 20px var(--cyan), 0 0 60px var(--cyan-glow);
+      z-index: 9999;
+      animation: glitchBar 10s infinite;
+    }
+
+    @keyframes glitchBar {
+      0%,89%,100% { opacity:1; transform:scaleX(1) translateX(0); }
+      90%  { opacity:0.3; transform:scaleX(0.6) translateX(15%); }
+      92%  { opacity:1;   transform:scaleX(1.05); }
+      94%  { opacity:0.6; transform:scaleX(0.85) translateX(-5%); }
+      96%  { opacity:1;   transform:scaleX(1); }
+    }
+
+    /* ── HEADER ── */
     header {
-      position: relative;
-      z-index: 10;
-      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      height: 60px;
+      background: rgba(2,4,10,0.97);
+      border-bottom: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: space-between;
       padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      background: rgba(6,9,16,0.95);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    header::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--cyan) 50%, transparent 100%);
+      animation: scanH 5s linear infinite;
     }
 
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      border: 2px solid var(--accent);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 14px;
-      color: var(--accent2);
-      box-shadow: 0 0 12px var(--glow);
-      animation: pulse-border 3s infinite;
+    @keyframes scanH {
+      0%   { opacity:0; background-position: -100% 0; }
+      20%  { opacity:1; }
+      80%  { opacity:1; }
+      100% { opacity:0; background-position: 200% 0; }
     }
 
-    @keyframes pulse-border {
-      0%, 100% { box-shadow: 0 0 12px var(--glow); }
-      50% { box-shadow: 0 0 24px var(--accent), 0 0 48px var(--glow); }
+    .logo { display:flex; align-items:center; gap:14px; }
+
+    .logo-mark {
+      position: relative;
+      width: 38px; height: 38px;
+      border: 1px solid var(--cyan);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 9px; font-weight: 900;
+      color: var(--cyan);
+      box-shadow: 0 0 15px var(--cyan-glow), inset 0 0 15px var(--cyan-glow2);
+      animation: logoPulse 4s ease-in-out infinite;
+    }
+
+    .logo-mark::before {
+      content: '';
+      position: absolute; top:-4px; right:-4px;
+      width:6px; height:6px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    .logo-mark::after {
+      content: '';
+      position: absolute; bottom:-4px; left:-4px;
+      width:6px; height:6px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    @keyframes logoPulse {
+      0%,100% { box-shadow: 0 0 15px var(--cyan-glow), inset 0 0 15px var(--cyan-glow2); }
+      50%      { box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 25px var(--cyan-glow); }
     }
 
     .logo-text {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text);
+      font-family: 'Orbitron', monospace;
+      font-weight: 700; font-size: 0.85rem;
+      letter-spacing: 0.18em; line-height: 1.3;
     }
 
-    .logo-text span {
-      color: var(--accent2);
+    .logo-text .hi { color: var(--cyan); }
+    .logo-text .lo {
+      display: block;
+      font-size: 0.55rem; color: var(--grey);
+      font-weight: 400; letter-spacing: 0.3em;
     }
 
-    .header-status {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .header-right { display:flex; align-items:center; gap:2rem; }
+
+    .hud {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--grey);
+      line-height: 1.6; text-align: right;
     }
+
+    .hud .v { display:block; color:var(--cyan); font-weight:700; }
 
     .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
+      display: inline-block;
+      width:5px; height:5px; border-radius:50%;
       background: var(--success);
-      animation: blink 2s infinite;
+      box-shadow: 0 0 8px var(--success);
+      margin-right: 5px;
+      animation: blink 1.5s infinite;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
 
-    /* NAV */
+    /* ── NAV ── */
     nav {
-      position: relative;
-      z-index: 10;
+      position: relative; z-index: 10;
+      background: var(--deep);
       border-bottom: 1px solid var(--border);
-      background: var(--bg2);
       display: flex;
-      gap: 0;
       padding: 0 2rem;
       overflow-x: auto;
+      scrollbar-width: none;
     }
 
+    nav::-webkit-scrollbar { display:none; }
+
     nav button {
-      background: none;
-      border: none;
+      position: relative;
+      background: none; border: none;
       border-bottom: 2px solid transparent;
-      color: var(--muted);
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 1rem 1.5rem;
-      cursor: pointer;
+      color: var(--grey);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 400;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.9rem 1.3rem;
+      cursor: crosshair;
       transition: all 0.2s;
       white-space: nowrap;
     }
 
-    nav button:hover {
-      color: var(--text);
-      background: rgba(13,111,255,0.05);
+    nav button::before {
+      content: attr(data-i);
+      position: absolute; top: 7px; left: 5px;
+      font-size: 0.42rem; color: var(--muted); letter-spacing: 0;
     }
+
+    nav button:hover { color: var(--cyan2); }
 
     nav button.active {
-      color: var(--accent2);
-      border-bottom-color: var(--accent2);
+      color: var(--cyan);
+      border-bottom-color: var(--cyan);
+      text-shadow: 0 0 12px var(--cyan);
     }
 
-    /* LAYOUT */
+    /* ── LAYOUT ── */
     .container {
-      position: relative;
-      z-index: 10;
-      max-width: 1100px;
+      position: relative; z-index: 10;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 2.5rem 2rem;
     }
 
-    /* SECTION */
-    .section { display: none; }
-    .section.active { display: block; }
+    .section { display:none; }
+    .section.active { display:block; animation: fadeUp 0.25s ease; }
 
-    /* HERO */
-    .hero {
-      padding: 4rem 0 2rem;
-      text-align: left;
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    .hero-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+    /* ── HERO ── */
+    .hero { padding: 3rem 0 2rem; }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; color: var(--cyan-dim);
+      letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
     }
+
+    .hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--cyan-dim); }
 
     .hero h1 {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      line-height: 1;
-      letter-spacing: 0.05em;
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.02em;
       text-transform: uppercase;
-      margin-bottom: 1rem;
+      margin-bottom: 1.8rem;
     }
 
-    .hero h1 .blue { color: var(--accent2); }
-    .hero h1 .dim { color: var(--muted); }
+    .hero h1 .l1 { display:block; color:var(--white); }
+
+    .hero h1 .l2 {
+      display: block;
+      color: var(--cyan);
+      text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow);
+      animation: glitchText 8s infinite;
+    }
+
+    @keyframes glitchText {
+      0%,88%,100% { opacity:1; text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow); transform:none; }
+      89%  { opacity:0; transform:translateX(4px); }
+      90%  { opacity:1; text-shadow: 3px 0 var(--glitch1), -3px 0 var(--glitch2); transform:translateX(-2px); }
+      91%  { opacity:0.3; transform:translateX(0); }
+      92%  { opacity:1; text-shadow: -3px 0 var(--glitch1), 3px 0 var(--glitch2); transform:translateX(3px); }
+      93%  { opacity:0; transform:translateX(-3px); }
+      94%  { opacity:1; text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow); transform:none; }
+      95%  { opacity:0.6; }
+      96%  { opacity:1; }
+      97%  { opacity:0.2; }
+      98%  { opacity:1; text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow); }
+    }
+
+    .hero h1 .l3 {
+      display: block;
+      font-size: 0.32em;
+      color: var(--border2);
+      letter-spacing: 0.45em;
+      margin-top: 0.8rem;
+    }
 
     .hero-sub {
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 520px;
-      line-height: 1.6;
-      margin-bottom: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 300;
+      color: var(--grey);
+      line-height: 1.9;
+      max-width: 480px;
+      margin-bottom: 3rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--border2);
     }
 
+    /* ── STATS ── */
     .stats-row {
       display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      margin-top: 2rem;
+      gap: 0;
+      margin-bottom: 3rem;
     }
 
     .stat {
-      border-left: 2px solid var(--accent);
-      padding-left: 1rem;
+      padding-right: 2.5rem;
+      margin-right: 2.5rem;
+      border-right: 1px solid var(--border);
     }
 
-    .stat-value {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1.8rem;
-      color: var(--accent2);
+    .stat:last-child { border-right:none; margin-right:0; padding-right:0; }
+
+    .stat-n {
       display: block;
+      font-family: 'Orbitron', monospace;
+      font-weight: 900; font-size: 2.8rem;
+      color: var(--cyan); line-height: 1;
+      text-shadow: 0 0 25px var(--cyan-glow);
     }
 
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+    .stat-l {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--grey);
+      letter-spacing: 0.22em; text-transform: uppercase;
+      margin-top: 0.25rem;
     }
 
-    /* CARDS */
-    .card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 0 20px var(--glow);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-
-    .card-title {
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .badge {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      padding: 2px 8px;
-      border-radius: 2px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .badge-blue { background: rgba(13,111,255,0.2); color: var(--accent2); border: 1px solid var(--accent); }
-    .badge-green { background: rgba(0,229,160,0.1); color: var(--success); border: 1px solid var(--success); }
-    .badge-warn { background: rgba(245,166,35,0.1); color: var(--warn); border: 1px solid var(--warn); }
-    .badge-red { background: rgba(255,60,92,0.1); color: var(--danger); border: 1px solid var(--danger); }
-
-    /* DIARY ENTRIES */
-    .entries-grid {
-      display: flex;
-      flex-direction: column;
+    /* ── PATH CARDS ── */
+    .path-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
-      margin-top: 1.5rem;
     }
+
+    @media (max-width: 580px) { .path-cards { grid-template-columns: 1fr; } }
+
+    .path-card {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      cursor: crosshair;
+      transition: all 0.3s;
+      overflow: hidden;
+      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+    }
+
+    .path-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,245,255,0.05) 0%, transparent 55%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+
+    .path-card::after {
+      content: '';
+      position: absolute; top:0; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: 0.3; transition: opacity 0.3s;
+    }
+
+    .path-card:hover { border-color: var(--cyan); box-shadow: 0 0 40px var(--cyan-glow), inset 0 0 40px rgba(0,245,255,0.04); transform: translateY(-3px); }
+    .path-card:hover::before { opacity: 1; }
+    .path-card:hover::after  { opacity: 1; }
+
+    .path-card-iron { border-color: rgba(255,32,96,0.25); }
+    .path-card-iron::after { background: linear-gradient(90deg, var(--danger), transparent); }
+    .path-card-iron::before { background: linear-gradient(135deg, rgba(255,32,96,0.06) 0%, transparent 55%); }
+    .path-card-iron:hover { border-color:var(--danger); box-shadow:0 0 40px rgba(255,32,96,0.2),inset 0 0 40px rgba(255,32,96,0.04); }
+
+    .path-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--grey);
+      letter-spacing: 0.28em; margin-bottom: 1.2rem;
+    }
+
+    .path-title {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900; font-size: 2.2rem;
+      color: var(--cyan);
+      text-shadow: 0 0 20px var(--cyan-glow);
+      margin-bottom: 0.4rem;
+    }
+
+    .path-card-iron .path-title { color:var(--danger); text-shadow:0 0 20px rgba(255,32,96,0.35); }
+
+    .path-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; color: var(--grey); font-weight:300;
+    }
+
+    .path-arrow {
+      position: absolute; bottom:1.5rem; right:1.5rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2rem; color: var(--border2);
+      transition: all 0.3s;
+    }
+
+    .path-card:hover .path-arrow { color:var(--cyan); transform:translateX(5px); text-shadow:0 0 10px var(--cyan); }
+    .path-card-iron:hover .path-arrow { color:var(--danger); text-shadow:0 0 10px var(--danger); }
+
+    /* ── SECTION HEADER ── */
+    .sec-hd {
+      display: flex; align-items:flex-end; justify-content:space-between;
+      padding-bottom: 1.5rem; margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .sec-hd::after {
+      content:''; position:absolute; bottom:-1px; left:0;
+      width:70px; height:1px;
+      background:var(--cyan); box-shadow:0 0 10px var(--cyan);
+    }
+
+    .sec-title {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900; font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .sec-title span { color: var(--cyan); }
+    .sec-meta { font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:var(--grey); letter-spacing:0.2em; margin-top:0.3rem; }
+
+    /* ── BTN ── */
+    .btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.63rem; font-weight:700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.55rem 1.3rem;
+      border: 1px solid var(--cyan);
+      background: transparent; color: var(--cyan);
+      cursor: crosshair; transition: all 0.2s;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    .btn:hover { background:var(--cyan); color:var(--black); box-shadow:0 0 20px var(--cyan-glow); }
+
+    .btn-danger { border-color:var(--danger); color:var(--danger); }
+    .btn-danger:hover { background:var(--danger); color:var(--black); box-shadow:0 0 20px rgba(255,32,96,0.4); }
+
+    .btn-ghost {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.63rem; letter-spacing:0.15em; text-transform:uppercase;
+      padding: 0.55rem 1.2rem;
+      border: 1px solid var(--border2);
+      background: transparent; color: var(--grey);
+      cursor: crosshair; transition: all 0.2s;
+    }
+
+    .btn-ghost:hover { color:var(--white); border-color:var(--grey); }
+
+    /* ── ENTRIES ── */
+    .list { display:flex; flex-direction:column; gap:0.8rem; }
 
     .entry {
-      background: var(--bg2);
+      background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
+      position: relative; overflow:hidden;
       transition: border-color 0.2s;
     }
 
-    .entry:hover { border-color: var(--accent); }
+    .entry::before {
+      content:''; position:absolute;
+      left:0; top:0; bottom:0; width:2px;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+      opacity: 0; transition: opacity 0.2s;
+    }
 
-    .entry-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+    .entry:hover { border-color:var(--border2); }
+    .entry:hover::before, .entry.open::before { opacity:1; }
+
+    .entry-hd {
+      display:flex; align-items:center; gap:1rem;
       padding: 1rem 1.5rem;
-      background: var(--bg3);
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      user-select: none;
+      cursor: crosshair; user-select:none;
     }
 
-    .entry-day {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
+    .entry-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--cyan-dim);
+      letter-spacing: 0.15em; min-width: 90px;
     }
 
-    .entry-title {
-      font-weight: 700;
-      font-size: 1rem;
-      flex: 1;
+    .entry-t {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size:1rem;
+      letter-spacing:0.04em; flex:1;
     }
 
-    .entry-toggle {
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--muted);
-      font-size: 0.8rem;
-      transition: transform 0.2s;
+    .entry-chev {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--grey); font-size:0.7rem;
+      transition: transform 0.2s, color 0.2s;
     }
 
-    .entry.open .entry-toggle { transform: rotate(180deg); }
+    .entry.open .entry-chev { transform:rotate(180deg); color:var(--cyan); }
 
     .entry-body {
-      display: none;
-      padding: 1.5rem;
+      display:none;
+      padding: 0 1.5rem 1.5rem;
+      border-top: 1px solid var(--border);
     }
 
-    .entry.open .entry-body { display: block; }
+    .entry.open .entry-body { display:block; }
 
-    .entry-section {
-      margin-bottom: 1.5rem;
-    }
+    .esec { margin-top:1.2rem; }
 
-    .entry-section:last-child { margin-bottom: 0; }
-
-    .entry-section-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+    .esec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--cyan-dim);
+      letter-spacing: 0.25em; text-transform:uppercase;
       margin-bottom: 0.6rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      display:flex; align-items:center; gap:0.8rem;
     }
 
-    .entry-section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    .esec-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .esec p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight:300;
+      color: var(--white); line-height:1.9;
     }
 
-    .entry-section p {
-      color: var(--text);
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
-
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
+    .tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
 
     .tag {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      padding: 3px 10px;
-      border-radius: 2px;
-      background: rgba(13,111,255,0.1);
-      color: var(--accent2);
-      border: 1px solid rgba(13,111,255,0.3);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      padding: 2px 10px;
+      border: 1px solid rgba(0,245,255,0.2);
+      color: var(--cyan2);
+      background: rgba(0,245,255,0.04);
+      letter-spacing: 0.08em;
     }
 
-    /* SECTION HEADER */
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
+    .tag-r { border-color:rgba(255,32,96,0.25); color:var(--danger); background:rgba(255,32,96,0.04); }
 
-    .section-title {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .section-title span { color: var(--accent2); }
-
-    .section-meta {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    /* TOOLS GRID */
+    /* ── TOOLS ── */
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.2rem;
     }
 
     .tool-card {
-      background: var(--bg2);
+      background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 6px;
       padding: 1.5rem;
-      transition: all 0.2s;
-      cursor: pointer;
+      transition: all 0.25s;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
     }
 
     .tool-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 0 20px var(--glow);
+      border-color: var(--border2);
+      box-shadow: 0 0 25px var(--cyan-glow2);
       transform: translateY(-2px);
     }
 
     .tool-name {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1rem;
-      color: var(--accent2);
-      margin-bottom: 0.3rem;
+      font-family: 'Orbitron', monospace;
+      font-weight:700; font-size:0.88rem;
+      color: var(--cyan); margin-bottom:0.2rem;
     }
 
-    .tool-category {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+    .tool-cat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color:var(--grey);
+      letter-spacing: 0.15em; text-transform:uppercase;
       margin-bottom: 0.8rem;
     }
 
     .tool-desc {
-      font-size: 0.9rem;
-      color: var(--text);
-      line-height: 1.6;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight:300;
+      color: var(--white); line-height:1.75;
     }
 
-    /* DICT */
-    .dict-search {
-      display: flex;
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-
-    .dict-search input {
-      flex: 1;
-      background: var(--bg2);
+    .terminal {
+      margin-top: 1rem;
+      background: #010204;
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 0.75rem 1rem;
-      color: var(--text);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      outline: none;
-      transition: border-color 0.2s;
+      border-left: 2px solid var(--cyan-dim);
+      padding: 0.8rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight:300;
+      color: var(--success); line-height:1.8;
     }
 
-    .dict-search input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 10px var(--glow);
+    .terminal .p { color: var(--cyan-dim); }
+
+    /* ── DICT ── */
+    .dict-wrap { margin-bottom:1.5rem; position:relative; }
+
+    .dict-wrap::before {
+      content: '//';
+      position: absolute; left:1rem; top:50%; transform:translateY(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; color: var(--cyan-dim);
+      pointer-events: none;
     }
 
-    .dict-search input::placeholder { color: var(--muted); }
-
-    .dict-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
+    .dict-input {
+      width:100%;
+      background: var(--panel);
+      border: none; border-bottom: 1px solid var(--cyan-dim);
+      padding: 0.8rem 1rem 0.8rem 3rem;
+      color: var(--white);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem; font-weight:300;
+      outline: none; transition: all 0.2s;
     }
 
-    .dict-item {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1rem 1.5rem;
-      display: flex;
-      gap: 1.5rem;
-      align-items: flex-start;
-      transition: border-color 0.2s;
+    .dict-input:focus { border-bottom-color:var(--cyan); }
+    .dict-input::placeholder { color:var(--grey); }
+
+    .dict-list { display:flex; flex-direction:column; gap:1px; }
+
+    .dict-row {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 1.5rem; align-items:start;
+      padding: 1rem 1.2rem;
+      background: var(--panel);
+      border: 1px solid transparent;
+      transition: all 0.15s;
     }
 
-    .dict-item:hover { border-color: var(--accent); }
+    .dict-row:hover { border-color:var(--border); background:var(--panel2); }
 
     .dict-term {
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--accent2);
-      font-size: 0.9rem;
-      min-width: 160px;
+      font-family: 'Orbitron', monospace;
+      font-weight:700; font-size:0.72rem;
+      color: var(--cyan);
     }
 
     .dict-def {
-      font-size: 0.9rem;
-      color: var(--text);
-      line-height: 1.6;
-      flex: 1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight:300;
+      color: var(--white); line-height:1.75;
     }
 
-    /* EMPTY STATE */
-    .empty {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: var(--muted);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-    }
+    @media (max-width:580px) { .dict-row { grid-template-columns:1fr; gap:0.4rem; } }
 
-    .empty::before {
-      content: '[ NO DATA ]';
-      display: block;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: var(--border);
-    }
+    /* ── RESOURCES ── */
+    .res-list { display:flex; flex-direction:column; gap:0.8rem; }
 
-    /* TERMINAL BLOCK */
-    .terminal {
-      background: #020408;
+    .res-card {
+      background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1rem 1.5rem;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--success);
-      line-height: 1.8;
-      margin-top: 0.8rem;
-    }
-
-    .terminal .prompt { color: var(--muted); }
-
-    /* RESPONSIVE */
-    @media (max-width: 600px) {
-      .container { padding: 1rem; }
-      nav button { padding: 0.8rem 1rem; font-size: 0.75rem; }
-      .tools-grid { grid-template-columns: 1fr; }
-      .dict-item { flex-direction: column; gap: 0.5rem; }
-      .dict-term { min-width: auto; }
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .section.active { animation: fadeIn 0.3s ease; }
-
-    /* ADD ENTRY BUTTON */
-    .btn {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.6rem 1.2rem;
-      border-radius: 4px;
-      border: 1px solid var(--accent);
-      background: rgba(13,111,255,0.1);
-      color: var(--accent2);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn:hover {
-      background: rgba(13,111,255,0.25);
-      box-shadow: 0 0 12px var(--glow);
-    }
-
-    /* MODAL */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(6,9,16,0.92);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--bg2);
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 640px;
-      box-shadow: 0 0 40px var(--glow);
-      animation: fadeIn 0.2s ease;
-    }
-
-    .modal h2 {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .form-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-
-    .form-input, .form-textarea {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 0.7rem 1rem;
-      color: var(--text);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
+      padding: 1.1rem 1.4rem;
+      display: flex; align-items:center; gap:1.5rem;
       transition: border-color 0.2s;
     }
 
-    .form-textarea {
-      min-height: 90px;
-      resize: vertical;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8rem;
+    .res-card:hover { border-color:var(--border2); }
+
+    .res-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight:600; font-size:1rem; flex:1;
     }
 
-    .form-input:focus, .form-textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 8px var(--glow);
+    .res-note {
+      font-family: 'JetBrains Mono', monospace;
+      font-size:0.62rem; color:var(--grey); font-weight:300; flex:1;
     }
 
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: flex-end;
-      margin-top: 1.5rem;
+    .res-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; color:var(--cyan);
+      text-decoration: none; letter-spacing:0.04em;
     }
 
-    .btn-ghost {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.6rem 1.2rem;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s;
+    .res-link:hover { text-shadow:0 0 8px var(--cyan); }
+
+    /* ── MODAL ── */
+    .overlay {
+      display:none; position:fixed; inset:0;
+      background: rgba(2,4,10,0.95);
+      z-index:500; align-items:center; justify-content:center;
+      padding:1rem; backdrop-filter:blur(6px);
     }
 
-    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+    .overlay.open { display:flex; }
+
+    .modal {
+      background: var(--panel);
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 60px var(--cyan-glow), inset 0 0 60px var(--cyan-glow2);
+      padding: 2rem; width:100%; max-width:620px;
+      animation: fadeUp 0.2s ease;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    .modal-iron { border-color:var(--danger); box-shadow:0 0 60px rgba(255,32,96,0.2),inset 0 0 60px rgba(255,32,96,0.04); }
+
+    .modal-title {
+      font-family: 'Orbitron', monospace;
+      font-weight:900; font-size:0.95rem;
+      color:var(--cyan); letter-spacing:0.1em;
+      text-transform:uppercase; margin-bottom:1.8rem;
+    }
+
+    .modal-iron .modal-title { color:var(--danger); }
+
+    .field { margin-bottom:1.1rem; }
+
+    .field label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color:var(--grey);
+      letter-spacing: 0.2em; text-transform:uppercase;
+      display:block; margin-bottom:0.4rem;
+    }
+
+    .field input, .field textarea {
+      width:100%;
+      background: var(--deep);
+      border: none; border-bottom:1px solid var(--border2);
+      padding: 0.65rem 0.8rem;
+      color: var(--white);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight:300;
+      outline:none; transition:border-color 0.2s;
+    }
+
+    .field textarea { min-height:85px; resize:vertical; }
+    .field input:focus, .field textarea:focus { border-bottom-color:var(--cyan); }
+    .modal-iron .field input:focus, .modal-iron .field textarea:focus { border-bottom-color:var(--danger); }
+    .field input::placeholder, .field textarea::placeholder { color:var(--grey); }
+
+    .modal-actions { display:flex; gap:1rem; justify-content:flex-end; margin-top:1.8rem; }
+
+    /* ── EMPTY ── */
+    .empty {
+      text-align:center; padding:5rem 2rem;
+      font-family:'JetBrains Mono',monospace;
+      font-size:0.68rem; color:var(--muted);
+      letter-spacing:0.15em;
+    }
+
+    .empty::before {
+      content:'[ NULL ]';
+      display:block;
+      font-family:'Orbitron',monospace;
+      font-size:1.8rem; color:var(--border);
+      font-weight:900; margin-bottom:1rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:600px) {
+      .container { padding:1.5rem 1rem; }
+      nav button { padding:0.75rem 0.9rem; font-size:0.6rem; }
+      .tools-grid { grid-template-columns:1fr; }
+      .header-right { display:none; }
+      .stats-row { flex-wrap:wrap; gap:1.5rem; }
+    }
   </style>
 </head>
 <body>
 
+<div class="glitch-bar"></div>
+<div class="scanlines"></div>
+
+<!-- HEADER -->
 <header>
   <div class="logo">
-    <div class="logo-icon">TBR</div>
-    <div class="logo-text">The<span>Blue</span>Revolution</div>
+    <div class="logo-mark">TBR</div>
+    <div class="logo-text">
+      <span class="hi">TheBlue<span style="color:var(--white)">Revolution</span></span>
+      <span class="lo">// sistema.diario.v1.0</span>
+    </div>
   </div>
-  <div class="header-status">
-    <div class="status-dot"></div>
-    <span id="currentDate"></span>
+  <div class="header-right">
+    <div class="hud">
+      <span class="v" id="hdDate"></span>TIMESTAMP
+    </div>
+    <div class="hud">
+      <span class="v"><span class="status-dot"></span>ONLINE</span>ESTADO
+    </div>
   </div>
 </header>
 
+<!-- NAV -->
 <nav>
-  <button class="active" onclick="showSection('home')">Inicio</button>
-  <button onclick="showSection('diary')">Diario</button>
-  <button onclick="showSection('tools')">Herramientas</button>
-  <button onclick="showSection('dict')">Diccionario</button>
-  <button onclick="showSection('resources')">Recursos</button>
+  <button data-i="00" class="active" onclick="go('home',this)">Inicio</button>
+  <button data-i="01" onclick="go('diary',this)">Diario</button>
+  <button data-i="02" onclick="go('tools',this)">Herramientas</button>
+  <button data-i="03" onclick="go('dict',this)">Diccionario</button>
+  <button data-i="04" onclick="go('resources',this)">Recursos</button>
+  <button data-i="05" onclick="go('grado',this)">Grado</button>
+  <button data-i="06" onclick="go('iron',this)">Iron</button>
 </nav>
 
-<!-- HOME -->
+<!-- MAIN -->
 <div class="container">
+
+  <!-- HOME -->
   <div id="home" class="section active">
     <div class="hero">
-      <div class="hero-label">// thebluerevolution.github.io — Bitácora de Ciberseguridad</div>
+      <div class="hero-eyebrow">thebluerevolution.github.io — bitácora de ciberseguridad</div>
       <h1>
-        Diario<br>
-        <span class="blue">del Curso</span><br>
-        <span class="dim">_</span>
+        <span class="l1">Diario</span>
+        <span class="l2">del Camino</span>
+        <span class="l3">// ciberseguridad — 2025/2026</span>
       </h1>
       <p class="hero-sub">
-        Registro personal del bootcamp de ciberseguridad. Todo en crudo: 
-        apuntes, herramientas, conceptos, errores y aprendizajes.
+        registro personal de un camino hacia la ciberseguridad.
       </p>
       <div class="stats-row">
         <div class="stat">
-          <span class="stat-value" id="statDays">0</span>
-          <span class="stat-label">Días de curso</span>
+          <span class="stat-n" id="sDays">0</span>
+          <span class="stat-l">días en el camino</span>
         </div>
         <div class="stat">
-          <span class="stat-value" id="statTools">0</span>
-          <span class="stat-label">Herramientas</span>
+          <span class="stat-n" id="sTools">0</span>
+          <span class="stat-l">herramientas</span>
         </div>
         <div class="stat">
-          <span class="stat-value" id="statTerms">0</span>
-          <span class="stat-label">Términos en dict.</span>
+          <span class="stat-n" id="sTerms">0</span>
+          <span class="stat-l">términos</span>
+        </div>
+      </div>
+      <div class="path-cards">
+        <div class="path-card path-card-iron" onclick="go('grado', document.querySelectorAll('nav button')[5])">
+          <div class="path-tag">// RUTA_01 — FORMACIÓN REGLADA</div>
+          <div class="path-title" style="color:var(--danger);text-shadow:0 0 20px rgba(255,32,96,0.35)">Grado</div>
+          <div class="path-sub">Preparatoria → DAM</div>
+          <div class="path-arrow">→</div>
+        </div>
+        <div class="path-card" onclick="go('iron', document.querySelectorAll('nav button')[6])">
+          <div class="path-tag">// RUTA_02 — BOOTCAMP</div>
+          <div class="path-title">Iron</div>
+          <div class="path-sub">IronHack — CompTIA Security+</div>
+          <div class="path-arrow">→</div>
         </div>
       </div>
     </div>
@@ -751,365 +859,362 @@
 
   <!-- DIARY -->
   <div id="diary" class="section">
-    <div class="section-header">
+    <div class="sec-hd">
       <div>
-        <div class="section-title">// <span>Diario</span></div>
+        <div class="sec-title">// <span>Diario</span></div>
+        <div class="sec-meta" id="dMeta">0 entradas</div>
       </div>
-      <button class="btn" onclick="openModal('entry')">+ Nueva entrada</button>
+      <button class="btn" onclick="openM('entry')">+ nueva entrada</button>
     </div>
-    <div class="entries-grid" id="entriesList">
-      <div class="empty">Aún no hay entradas. Empieza hoy.</div>
-    </div>
+    <div class="list" id="entriesList"><div class="empty">aún no hay entradas. empieza hoy.</div></div>
   </div>
 
   <!-- TOOLS -->
   <div id="tools" class="section">
-    <div class="section-header">
-      <div class="section-title">// <span>Herramientas</span></div>
-      <button class="btn" onclick="openModal('tool')">+ Añadir herramienta</button>
+    <div class="sec-hd">
+      <div class="sec-title">// <span>Herramientas</span></div>
+      <button class="btn" onclick="openM('tool')">+ añadir</button>
     </div>
-    <div class="tools-grid" id="toolsList">
-      <div class="empty">Nada todavía.</div>
-    </div>
+    <div class="tools-grid" id="toolsList"><div class="empty">sin herramientas.</div></div>
   </div>
 
   <!-- DICT -->
   <div id="dict" class="section">
-    <div class="section-header">
-      <div class="section-title">// <span>Diccionario</span></div>
-      <button class="btn" onclick="openModal('term')">+ Añadir término</button>
+    <div class="sec-hd">
+      <div class="sec-title">// <span>Diccionario</span></div>
+      <button class="btn" onclick="openM('term')">+ añadir término</button>
     </div>
-    <div class="dict-search">
-      <input type="text" id="dictSearch" placeholder="Buscar término..." oninput="filterDict()" />
+    <div class="dict-wrap">
+      <input class="dict-input" id="dictQ" placeholder="buscar término..." oninput="renderTerms(this.value)"/>
     </div>
-    <div class="dict-list" id="dictList">
-      <div class="empty">El diccionario está vacío.</div>
-    </div>
+    <div class="dict-list" id="dictList"><div class="empty">diccionario vacío.</div></div>
   </div>
 
   <!-- RESOURCES -->
   <div id="resources" class="section">
-    <div class="section-header">
-      <div class="section-title">// <span>Recursos</span></div>
-      <button class="btn" onclick="openModal('resource')">+ Añadir recurso</button>
+    <div class="sec-hd">
+      <div class="sec-title">// <span>Recursos</span></div>
+      <button class="btn" onclick="openM('resource')">+ añadir</button>
     </div>
-    <div class="entries-grid" id="resourcesList">
-      <div class="empty">Sin recursos añadidos aún.</div>
+    <div class="res-list" id="resourcesList"><div class="empty">sin recursos guardados.</div></div>
+  </div>
+
+  <!-- GRADO -->
+  <div id="grado" class="section">
+    <div class="sec-hd">
+      <div>
+        <div class="sec-title">// <span>Grado</span></div>
+        <div class="sec-meta">Preparatoria → DAM</div>
+      </div>
+      <button class="btn" onclick="openM('grado')">+ añadir material</button>
+    </div>
+    <div class="list" id="gradoList"><div class="empty">sin material del grado.</div></div>
+  </div>
+
+  <!-- IRON -->
+  <div id="iron" class="section">
+    <div class="sec-hd">
+      <div>
+        <div class="sec-title">// <span style="color:var(--danger)">Iron</span></div>
+        <div class="sec-meta">IronHack Bootcamp — CompTIA Security+</div>
+      </div>
+      <button class="btn btn-danger" onclick="openM('iron')">+ añadir material</button>
+    </div>
+    <div class="list" id="ironList"><div class="empty">sin material del bootcamp.</div></div>
+  </div>
+
+</div>
+
+<!-- ── MODALS ── -->
+<div class="overlay" id="ov-entry">
+  <div class="modal">
+    <div class="modal-title">// nueva entrada del diario</div>
+    <div class="field"><label>Título del día</label><input id="e-title" placeholder="Ej: Modelo OSI — capas y protocolos"/></div>
+    <div class="field"><label>Notas en crudo</label><textarea id="e-raw" placeholder="Todo lo que aprendiste, sin filtro..."></textarea></div>
+    <div class="field"><label>Resumen</label><textarea id="e-sum" placeholder="¿Qué te llevas de hoy?"></textarea></div>
+    <div class="field"><label>Herramientas / Conceptos (coma)</label><input id="e-tags" placeholder="nmap, TCP/IP, Wireshark..."/></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeM('entry')">cancelar</button>
+      <button class="btn" onclick="saveEntry()">guardar entrada</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: Nueva entrada -->
-<div class="modal-overlay" id="modal-entry">
+<div class="overlay" id="ov-tool">
   <div class="modal">
-    <h2>// Nueva entrada del diario</h2>
-    <div class="form-group">
-      <label class="form-label">Título del día</label>
-      <input class="form-input" id="e-title" placeholder="Ej: Introducción a redes — Modelo OSI" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Notas en crudo (lo que viste, tal cual)</label>
-      <textarea class="form-textarea" id="e-raw" placeholder="Escribe aquí tus apuntes sin filtro..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Resumen (lo más importante)</label>
-      <textarea class="form-textarea" id="e-summary" placeholder="¿Qué te llevas de hoy?"></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Herramientas / Conceptos vistos (separados por coma)</label>
-      <input class="form-input" id="e-tags" placeholder="Ej: nmap, TCP/IP, Wireshark" />
-    </div>
+    <div class="modal-title">// nueva herramienta</div>
+    <div class="field"><label>Nombre</label><input id="t-name" placeholder="Ej: Nmap"/></div>
+    <div class="field"><label>Categoría</label><input id="t-cat" placeholder="Ej: Reconocimiento..."/></div>
+    <div class="field"><label>Descripción</label><textarea id="t-desc" placeholder="¿Para qué sirve?"></textarea></div>
+    <div class="field"><label>Comandos (uno por línea)</label><textarea id="t-cmds" placeholder="nmap -sV 192.168.1.1"></textarea></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeModal('entry')">Cancelar</button>
-      <button class="btn" onclick="saveEntry()">Guardar entrada</button>
+      <button class="btn-ghost" onclick="closeM('tool')">cancelar</button>
+      <button class="btn" onclick="saveTool()">guardar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: Herramienta -->
-<div class="modal-overlay" id="modal-tool">
+<div class="overlay" id="ov-term">
   <div class="modal">
-    <h2>// Nueva herramienta</h2>
-    <div class="form-group">
-      <label class="form-label">Nombre</label>
-      <input class="form-input" id="t-name" placeholder="Ej: Nmap" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Categoría</label>
-      <input class="form-input" id="t-cat" placeholder="Ej: Reconocimiento, Análisis de red..." />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Descripción y uso básico</label>
-      <textarea class="form-textarea" id="t-desc" placeholder="¿Para qué sirve? ¿Cómo se usa?"></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Comandos clave (uno por línea)</label>
-      <textarea class="form-textarea" id="t-cmds" placeholder="nmap -sV 192.168.1.1&#10;nmap -A target"></textarea>
-    </div>
+    <div class="modal-title">// nuevo término</div>
+    <div class="field"><label>Término</label><input id="d-term" placeholder="Ej: Firewall"/></div>
+    <div class="field"><label>Definición</label><textarea id="d-def" placeholder="Con tus propias palabras..."></textarea></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeModal('tool')">Cancelar</button>
-      <button class="btn" onclick="saveTool()">Guardar herramienta</button>
+      <button class="btn-ghost" onclick="closeM('term')">cancelar</button>
+      <button class="btn" onclick="saveTerm()">guardar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: Término -->
-<div class="modal-overlay" id="modal-term">
+<div class="overlay" id="ov-resource">
   <div class="modal">
-    <h2>// Nuevo término</h2>
-    <div class="form-group">
-      <label class="form-label">Término</label>
-      <input class="form-input" id="d-term" placeholder="Ej: Firewall" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Definición</label>
-      <textarea class="form-textarea" id="d-def" placeholder="Explícalo con tus propias palabras..."></textarea>
-    </div>
+    <div class="modal-title">// nuevo recurso</div>
+    <div class="field"><label>Nombre</label><input id="r-name" placeholder="Ej: TryHackMe — Intro Linux"/></div>
+    <div class="field"><label>URL</label><input id="r-url" placeholder="https://..."/></div>
+    <div class="field"><label>Notas</label><textarea id="r-notes" placeholder="¿Por qué lo guardas?"></textarea></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeModal('term')">Cancelar</button>
-      <button class="btn" onclick="saveTerm()">Guardar término</button>
+      <button class="btn-ghost" onclick="closeM('resource')">cancelar</button>
+      <button class="btn" onclick="saveResource()">guardar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: Recurso -->
-<div class="modal-overlay" id="modal-resource">
+<div class="overlay" id="ov-grado">
   <div class="modal">
-    <h2>// Nuevo recurso</h2>
-    <div class="form-group">
-      <label class="form-label">Nombre / Título</label>
-      <input class="form-input" id="r-name" placeholder="Ej: TryHackMe — Introducción a Linux" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">URL</label>
-      <input class="form-input" id="r-url" placeholder="https://..." />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Notas</label>
-      <textarea class="form-textarea" id="r-notes" placeholder="¿Por qué lo guardas? ¿Qué tiene de útil?"></textarea>
-    </div>
+    <div class="modal-title">// material — grado</div>
+    <div class="field"><label>Título / Tema</label><input id="g-title" placeholder="Ej: Bases de datos — SQL"/></div>
+    <div class="field"><label>Módulo / Asignatura</label><input id="g-mod" placeholder="Ej: Programación, Redes..."/></div>
+    <div class="field"><label>Apuntes</label><textarea id="g-notes" placeholder="Todo lo que quieras guardar..."></textarea></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeModal('resource')">Cancelar</button>
-      <button class="btn" onclick="saveResource()">Guardar recurso</button>
+      <button class="btn-ghost" onclick="closeM('grado')">cancelar</button>
+      <button class="btn" onclick="saveGrado()">guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="ov-iron">
+  <div class="modal modal-iron">
+    <div class="modal-title">// material — iron</div>
+    <div class="field"><label>Título / Tema</label><input id="i-title" placeholder="Ej: Reconocimiento activo"/></div>
+    <div class="field"><label>Semana / Módulo</label><input id="i-mod" placeholder="Ej: Semana 1 — Redes"/></div>
+    <div class="field"><label>Apuntes</label><textarea id="i-notes" placeholder="Todo lo que quieras guardar..."></textarea></div>
+    <div class="field"><label>Herramientas (coma)</label><input id="i-tags" placeholder="nmap, netcat..."/></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeM('iron')">cancelar</button>
+      <button class="btn btn-danger" onclick="saveIron()">guardar</button>
     </div>
   </div>
 </div>
 
 <script>
   // STATE
-  let entries = JSON.parse(localStorage.getItem('tbr-entries') || '[]');
-  let tools   = JSON.parse(localStorage.getItem('tbr-tools')   || '[]');
-  let terms   = JSON.parse(localStorage.getItem('tbr-terms')   || '[]');
+  let entries   = JSON.parse(localStorage.getItem('tbr-entries')   || '[]');
+  let tools     = JSON.parse(localStorage.getItem('tbr-tools')     || '[]');
+  let terms     = JSON.parse(localStorage.getItem('tbr-terms')     || '[]');
   let resources = JSON.parse(localStorage.getItem('tbr-resources') || '[]');
+  let grado     = JSON.parse(localStorage.getItem('tbr-grado')     || '[]');
+  let iron      = JSON.parse(localStorage.getItem('tbr-iron')      || '[]');
 
   // DATE
   const now = new Date();
-  document.getElementById('currentDate').textContent =
-    now.toLocaleDateString('es-ES', { weekday:'short', day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
+  document.getElementById('hdDate').textContent =
+    now.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'.');
+
+  function daysSince(d) {
+    const s=new Date(d), t=new Date();
+    t.setHours(0,0,0,0); s.setHours(0,0,0,0);
+    return Math.floor((t-s)/(864e5));
+  }
 
   // NAV
-  function showSection(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  function go(id, btn) {
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
+    if(btn) btn.classList.add('active');
     updateStats();
   }
 
   // MODALS
-  function openModal(type) {
-    document.getElementById('modal-' + type).classList.add('open');
-  }
-  function closeModal(type) {
-    document.getElementById('modal-' + type).classList.remove('open');
-  }
-
-  // SAVE ENTRY
-  function saveEntry() {
-    const title   = document.getElementById('e-title').value.trim();
-    const raw     = document.getElementById('e-raw').value.trim();
-    const summary = document.getElementById('e-summary').value.trim();
-    const tags    = document.getElementById('e-tags').value.trim();
-    if (!title) return;
-    const entry = {
-      id: Date.now(),
-      date: new Date().toLocaleDateString('es-ES'),
-      day: entries.length + 1,
-      title, raw, summary,
-      tags: tags ? tags.split(',').map(t => t.trim()).filter(Boolean) : []
-    };
-    entries.unshift(entry);
-    localStorage.setItem('tbr-entries', JSON.stringify(entries));
-    closeModal('entry');
-    ['e-title','e-raw','e-summary','e-tags'].forEach(id => document.getElementById(id).value = '');
-    renderEntries();
-    updateStats();
-  }
-
-  // SAVE TOOL
-  function saveTool() {
-    const name = document.getElementById('t-name').value.trim();
-    const cat  = document.getElementById('t-cat').value.trim();
-    const desc = document.getElementById('t-desc').value.trim();
-    const cmds = document.getElementById('t-cmds').value.trim();
-    if (!name) return;
-    tools.push({ id: Date.now(), name, cat, desc, cmds });
-    localStorage.setItem('tbr-tools', JSON.stringify(tools));
-    closeModal('tool');
-    ['t-name','t-cat','t-desc','t-cmds'].forEach(id => document.getElementById(id).value = '');
-    renderTools();
-    updateStats();
-  }
-
-  // SAVE TERM
-  function saveTerm() {
-    const term = document.getElementById('d-term').value.trim();
-    const def  = document.getElementById('d-def').value.trim();
-    if (!term) return;
-    terms.push({ id: Date.now(), term, def });
-    localStorage.setItem('tbr-terms', JSON.stringify(terms));
-    closeModal('term');
-    ['d-term','d-def'].forEach(id => document.getElementById(id).value = '');
-    renderTerms();
-    updateStats();
-  }
-
-  // SAVE RESOURCE
-  function saveResource() {
-    const name  = document.getElementById('r-name').value.trim();
-    const url   = document.getElementById('r-url').value.trim();
-    const notes = document.getElementById('r-notes').value.trim();
-    if (!name) return;
-    resources.push({ id: Date.now(), name, url, notes });
-    localStorage.setItem('tbr-resources', JSON.stringify(resources));
-    closeModal('resource');
-    ['r-name','r-url','r-notes'].forEach(id => document.getElementById(id).value = '');
-    renderResources();
-    updateStats();
-  }
-
-  // RENDER ENTRIES
-  function renderEntries() {
-    const el = document.getElementById('entriesList');
-    if (!entries.length) {
-      el.innerHTML = '<div class="empty">Aún no hay entradas. Empieza hoy.</div>';
-      return;
-    }
-    el.innerHTML = entries.map(e => `
-      <div class="entry" id="entry-${e.id}">
-        <div class="entry-header" onclick="toggleEntry(${e.id})">
-          <span class="entry-day">DÍA ${String(e.day).padStart(2,'0')} // ${e.date}</span>
-          <span class="entry-title">${e.title}</span>
-          <span class="entry-toggle">▼</span>
-        </div>
-        <div class="entry-body">
-          ${e.raw ? `
-          <div class="entry-section">
-            <div class="entry-section-label">Notas en crudo</div>
-            <p>${e.raw.replace(/\n/g,'<br>')}</p>
-          </div>` : ''}
-          ${e.summary ? `
-          <div class="entry-section">
-            <div class="entry-section-label">Resumen</div>
-            <p>${e.summary.replace(/\n/g,'<br>')}</p>
-          </div>` : ''}
-          ${e.tags.length ? `
-          <div class="entry-section">
-            <div class="entry-section-label">Temas / Herramientas</div>
-            <div class="tag-list">${e.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-          </div>` : ''}
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function toggleEntry(id) {
-    document.getElementById('entry-' + id).classList.toggle('open');
-  }
-
-  // RENDER TOOLS
-  function renderTools() {
-    const el = document.getElementById('toolsList');
-    if (!tools.length) {
-      el.innerHTML = '<div class="empty">Nada todavía.</div>';
-      return;
-    }
-    el.innerHTML = tools.map(t => `
-      <div class="tool-card">
-        <div class="tool-name">${t.name}</div>
-        <div class="tool-category">${t.cat || 'Sin categoría'}</div>
-        <div class="tool-desc">${t.desc || ''}</div>
-        ${t.cmds ? `<div class="terminal">${t.cmds.split('\n').map(c => `<div><span class="prompt">$ </span>${c}</div>`).join('')}</div>` : ''}
-      </div>
-    `).join('');
-  }
-
-  // RENDER TERMS
-  function renderTerms(filter = '') {
-    const el = document.getElementById('dictList');
-    const filtered = terms.filter(t =>
-      t.term.toLowerCase().includes(filter.toLowerCase()) ||
-      t.def.toLowerCase().includes(filter.toLowerCase())
-    );
-    if (!filtered.length) {
-      el.innerHTML = '<div class="empty">El diccionario está vacío.</div>';
-      return;
-    }
-    el.innerHTML = [...filtered]
-      .sort((a,b) => a.term.localeCompare(b.term))
-      .map(t => `
-        <div class="dict-item">
-          <span class="dict-term">${t.term}</span>
-          <span class="dict-def">${t.def}</span>
-        </div>
-      `).join('');
-  }
-
-  // RENDER RESOURCES
-  function renderResources() {
-    const el = document.getElementById('resourcesList');
-    if (!resources.length) {
-      el.innerHTML = '<div class="empty">Sin recursos añadidos aún.</div>';
-      return;
-    }
-    el.innerHTML = resources.map(r => `
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">${r.name}</span>
-          ${r.url ? `<span class="badge badge-blue">ENLACE</span>` : ''}
-        </div>
-        ${r.notes ? `<p style="color:var(--text);font-size:0.9rem;line-height:1.6;margin-bottom:0.8rem">${r.notes}</p>` : ''}
-        ${r.url ? `<a href="${r.url}" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--accent2);text-decoration:none;">${r.url}</a>` : ''}
-      </div>
-    `).join('');
-  }
-
-  // FILTER DICT
-  function filterDict() {
-    renderTerms(document.getElementById('dictSearch').value);
-  }
-
-  // STATS
-  function updateStats() {
-    document.getElementById('statDays').textContent  = entries.length;
-    document.getElementById('statTools').textContent = tools.length;
-    document.getElementById('statTerms').textContent = terms.length;
-  }
-
-  // CLOSE MODAL ON OVERLAY CLICK
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', e => {
-      if (e.target === overlay) {
-        overlay.classList.remove('open');
-      }
-    });
+  function openM(k){ document.getElementById('ov-'+k).classList.add('open'); }
+  function closeM(k){ document.getElementById('ov-'+k).classList.remove('open'); }
+  document.querySelectorAll('.overlay').forEach(o=>{
+    o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); });
   });
 
+  function clr(ids){ ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; }); }
+
+  // SAVES
+  function saveEntry(){
+    const title=document.getElementById('e-title').value.trim(); if(!title) return;
+    entries.unshift({ id:Date.now(), day:entries.length+1,
+      date: now.toLocaleDateString('es-ES'), title,
+      raw: document.getElementById('e-raw').value.trim(),
+      sum: document.getElementById('e-sum').value.trim(),
+      tags: document.getElementById('e-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+    });
+    localStorage.setItem('tbr-entries',JSON.stringify(entries));
+    closeM('entry'); clr(['e-title','e-raw','e-sum','e-tags']);
+    renderEntries(); updateStats();
+  }
+
+  function saveTool(){
+    const name=document.getElementById('t-name').value.trim(); if(!name) return;
+    tools.push({ id:Date.now(), name,
+      cat:  document.getElementById('t-cat').value.trim(),
+      desc: document.getElementById('t-desc').value.trim(),
+      cmds: document.getElementById('t-cmds').value.trim()
+    });
+    localStorage.setItem('tbr-tools',JSON.stringify(tools));
+    closeM('tool'); clr(['t-name','t-cat','t-desc','t-cmds']);
+    renderTools(); updateStats();
+  }
+
+  function saveTerm(){
+    const term=document.getElementById('d-term').value.trim(); if(!term) return;
+    terms.push({ id:Date.now(), term, def:document.getElementById('d-def').value.trim() });
+    localStorage.setItem('tbr-terms',JSON.stringify(terms));
+    closeM('term'); clr(['d-term','d-def']);
+    renderTerms(); updateStats();
+  }
+
+  function saveResource(){
+    const name=document.getElementById('r-name').value.trim(); if(!name) return;
+    resources.push({ id:Date.now(), name,
+      url:   document.getElementById('r-url').value.trim(),
+      notes: document.getElementById('r-notes').value.trim()
+    });
+    localStorage.setItem('tbr-resources',JSON.stringify(resources));
+    closeM('resource'); clr(['r-name','r-url','r-notes']);
+    renderResources();
+  }
+
+  function saveGrado(){
+    const title=document.getElementById('g-title').value.trim(); if(!title) return;
+    grado.unshift({ id:Date.now(), date:now.toLocaleDateString('es-ES'), title,
+      mod:   document.getElementById('g-mod').value.trim(),
+      notes: document.getElementById('g-notes').value.trim()
+    });
+    localStorage.setItem('tbr-grado',JSON.stringify(grado));
+    closeM('grado'); clr(['g-title','g-mod','g-notes']);
+    renderGrado();
+  }
+
+  function saveIron(){
+    const title=document.getElementById('i-title').value.trim(); if(!title) return;
+    iron.unshift({ id:Date.now(), date:now.toLocaleDateString('es-ES'), title,
+      mod:   document.getElementById('i-mod').value.trim(),
+      notes: document.getElementById('i-notes').value.trim(),
+      tags:  document.getElementById('i-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+    });
+    localStorage.setItem('tbr-iron',JSON.stringify(iron));
+    closeM('iron'); clr(['i-title','i-mod','i-notes','i-tags']);
+    renderIron();
+  }
+
+  // TOGGLE
+  function tog(id){ document.getElementById(id).classList.toggle('open'); }
+
+  // RENDERS
+  function renderEntries(){
+    const el=document.getElementById('entriesList');
+    const m=document.getElementById('dMeta');
+    m.textContent=entries.length+' entradas registradas';
+    if(!entries.length){ el.innerHTML='<div class="empty">aún no hay entradas. empieza hoy.</div>'; return; }
+    el.innerHTML=entries.map(e=>`
+      <div class="entry" id="e${e.id}">
+        <div class="entry-hd" onclick="tog('e${e.id}')">
+          <span class="entry-code">DÍA_${String(e.day).padStart(3,'0')} // ${e.date}</span>
+          <span class="entry-t">${e.title}</span>
+          <span class="entry-chev">▾</span>
+        </div>
+        <div class="entry-body">
+          ${e.raw?`<div class="esec"><div class="esec-label">raw_notes</div><p>${e.raw.replace(/\n/g,'<br>')}</p></div>`:''}
+          ${e.sum?`<div class="esec"><div class="esec-label">resumen</div><p>${e.sum.replace(/\n/g,'<br>')}</p></div>`:''}
+          ${e.tags?.length?`<div class="esec"><div class="esec-label">tags</div><div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  function renderTools(){
+    const el=document.getElementById('toolsList');
+    if(!tools.length){ el.innerHTML='<div class="empty">sin herramientas.</div>'; return; }
+    el.innerHTML=tools.map(t=>`
+      <div class="tool-card">
+        <div class="tool-name">${t.name}</div>
+        <div class="tool-cat">${t.cat||'sin categoría'}</div>
+        <div class="tool-desc">${t.desc||''}</div>
+        ${t.cmds?`<div class="terminal">${t.cmds.split('\n').map(c=>`<div><span class="p">$ </span>${c}</div>`).join('')}</div>`:''}
+      </div>`).join('');
+  }
+
+  function renderTerms(q=''){
+    const el=document.getElementById('dictList');
+    const list=terms.filter(t=>
+      t.term.toLowerCase().includes(q.toLowerCase())||
+      t.def.toLowerCase().includes(q.toLowerCase())
+    ).sort((a,b)=>a.term.localeCompare(b.term));
+    if(!list.length){ el.innerHTML='<div class="empty">sin resultados.</div>'; return; }
+    el.innerHTML=list.map(t=>`
+      <div class="dict-row">
+        <span class="dict-term">${t.term}</span>
+        <span class="dict-def">${t.def}</span>
+      </div>`).join('');
+  }
+
+  function renderResources(){
+    const el=document.getElementById('resourcesList');
+    if(!resources.length){ el.innerHTML='<div class="empty">sin recursos guardados.</div>'; return; }
+    el.innerHTML=resources.map(r=>`
+      <div class="res-card">
+        <span class="res-name">${r.name}</span>
+        ${r.notes?`<span class="res-note">${r.notes}</span>`:''}
+        ${r.url?`<a class="res-link" href="${r.url}" target="_blank">${r.url.replace(/^https?:\/\//,'')}</a>`:''}
+      </div>`).join('');
+  }
+
+  function renderGrado(){
+    const el=document.getElementById('gradoList');
+    if(!grado.length){ el.innerHTML='<div class="empty">sin material del grado.</div>'; return; }
+    el.innerHTML=grado.map(g=>`
+      <div class="entry" id="g${g.id}">
+        <div class="entry-hd" onclick="tog('g${g.id}')">
+          <span class="entry-code">${g.mod||'GRADO'} // ${g.date}</span>
+          <span class="entry-t">${g.title}</span>
+          <span class="entry-chev">▾</span>
+        </div>
+        <div class="entry-body">
+          ${g.notes?`<div class="esec"><div class="esec-label">apuntes</div><p>${g.notes.replace(/\n/g,'<br>')}</p></div>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  function renderIron(){
+    const el=document.getElementById('ironList');
+    if(!iron.length){ el.innerHTML='<div class="empty">sin material del bootcamp.</div>'; return; }
+    el.innerHTML=iron.map(i=>`
+      <div class="entry" id="i${i.id}" style="--ec:var(--danger)">
+        <div class="entry-hd" style="border-left:2px solid var(--danger)" onclick="tog('i${i.id}')">
+          <span class="entry-code" style="color:var(--danger)">${i.mod||'IRON'} // ${i.date}</span>
+          <span class="entry-t">${i.title}</span>
+          <span class="entry-chev">▾</span>
+        </div>
+        <div class="entry-body">
+          ${i.notes?`<div class="esec"><div class="esec-label">apuntes</div><p>${i.notes.replace(/\n/g,'<br>')}</p></div>`:''}
+          ${i.tags?.length?`<div class="esec"><div class="esec-label">herramientas</div><div class="tags">${i.tags.map(t=>`<span class="tag tag-r">${t}</span>`).join('')}</div></div>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  function updateStats(){
+    document.getElementById('sDays').textContent  = daysSince('2025-09-12');
+    document.getElementById('sTools').textContent = tools.length;
+    document.getElementById('sTerms').textContent = terms.length;
+  }
+
   // INIT
-  renderEntries();
-  renderTools();
-  renderTerms();
-  renderResources();
+  renderEntries(); renderTools(); renderTerms();
+  renderResources(); renderGrado(); renderIron();
   updateStats();
 </script>
 </body>
