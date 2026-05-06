@@ -693,6 +693,173 @@
 
     .res-link:hover { text-shadow:0 0 8px var(--cyan); }
 
+    /* ── IRON LAYOUT ── */
+    .iron-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 780px) {
+      .iron-layout { grid-template-columns: 1fr; }
+    }
+
+    .iron-col-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--cyan-dim);
+      letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    /* WEEKS */
+    .iron-weeks-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .iron-week-item {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 1rem 1.2rem;
+      cursor: crosshair;
+      transition: all 0.2s;
+      position: relative; overflow: hidden;
+    }
+
+    .iron-week-item::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      opacity: 0; transition: opacity 0.2s;
+    }
+
+    .iron-week-item:hover { border-color: var(--border2); }
+    .iron-week-item:hover::before { opacity: 1; }
+
+    .iron-item-num {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900; font-size: 1.4rem;
+      color: var(--border2); min-width: 36px;
+      transition: color 0.2s;
+    }
+
+    .iron-week-item:hover .iron-item-num { color: var(--cyan); }
+
+    .iron-item-info { flex: 1; }
+
+    .iron-item-title {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .iron-item-sub {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: var(--grey);
+      font-weight: 300; margin-top: 0.1rem;
+    }
+
+    .iron-item-arrow {
+      color: var(--border2);
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .iron-week-item:hover .iron-item-arrow { color: var(--cyan); transform: translateX(4px); }
+
+    /* MODULES */
+    .iron-mods-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .iron-mod-item {
+      display: flex; align-items: center; gap: 0.8rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      cursor: crosshair;
+      transition: all 0.2s;
+    }
+
+    .iron-mod-item:hover {
+      border-color: var(--mc, var(--cyan));
+      box-shadow: 0 0 12px color-mix(in srgb, var(--mc, var(--cyan)) 30%, transparent);
+    }
+
+    .iron-mod-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%; flex-shrink: 0;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .iron-mod-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; font-weight: 400;
+      flex: 1; color: var(--white);
+      letter-spacing: 0.03em;
+    }
+
+    .iron-mod-weeks {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.55rem; color: var(--grey);
+      font-weight: 700;
+    }
+
+    /* IRON DETAIL */
+    .iron-detail-section { padding-top: 0; }
+
+    .iron-detail-header {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding-bottom: 1.5rem; margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .iron-back-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.1em;
+      color: var(--grey); background: none; border: none;
+      cursor: crosshair; transition: color 0.2s;
+      padding: 0.4rem 0; white-space: nowrap;
+    }
+
+    .iron-back-btn:hover { color: var(--cyan); }
+
+    .iron-detail-title {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900; font-size: 1.3rem;
+      color: var(--cyan); text-transform: uppercase;
+    }
+
+    .iron-detail-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; color: var(--grey);
+      margin-top: 0.2rem; letter-spacing: 0.1em;
+    }
+
+    /* DAY TABS */
+    .iron-day-tabs {
+      display: flex; gap: 0.4rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .iron-day-tabs.hidden { display: none; }
+
+    .iron-day-tab {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      background: var(--panel); border: 1px solid var(--border);
+      color: var(--grey); cursor: crosshair; transition: all 0.2s;
+    }
+
+    .iron-day-tab:hover { color: var(--white); border-color: var(--border2); }
+    .iron-day-tab.active { color: var(--cyan); border-color: var(--cyan); background: rgba(0,245,255,0.05); }
+
+    .iron-detail-body { min-height: 200px; }
+
     /* ── MODAL ── */
     .overlay {
       display:none; position:fixed; inset:0;
@@ -915,12 +1082,172 @@
   <div id="iron" class="section">
     <div class="sec-hd">
       <div>
-        <div class="sec-title">// <span style="color:var(--danger)">Iron</span></div>
+        <div class="sec-title">// <span style="color:var(--cyan)">Iron</span></div>
         <div class="sec-meta">IronHack Bootcamp — CompTIA Security+</div>
       </div>
-      <button class="btn btn-danger" onclick="openM('iron')">+ añadir material</button>
     </div>
-    <div class="list" id="ironList"><div class="empty">sin material del bootcamp.</div></div>
+
+    <!-- TWO COLUMN LAYOUT -->
+    <div class="iron-layout">
+
+      <!-- LEFT: WEEKS -->
+      <div class="iron-weeks-col">
+        <div class="iron-col-label">// semanas</div>
+        <div class="iron-weeks-list">
+          <div class="iron-week-item" onclick="openIronView('week',1)">
+            <span class="iron-item-num">01</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 1</span>
+              <span class="iron-item-sub">Network Administration</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',2)">
+            <span class="iron-item-num">02</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 2</span>
+              <span class="iron-item-sub">Network &amp; Application Security</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',3)">
+            <span class="iron-item-num">03</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 3</span>
+              <span class="iron-item-sub">Network &amp; App Sec + Threats</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',4)">
+            <span class="iron-item-num">04</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 4</span>
+              <span class="iron-item-sub">Threats + Digital Forensics</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',5)">
+            <span class="iron-item-num">05</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 5</span>
+              <span class="iron-item-sub">Digital Forensics + Ethical Hacking</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',6)">
+            <span class="iron-item-num">06</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 6</span>
+              <span class="iron-item-sub">Ethical Hacking &amp; Incident Response</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',7)">
+            <span class="iron-item-num">07</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 7</span>
+              <span class="iron-item-sub">Secure Design + Risk Management</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',8)">
+            <span class="iron-item-num">08</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 8</span>
+              <span class="iron-item-sub">Threat Intelligence + Intro to Programming</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+          <div class="iron-week-item" onclick="openIronView('week',9)">
+            <span class="iron-item-num">09</span>
+            <div class="iron-item-info">
+              <span class="iron-item-title">Semana 9</span>
+              <span class="iron-item-sub">Final Scenarios + Final Exam</span>
+            </div>
+            <span class="iron-item-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: MODULES -->
+      <div class="iron-mods-col">
+        <div class="iron-col-label">// módulos</div>
+        <div class="iron-mods-list">
+          <div class="iron-mod-item" style="--mc:#ff6b6b" onclick="openIronView('mod','network-admin')">
+            <span class="iron-mod-dot" style="background:#ff6b6b"></span>
+            <span class="iron-mod-name">Network Administration</span>
+            <span class="iron-mod-weeks">W1</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#ff9f43" onclick="openIronView('mod','network-app')">
+            <span class="iron-mod-dot" style="background:#ff9f43"></span>
+            <span class="iron-mod-name">Network &amp; App Security</span>
+            <span class="iron-mod-weeks">W2–3</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#ffd32a" onclick="openIronView('mod','threats')">
+            <span class="iron-mod-dot" style="background:#ffd32a"></span>
+            <span class="iron-mod-name">Threats, Attacks &amp; Tools</span>
+            <span class="iron-mod-weeks">W3–4</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#0be881" onclick="openIronView('mod','forensics')">
+            <span class="iron-mod-dot" style="background:#0be881"></span>
+            <span class="iron-mod-name">Digital Forensics &amp; Malware</span>
+            <span class="iron-mod-weeks">W4–5</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#00d2d3" onclick="openIronView('mod','ethical')">
+            <span class="iron-mod-dot" style="background:#00d2d3"></span>
+            <span class="iron-mod-name">Ethical Hacking &amp; IR</span>
+            <span class="iron-mod-weeks">W5–6</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#54a0ff" onclick="openIronView('mod','secure-design')">
+            <span class="iron-mod-dot" style="background:#54a0ff"></span>
+            <span class="iron-mod-name">Secure Design</span>
+            <span class="iron-mod-weeks">W7</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#5f27cd" onclick="openIronView('mod','risk')">
+            <span class="iron-mod-dot" style="background:#5f27cd"></span>
+            <span class="iron-mod-name">Risk Management</span>
+            <span class="iron-mod-weeks">W7</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#a29bfe" onclick="openIronView('mod','threat-intel')">
+            <span class="iron-mod-dot" style="background:#a29bfe"></span>
+            <span class="iron-mod-name">Threat Intelligence</span>
+            <span class="iron-mod-weeks">W8</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#fd79a8" onclick="openIronView('mod','programming')">
+            <span class="iron-mod-dot" style="background:#fd79a8"></span>
+            <span class="iron-mod-name">Intro to Programming</span>
+            <span class="iron-mod-weeks">W8</span>
+          </div>
+          <div class="iron-mod-item" style="--mc:#b2bec3" onclick="openIronView('mod','final')">
+            <span class="iron-mod-dot" style="background:#b2bec3"></span>
+            <span class="iron-mod-name">Final Scenarios &amp; Exam</span>
+            <span class="iron-mod-weeks">W9</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /iron-layout -->
+  </div>
+
+  <!-- IRON DETAIL VIEW (full screen) -->
+  <div id="iron-detail" class="section iron-detail-section">
+    <div class="iron-detail-header">
+      <button class="iron-back-btn" onclick="go('iron', document.querySelectorAll('nav button')[6])">← volver</button>
+      <div>
+        <div class="iron-detail-title" id="ironDetailTitle"></div>
+        <div class="iron-detail-sub" id="ironDetailSub"></div>
+      </div>
+      <button class="btn" id="ironAddBtn" onclick="openIronEntryModal()">+ añadir entrada</button>
+    </div>
+    <!-- Day tabs (for week view) -->
+    <div class="iron-day-tabs" id="ironDayTabs">
+      <button class="iron-day-tab active" onclick="switchDay(this,1)">Lunes</button>
+      <button class="iron-day-tab" onclick="switchDay(this,2)">Martes</button>
+      <button class="iron-day-tab" onclick="switchDay(this,3)">Miércoles</button>
+      <button class="iron-day-tab" onclick="switchDay(this,4)">Jueves</button>
+      <button class="iron-day-tab" onclick="switchDay(this,5)">Viernes</button>
+    </div>
+    <div class="iron-detail-body" id="ironDetailBody"></div>
   </div>
 
 </div>
@@ -992,19 +1319,22 @@
   </div>
 </div>
 
-<div class="overlay" id="ov-iron">
+<!-- Iron entry modal -->
+<div class="overlay" id="ov-iron-entry">
   <div class="modal modal-iron">
-    <div class="modal-title">// material — iron</div>
-    <div class="field"><label>Título / Tema</label><input id="i-title" placeholder="Ej: Reconocimiento activo"/></div>
-    <div class="field"><label>Semana / Módulo</label><input id="i-mod" placeholder="Ej: Semana 1 — Redes"/></div>
-    <div class="field"><label>Apuntes</label><textarea id="i-notes" placeholder="Todo lo que quieras guardar..."></textarea></div>
-    <div class="field"><label>Herramientas (coma)</label><input id="i-tags" placeholder="nmap, netcat..."/></div>
+    <div class="modal-title" id="ironModalTitle">// nueva entrada</div>
+    <div class="field"><label>Título</label><input id="ie-title" placeholder="Ej: Reconocimiento con Nmap"/></div>
+    <div class="field"><label>Notas en crudo</label><textarea id="ie-raw" placeholder="Todo lo que aprendiste, sin filtro..."></textarea></div>
+    <div class="field"><label>Resumen</label><textarea id="ie-sum" placeholder="¿Qué te llevas?"></textarea></div>
+    <div class="field"><label>Herramientas / Conceptos (coma)</label><input id="ie-tags" placeholder="nmap, netcat..."/></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeM('iron')">cancelar</button>
-      <button class="btn btn-danger" onclick="saveIron()">guardar</button>
+      <button class="btn-ghost" onclick="closeM('iron-entry')">cancelar</button>
+      <button class="btn" onclick="saveIronEntry()">guardar</button>
     </div>
   </div>
 </div>
+
+
 
 <script>
   // STATE
@@ -1100,17 +1430,139 @@
     renderGrado();
   }
 
-  function saveIron(){
-    const title=document.getElementById('i-title').value.trim(); if(!title) return;
-    iron.unshift({ id:Date.now(), date:now.toLocaleDateString('es-ES'), title,
-      mod:   document.getElementById('i-mod').value.trim(),
-      notes: document.getElementById('i-notes').value.trim(),
-      tags:  document.getElementById('i-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
-    });
-    localStorage.setItem('tbr-iron',JSON.stringify(iron));
-    closeM('iron'); clr(['i-title','i-mod','i-notes','i-tags']);
-    renderIron();
+  // ── IRON DATA ──
+  // ironEntries: { id, week(1-9), day(1-5), mod(string), title, raw, sum, tags[] }
+  let ironEntries = JSON.parse(localStorage.getItem('tbr-iron-v2') || '[]');
+
+  const WEEK_MODS = {
+    1: ['network-admin'],
+    2: ['network-app'],
+    3: ['network-app','threats'],
+    4: ['threats','forensics'],
+    5: ['forensics','ethical'],
+    6: ['ethical'],
+    7: ['secure-design','risk'],
+    8: ['threat-intel','programming'],
+    9: ['final']
+  };
+
+  const MOD_META = {
+    'network-admin':  { name:'Network Administration',          color:'#ff6b6b', weeks:[1] },
+    'network-app':    { name:'Network & App Security',          color:'#ff9f43', weeks:[2,3] },
+    'threats':        { name:'Threats, Attacks & Tools',        color:'#ffd32a', weeks:[3,4] },
+    'forensics':      { name:'Digital Forensics & Malware',     color:'#0be881', weeks:[4,5] },
+    'ethical':        { name:'Ethical Hacking & IR',            color:'#00d2d3', weeks:[5,6] },
+    'secure-design':  { name:'Secure Design',                   color:'#54a0ff', weeks:[7] },
+    'risk':           { name:'Risk Management',                  color:'#5f27cd', weeks:[7] },
+    'threat-intel':   { name:'Threat Intelligence',             color:'#a29bfe', weeks:[8] },
+    'programming':    { name:'Intro to Programming',            color:'#fd79a8', weeks:[8] },
+    'final':          { name:'Final Scenarios & Exam',          color:'#b2bec3', weeks:[9] }
+  };
+
+  const WEEK_SUBS = {
+    1:'Network Administration',
+    2:'Network & Application Security',
+    3:'Network & App Sec + Threats, Attacks & Tools',
+    4:'Threats, Attacks & Tools + Digital Forensics',
+    5:'Digital Forensics & Malware + Ethical Hacking',
+    6:'Ethical Hacking & Incident Response',
+    7:'Secure Design + Risk Management',
+    8:'Threat Intelligence + Intro to Programming',
+    9:'Final Scenarios + Final Exam'
+  };
+
+  const DAY_NAMES = ['','Lunes','Martes','Miércoles','Jueves','Viernes'];
+
+  let currentIronCtx = { type: null, value: null, day: 1 };
+
+  function openIronView(type, value) {
+    currentIronCtx = { type, value, day: 1 };
+    // switch to detail section without touching nav active state
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('iron-detail').classList.add('active');
+
+    if (type === 'week') {
+      const w = value;
+      document.getElementById('ironDetailTitle').textContent = `Semana ${String(w).padStart(2,'0')}`;
+      document.getElementById('ironDetailSub').textContent = WEEK_SUBS[w];
+      document.getElementById('ironDayTabs').classList.remove('hidden');
+      document.querySelectorAll('.iron-day-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+      renderIronDetail();
+    } else {
+      const m = MOD_META[value];
+      document.getElementById('ironDetailTitle').textContent = m.name;
+      document.getElementById('ironDetailSub').textContent = `Semanas: ${m.weeks.map(w=>'W'+w).join(', ')}`;
+      document.getElementById('ironDayTabs').classList.add('hidden');
+      renderIronDetail();
+    }
   }
+
+  function switchDay(btn, day) {
+    currentIronCtx.day = day;
+    document.querySelectorAll('.iron-day-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderIronDetail();
+  }
+
+  function renderIronDetail() {
+    const el = document.getElementById('ironDetailBody');
+    let entries;
+
+    if (currentIronCtx.type === 'week') {
+      entries = ironEntries.filter(e => e.week === currentIronCtx.value && e.day === currentIronCtx.day);
+    } else {
+      entries = ironEntries.filter(e => e.mod === currentIronCtx.value);
+    }
+
+    if (!entries.length) {
+      el.innerHTML = '<div class="empty">sin entradas todavía para esta selección.</div>';
+      return;
+    }
+
+    el.innerHTML = entries.map(e => `
+      <div class="entry" id="ie${e.id}">
+        <div class="entry-hd" onclick="tog('ie${e.id}')">
+          <span class="entry-code">${currentIronCtx.type==='mod' ? 'W'+e.week+' D'+e.day+' //' : '//'} ${e.date||''}</span>
+          <span class="entry-t">${e.title}</span>
+          <span class="entry-chev">▾</span>
+        </div>
+        <div class="entry-body">
+          ${e.raw?`<div class="esec"><div class="esec-label">raw_notes</div><p>${e.raw.replace(/\n/g,'<br>')}</p></div>`:''}
+          ${e.sum?`<div class="esec"><div class="esec-label">resumen</div><p>${e.sum.replace(/\n/g,'<br>')}</p></div>`:''}
+          ${e.tags?.length?`<div class="esec"><div class="esec-label">herramientas</div><div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  function openIronEntryModal() {
+    document.getElementById('ironModalTitle').textContent =
+      currentIronCtx.type === 'week'
+        ? `// nueva entrada — Semana ${currentIronCtx.value} / ${DAY_NAMES[currentIronCtx.day]}`
+        : `// nueva entrada — ${MOD_META[currentIronCtx.value]?.name || 'Iron'}`;
+    openM('iron-entry');
+  }
+
+  function saveIronEntry() {
+    const title = document.getElementById('ie-title').value.trim(); if(!title) return;
+    const entry = {
+      id: Date.now(),
+      date: new Date().toLocaleDateString('es-ES'),
+      week: currentIronCtx.type === 'week' ? currentIronCtx.value : null,
+      day:  currentIronCtx.type === 'week' ? currentIronCtx.day  : null,
+      mod:  currentIronCtx.type === 'mod'  ? currentIronCtx.value : (WEEK_MODS[currentIronCtx.value]?.[0] || null),
+      title,
+      raw:  document.getElementById('ie-raw').value.trim(),
+      sum:  document.getElementById('ie-sum').value.trim(),
+      tags: document.getElementById('ie-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+    };
+    ironEntries.unshift(entry);
+    localStorage.setItem('tbr-iron-v2', JSON.stringify(ironEntries));
+    closeM('iron-entry');
+    clr(['ie-title','ie-raw','ie-sum','ie-tags']);
+    renderIronDetail();
+  }
+
+
 
   // TOGGLE
   function tog(id){ document.getElementById(id).classList.toggle('open'); }
@@ -1214,7 +1666,7 @@
 
   // INIT
   renderEntries(); renderTools(); renderTerms();
-  renderResources(); renderGrado(); renderIron();
+  renderResources(); renderGrado();
   updateStats();
 </script>
 </body>
