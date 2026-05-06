@@ -18,9 +18,17 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;}
     body{background:var(--black);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:16px;min-height:100vh;overflow-x:hidden;cursor:crosshair;}
-    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;animation:gridDrift 30s linear infinite;}
+
+    /* CITY SVG BG */
+    .city-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .city-bg svg { width: 100%; height: 100%; opacity: 0.07; }
+
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:1;animation:gridDrift 30s linear infinite;}
     @keyframes gridDrift{0%{background-position:0 0}100%{background-position:60px 60px}}
-    body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 35%,rgba(2,4,10,0.8) 100%);pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 30%,transparent 20%,rgba(2,4,10,0.92) 100%);pointer-events:none;z-index:1;}
     .scanlines{position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.1) 3px,rgba(0,0,0,0.1) 4px);pointer-events:none;z-index:9998;}
     .glitch-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--cyan);box-shadow:0 0 20px var(--cyan),0 0 60px var(--cyan-glow);z-index:9999;animation:glitchBar 10s infinite;}
     @keyframes glitchBar{0%,89%,100%{opacity:1;transform:scaleX(1) translateX(0)}90%{opacity:0.3;transform:scaleX(0.6) translateX(15%)}92%{opacity:1;transform:scaleX(1.05)}94%{opacity:0.6;transform:scaleX(0.85) translateX(-5%)}96%{opacity:1;transform:scaleX(1)}}
@@ -304,6 +312,137 @@
 <body>
 <div class="glitch-bar"></div>
 <div class="scanlines"></div>
+<div class="city-bg">
+  <svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax slice">
+    <!-- Sky glow -->
+    <defs>
+      <radialGradient id="skyGlow" cx="50%" cy="80%" r="60%">
+        <stop offset="0%" stop-color="#00f5ff" stop-opacity="0.15"/>
+        <stop offset="40%" stop-color="#0044ff" stop-opacity="0.06"/>
+        <stop offset="100%" stop-color="#02040a" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="pinkGlow" cx="20%" cy="75%" r="30%">
+        <stop offset="0%" stop-color="#ff00aa" stop-opacity="0.1"/>
+        <stop offset="100%" stop-color="#02040a" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+      <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+    <rect width="1440" height="900" fill="#02040a"/>
+    <rect width="1440" height="900" fill="url(#skyGlow)"/>
+    <rect width="1440" height="900" fill="url(#pinkGlow)"/>
+
+    <!-- Far buildings -->
+    <rect x="0"   y="600" width="40"  height="300" fill="#050c18"/>
+    <rect x="45"  y="560" width="30"  height="340" fill="#060e1c"/>
+    <rect x="80"  y="580" width="50"  height="320" fill="#040b16"/>
+    <rect x="135" y="540" width="35"  height="360" fill="#060e1c"/>
+    <rect x="175" y="570" width="60"  height="330" fill="#050c18"/>
+    <rect x="240" y="520" width="45"  height="380" fill="#040b16"/>
+    <rect x="290" y="550" width="30"  height="350" fill="#060e1c"/>
+    <rect x="325" y="500" width="55"  height="400" fill="#050c18"/>
+    <rect x="385" y="530" width="40"  height="370" fill="#040b16"/>
+    <rect x="430" y="490" width="70"  height="410" fill="#060e1c"/>
+    <rect x="505" y="510" width="35"  height="390" fill="#050c18"/>
+    <rect x="545" y="480" width="50"  height="420" fill="#040b16"/>
+    <rect x="600" y="500" width="45"  height="400" fill="#060e1c"/>
+    <rect x="650" y="460" width="80"  height="440" fill="#050c18"/>
+    <rect x="735" y="490" width="40"  height="410" fill="#040b16"/>
+    <rect x="780" y="510" width="55"  height="390" fill="#060e1c"/>
+    <rect x="840" y="470" width="35"  height="430" fill="#050c18"/>
+    <rect x="880" y="500" width="60"  height="400" fill="#040b16"/>
+    <rect x="945" y="520" width="45"  height="380" fill="#060e1c"/>
+    <rect x="995" y="480" width="70"  height="420" fill="#050c18"/>
+    <rect x="1070" y="510" width="40" height="390" fill="#040b16"/>
+    <rect x="1115" y="530" width="55" height="370" fill="#060e1c"/>
+    <rect x="1175" y="490" width="35" height="410" fill="#050c18"/>
+    <rect x="1215" y="520" width="60" height="380" fill="#040b16"/>
+    <rect x="1280" y="500" width="45" height="400" fill="#060e1c"/>
+    <rect x="1330" y="460" width="50" height="440" fill="#050c18"/>
+    <rect x="1385" y="540" width="55" height="360" fill="#040b16"/>
+
+    <!-- Mid buildings with neon accents -->
+    <rect x="0"   y="650" width="60"  height="250" fill="#071020"/>
+    <rect x="65"  y="620" width="80"  height="280" fill="#08121f"/>
+    <rect x="150" y="600" width="55"  height="300" fill="#071020"/>
+    <rect x="210" y="580" width="90"  height="320" fill="#08121f"/>
+    <rect x="305" y="560" width="65"  height="340" fill="#071020"/>
+    <rect x="375" y="590" width="75"  height="310" fill="#08121f"/>
+    <rect x="455" y="545" width="85"  height="355" fill="#071020"/>
+    <rect x="545" y="570" width="60"  height="330" fill="#08121f"/>
+    <rect x="610" y="540" width="100" height="360" fill="#071020"/>
+    <rect x="715" y="560" width="70"  height="340" fill="#08121f"/>
+    <rect x="790" y="530" width="90"  height="370" fill="#071020"/>
+    <rect x="885" y="555" width="65"  height="345" fill="#08121f"/>
+    <rect x="955" y="540" width="85"  height="360" fill="#071020"/>
+    <rect x="1045" y="560" width="75" height="340" fill="#08121f"/>
+    <rect x="1125" y="545" width="90" height="355" fill="#071020"/>
+    <rect x="1220" y="570" width="65" height="330" fill="#08121f"/>
+    <rect x="1290" y="540" width="80" height="360" fill="#071020"/>
+    <rect x="1375" y="580" width="65" height="320" fill="#08121f"/>
+
+    <!-- Neon window lights — cyan -->
+    <rect x="70" y="640" width="6" height="4" fill="#00f5ff" opacity="0.6" filter="url(#blur2)"/>
+    <rect x="82" y="640" width="6" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="70" y="652" width="6" height="4" fill="#00f5ff" opacity="0.3"/>
+    <rect x="160" y="625" width="5" height="4" fill="#00f5ff" opacity="0.5"/>
+    <rect x="170" y="625" width="5" height="4" fill="#00f5ff" opacity="0.3"/>
+    <rect x="220" y="600" width="7" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="233" y="600" width="7" height="4" fill="#00f5ff" opacity="0.5"/>
+    <rect x="220" y="614" width="7" height="4" fill="#00f5ff" opacity="0.2"/>
+    <rect x="460" y="565" width="6" height="4" fill="#00f5ff" opacity="0.5"/>
+    <rect x="472" y="565" width="6" height="4" fill="#00f5ff" opacity="0.3"/>
+    <rect x="484" y="565" width="6" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="460" y="578" width="6" height="4" fill="#00f5ff" opacity="0.2"/>
+    <rect x="615" y="560" width="8" height="4" fill="#00f5ff" opacity="0.5"/>
+    <rect x="629" y="560" width="8" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="643" y="560" width="8" height="4" fill="#00f5ff" opacity="0.3"/>
+    <rect x="615" y="574" width="8" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="629" y="574" width="8" height="4" fill="#00f5ff" opacity="0.2"/>
+    <rect x="795" y="550" width="7" height="4" fill="#00f5ff" opacity="0.5"/>
+    <rect x="808" y="550" width="7" height="4" fill="#00f5ff" opacity="0.3"/>
+    <rect x="821" y="550" width="7" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="795" y="564" width="7" height="4" fill="#00f5ff" opacity="0.3"/>
+    <rect x="960" y="560" width="6" height="4" fill="#00f5ff" opacity="0.5"/>
+    <rect x="972" y="560" width="6" height="4" fill="#00f5ff" opacity="0.3"/>
+    <rect x="1130" y="565" width="7" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="1143" y="565" width="7" height="4" fill="#00f5ff" opacity="0.5"/>
+    <rect x="1295" y="558" width="6" height="4" fill="#00f5ff" opacity="0.4"/>
+    <rect x="1307" y="558" width="6" height="4" fill="#00f5ff" opacity="0.3"/>
+
+    <!-- Neon accents — pink/magenta -->
+    <rect x="68" y="618" width="84" height="2" fill="#ff00aa" opacity="0.35" filter="url(#blur2)"/>
+    <rect x="208" y="578" width="92" height="2" fill="#ff00aa" opacity="0.25" filter="url(#blur2)"/>
+    <rect x="453" y="543" width="88" height="2" fill="#ff2060" opacity="0.3" filter="url(#blur2)"/>
+    <rect x="608" y="538" width="103" height="2" fill="#ff00aa" opacity="0.35" filter="url(#blur2)"/>
+    <rect x="788" y="528" width="92" height="2" fill="#ff2060" opacity="0.3" filter="url(#blur2)"/>
+    <rect x="1123" y="543" width="93" height="2" fill="#ff00aa" opacity="0.35" filter="url(#blur2)"/>
+
+    <!-- Cyan rooftop lines -->
+    <rect x="0"   y="650" width="60"  height="2" fill="#00f5ff" opacity="0.2" filter="url(#blur2)"/>
+    <rect x="305" y="560" width="65"  height="2" fill="#00f5ff" opacity="0.25" filter="url(#blur2)"/>
+    <rect x="610" y="540" width="100" height="2" fill="#00f5ff" opacity="0.2" filter="url(#blur2)"/>
+    <rect x="955" y="540" width="85"  height="2" fill="#00f5ff" opacity="0.25" filter="url(#blur2)"/>
+    <rect x="1290" y="540" width="80" height="2" fill="#00f5ff" opacity="0.2" filter="url(#blur2)"/>
+
+    <!-- Ground glow -->
+    <rect x="0" y="895" width="1440" height="5" fill="#00f5ff" opacity="0.15" filter="url(#blur4)"/>
+    <rect x="0" y="880" width="1440" height="20" fill="url(#skyGlow)" opacity="0.5"/>
+
+    <!-- Distant moon / orb -->
+    <circle cx="1100" cy="200" r="45" fill="none" stroke="#00f5ff" stroke-width="1" opacity="0.15"/>
+    <circle cx="1100" cy="200" r="38" fill="#00f5ff" opacity="0.04" filter="url(#blur4)"/>
+
+    <!-- Rain streaks -->
+    <line x1="200" y1="0" x2="195" y2="150" stroke="#00f5ff" stroke-width="0.3" opacity="0.08"/>
+    <line x1="450" y1="0" x2="445" y2="200" stroke="#00f5ff" stroke-width="0.3" opacity="0.06"/>
+    <line x1="700" y1="0" x2="695" y2="180" stroke="#00f5ff" stroke-width="0.3" opacity="0.07"/>
+    <line x1="900" y1="0" x2="895" y2="160" stroke="#00f5ff" stroke-width="0.3" opacity="0.05"/>
+    <line x1="1200" y1="0" x2="1195" y2="190" stroke="#00f5ff" stroke-width="0.3" opacity="0.08"/>
+    <line x1="320" y1="0" x2="315" y2="220" stroke="#ff00aa" stroke-width="0.3" opacity="0.05"/>
+    <line x1="820" y1="0" x2="815" y2="170" stroke="#ff00aa" stroke-width="0.3" opacity="0.04"/>
+  </svg>
+</div>
 
 <header>
   <div class="logo">
@@ -1195,6 +1334,86 @@
   const now2 = new Date();
   document.getElementById('hdDate').textContent =
     now2.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'.');
+
+  // Pre-populate tools (all red, VirtualBox orange)
+  if(!tools.length){
+    tools=[
+      {id:1,name:'Wireshark',cat:'Análisis de red',level:'red',desc:'Analizador de protocolos de red. Captura y examina el tráfico en tiempo real.',cmds:'wireshark\nwireshark -i eth0 -w captura.pcap'},
+      {id:2,name:'Cisco Packet Tracer',cat:'Simulación de redes',level:'red',desc:'Simulador de redes de Cisco. Permite diseñar y probar topologías sin hardware real.',cmds:''},
+      {id:3,name:'Oracle VirtualBox',cat:'Virtualización',level:'orange',desc:'Software de virtualización para crear y gestionar máquinas virtuales.',cmds:''},
+      {id:4,name:'Kleopatra',cat:'Cifrado / PKI',level:'red',desc:'Interfaz gráfica para gestión de certificados y cifrado GPG/PGP.',cmds:''},
+      {id:5,name:'Autopsy',cat:'Forense digital',level:'red',desc:'Plataforma de análisis forense digital. Permite examinar discos duros e imágenes forenses.',cmds:''},
+      {id:6,name:'OpenStego',cat:'Esteganografía',level:'red',desc:'Herramienta de esteganografía para ocultar datos dentro de archivos de imagen.',cmds:''},
+      {id:7,name:'ffuf',cat:'Web — Fuzzing',level:'red',desc:'Herramienta de fuzzing web rápida. Descubre directorios, parámetros y subdominios ocultos.',cmds:'ffuf -w wordlist.txt -u https://target.com/FUZZ\nffuf -w wordlist.txt -u https://target.com/FUZZ -e .php,.html'},
+      {id:8,name:'Hydra',cat:'Fuerza bruta',level:'red',desc:'Herramienta de cracking de credenciales por fuerza bruta. Soporta múltiples protocolos.',cmds:'hydra -l admin -P passwords.txt ssh://192.168.1.1\nhydra -L users.txt -P pass.txt http-post-form "/login:user=^USER^&pass=^PASS^:F=incorrect"'}
+    ];
+    localStorage.setItem('tbr-tools',JSON.stringify(tools));
+  }
+
+  // Pre-populate resources
+  if(!resources.length){
+    resources=[
+      {id:1,name:'TryHackMe',cat:'Plataformas',url:'https://tryhackme.com',notes:'Plataforma principal de labs del bootcamp. Labs guiados de ciberseguridad.'},
+      {id:2,name:'VirusTotal',cat:'Herramientas online',url:'https://virustotal.com',notes:'Análisis de ficheros y URLs sospechosos usando múltiples motores antivirus.'},
+      {id:3,name:'HoneyDB',cat:'Herramientas online',url:'https://honeydb.io',notes:'Base de datos de actividad de honeypots. Útil para ver ataques reales en tiempo real.'},
+      {id:4,name:'MalwareBazaar',cat:'Herramientas online',url:'https://bazaar.abuse.ch',notes:'Repositorio de muestras de malware para análisis e investigación.'},
+      {id:5,name:'CyberChef',cat:'Herramientas online',url:'https://gchq.github.io/CyberChef',notes:'Navaja suiza de análisis y transformación de datos: encoding, cifrado, hashing...'},
+      {id:6,name:'CrackStation',cat:'Herramientas online',url:'https://crackstation.net',notes:'Cracking online de hashes usando grandes tablas de lookup.'},
+      {id:7,name:'Have I Been Pwned',cat:'Herramientas online',url:'https://haveibeenpwned.com',notes:'Comprueba si tu email o contraseña han sido filtrados en alguna brecha de datos.'},
+      {id:8,name:'OSINT Framework',cat:'Herramientas online',url:'https://osintframework.com',notes:'Mapa interactivo de herramientas OSINT organizadas por categoría.'},
+      {id:9,name:'Exploit Database',cat:'Herramientas online',url:'https://exploit-db.com',notes:'Base de datos de exploits y vulnerabilidades públicas. Mantenida por Offensive Security.'},
+      {id:10,name:'WolframAlpha',cat:'Herramientas online',url:'https://wolframalpha.com',notes:'Motor de conocimiento computacional. Útil para cálculos, conversiones y consultas técnicas.'},
+      {id:11,name:'Maltego',cat:'IronHack Papers',url:'https://www.maltego.com',notes:'Herramienta de OSINT y análisis de relaciones entre entidades. Referencia del curso.'},
+      {id:12,name:'CompTIA Security+ Study Guide',cat:'IronHack Papers',url:'https://www.comptia.org/certifications/security',notes:'Guía oficial de estudio del examen CompTIA Security+. Objetivo final del bootcamp.'}
+    ];
+    localStorage.setItem('tbr-resources',JSON.stringify(resources));
+  }
+
+  // Pre-populate dict from Day 1
+  if(!terms.length){
+    terms=[
+      {id:1,term:'LAN',def:'Red de área local (Local Area Network). Conecta dispositivos dentro de un espacio físico limitado como una oficina o edificio.',tags:['redes','fundamentos']},
+      {id:2,term:'WAN',def:'Red de área amplia (Wide Area Network). Conecta redes entre ubicaciones geográficamente distantes.',tags:['redes','fundamentos']},
+      {id:3,term:'VLAN',def:'Red de área local virtual. Divide un switch físico en múltiples redes lógicas independientes. El tráfico entre VLANs solo fluye a través de un router.',tags:['redes','switching']},
+      {id:4,term:'Subred',def:'Segmento lógico de una red IP. Opera en capa 3 del modelo OSI. A diferencia de las VLANs, usa direcciones IP para segmentar.',tags:['redes','fundamentos']},
+      {id:5,term:'Switch',def:'Dispositivo de capa 2 que conecta múltiples dispositivos dentro de una LAN. Dirige el tráfico usando direcciones MAC.',tags:['redes','hardware']},
+      {id:6,term:'Router',def:'Dispositivo de capa 3 que conecta redes distintas entre sí. Usa direcciones IP para dirigir el tráfico hacia su destino.',tags:['redes','hardware']},
+      {id:7,term:'Firewall',def:'Sistema de seguridad que monitoriza y controla el tráfico de red entrante y saliente según reglas de seguridad predefinidas.',tags:['seguridad','redes']},
+      {id:8,term:'DNS',def:'Sistema de Nombres de Dominio (Domain Name System). Traduce nombres legibles (google.com) a direcciones IP que usan los equipos.',tags:['redes','protocolos']},
+      {id:9,term:'DHCP',def:'Protocolo de configuración dinámica de hosts. Asigna automáticamente direcciones IP a los dispositivos cuando se conectan a una red.',tags:['redes','protocolos']},
+      {id:10,term:'ARP',def:'Protocolo de resolución de direcciones (Address Resolution Protocol). Traduce direcciones IP a direcciones MAC dentro de una red local.',tags:['redes','protocolos']},
+      {id:11,term:'TCP',def:'Protocolo de control de transmisión. Garantiza la entrega ordenada y sin errores de los datos. Más lento pero fiable. Usado en web y email.',tags:['redes','protocolos']},
+      {id:12,term:'UDP',def:'Protocolo de datagramas de usuario. Más rápido que TCP pero sin garantía de entrega. Usado en streaming, videojuegos y DNS.',tags:['redes','protocolos']},
+      {id:13,term:'ICMP',def:'Protocolo de mensajes de control de internet. El comando ping lo utiliza para comprobar la conectividad entre dispositivos.',tags:['redes','protocolos']},
+      {id:14,term:'Dirección IP',def:'Identificador numérico único de cada dispositivo en una red. Puede ser pública (visible en internet) o privada (solo dentro de la red local).',tags:['redes','fundamentos']},
+      {id:15,term:'Dirección MAC',def:'Identificador físico único grabado en la tarjeta de red de cada dispositivo. Opera en capa 2 del modelo OSI. No cambia.',tags:['redes','fundamentos']},
+      {id:16,term:'Paquete',def:'Unidad básica de datos en una red. Contiene los datos a transmitir más información de cabecera (IP origen, IP destino, protocolo, etc.).',tags:['redes','fundamentos']},
+      {id:17,term:'Trama (Frame)',def:'Unidad de datos en capa 2 del modelo OSI. Encapsula paquetes añadiendo las direcciones MAC de origen y destino.',tags:['redes','fundamentos']},
+      {id:18,term:'Encapsulación',def:'Proceso por el que cada capa del modelo OSI añade su propia cabecera a los datos al enviarlos hacia capas inferiores.',tags:['redes','fundamentos']},
+      {id:19,term:'ping',def:'Comando que usa ICMP para verificar si un host es accesible en la red y medir la latencia de la conexión.',tags:['herramientas','troubleshooting']},
+      {id:20,term:'tracert / traceroute',def:'Traza la ruta que siguen los paquetes desde el origen hasta el destino. Útil para localizar dónde se interrumpe la conexión.',tags:['herramientas','troubleshooting']},
+      {id:21,term:'nslookup',def:'Comprueba si un servidor DNS responde correctamente. Útil para diagnosticar problemas de resolución de nombres.',tags:['herramientas','troubleshooting']},
+      {id:22,term:'ipconfig / ifconfig',def:'Comandos para ver la configuración IP de un equipo. ipconfig en Windows, ifconfig en Linux/Mac.',tags:['herramientas','troubleshooting']},
+      {id:23,term:'ISP',def:'Proveedor de Servicios de Internet (Internet Service Provider). Si todos los pasos locales de troubleshooting fallan, el problema puede estar en el ISP.',tags:['redes','fundamentos']}
+    ];
+    localStorage.setItem('tbr-terms',JSON.stringify(terms));
+  }
+
+  // Pre-populate Radar
+  if(!radarItems.length){
+    radarItems=[{id:1,name:'YubiKey',note:'Dispositivo físico de autenticación de dos factores. Alternativa hardware a los autenticadores de software. Me llama la atención su uso en entornos de alta seguridad.',url:'https://www.yubico.com'}];
+    localStorage.setItem('tbr-radar',JSON.stringify(radarItems));
+  }
+
+  // Pre-populate Ocio
+  if(!ocioItems.length){
+    ocioItems=[
+      {id:1,title:'Mr. Robot',type:'serie',status:'pending',score:0,note:'Serie sobre un hacker con perfil de analista de ciberseguridad. Muy recomendada en el sector por su realismo técnico.'},
+      {id:2,title:'Snowden',type:'pelicula',status:'pending',score:0,note:'Película sobre Edward Snowden y la NSA. Fundamental para entender vigilancia masiva y privacidad.'},
+      {id:3,title:'Intrusion Detection Honeypots',type:'libro',status:'pending',score:0,note:'De Chris Sanders. Guía fundacional para usar honeypots contra adversarios de red. 4.7★ en Amazon.'}
+    ];
+    localStorage.setItem('tbr-ocio',JSON.stringify(ocioItems));
+  }
 
   renderWeeksAndMods();
   renderGrado();
