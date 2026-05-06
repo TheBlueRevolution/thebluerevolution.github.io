@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TheBlueRevolution — Diario de Curso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #060910;
+      --bg2:      #0b1120;
+      --bg3:      #101828;
+      --border:   #1a2f50;
+      --accent:   #0d6fff;
+      --accent2:  #00c6ff;
+      --glow:     #0d6fff55;
+      --text:     #c9d8f0;
+      --muted:    #4a6080;
+      --danger:   #ff3c5c;
+      --success:  #00e5a0;
+      --warn:     #f5a623;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* SCANLINE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* GRID BG */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(13,111,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(13,111,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HEADER */
+    header {
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      background: rgba(6,9,16,0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      color: var(--accent2);
+      box-shadow: 0 0 12px var(--glow);
+      animation: pulse-border 3s infinite;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { box-shadow: 0 0 12px var(--glow); }
+      50% { box-shadow: 0 0 24px var(--accent), 0 0 48px var(--glow); }
+    }
+
+    .logo-text {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .logo-text span {
+      color: var(--accent2);
+    }
+
+    .header-status {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* NAV */
+    nav {
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      overflow-x: auto;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    nav button:hover {
+      color: var(--text);
+      background: rgba(13,111,255,0.05);
+    }
+
+    nav button.active {
+      color: var(--accent2);
+      border-bottom-color: var(--accent2);
+    }
+
+    /* LAYOUT */
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* SECTION */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* HERO */
+    .hero {
+      padding: 4rem 0 2rem;
+      text-align: left;
+    }
+
+    .hero-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .blue { color: var(--accent2); }
+    .hero h1 .dim { color: var(--muted); }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .stat {
+      border-left: 2px solid var(--accent);
+      padding-left: 1rem;
+    }
+
+    .stat-value {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.8rem;
+      color: var(--accent2);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .badge-blue { background: rgba(13,111,255,0.2); color: var(--accent2); border: 1px solid var(--accent); }
+    .badge-green { background: rgba(0,229,160,0.1); color: var(--success); border: 1px solid var(--success); }
+    .badge-warn { background: rgba(245,166,35,0.1); color: var(--warn); border: 1px solid var(--warn); }
+    .badge-red { background: rgba(255,60,92,0.1); color: var(--danger); border: 1px solid var(--danger); }
+
+    /* DIARY ENTRIES */
+    .entries-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .entry {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .entry:hover { border-color: var(--accent); }
+
+    .entry-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .entry-day {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+    }
+
+    .entry-title {
+      font-weight: 700;
+      font-size: 1rem;
+      flex: 1;
+    }
+
+    .entry-toggle {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+    }
+
+    .entry.open .entry-toggle { transform: rotate(180deg); }
+
+    .entry-body {
+      display: none;
+      padding: 1.5rem;
+    }
+
+    .entry.open .entry-body { display: block; }
+
+    .entry-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .entry-section:last-child { margin-bottom: 0; }
+
+    .entry-section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .entry-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .entry-section p {
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 10px;
+      border-radius: 2px;
+      background: rgba(13,111,255,0.1);
+      color: var(--accent2);
+      border: 1px solid rgba(13,111,255,0.3);
+    }
+
+    /* SECTION HEADER */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .section-title span { color: var(--accent2); }
+
+    .section-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* TOOLS GRID */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .tool-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--glow);
+      transform: translateY(-2px);
+    }
+
+    .tool-name {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      color: var(--accent2);
+      margin-bottom: 0.3rem;
+    }
+
+    .tool-category {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+
+    .tool-desc {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* DICT */
+    .dict-search {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .dict-search input {
+      flex: 1;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .dict-search input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--glow);
+    }
+
+    .dict-search input::placeholder { color: var(--muted); }
+
+    .dict-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .dict-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+
+    .dict-item:hover { border-color: var(--accent); }
+
+    .dict-term {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--accent2);
+      font-size: 0.9rem;
+      min-width: 160px;
+    }
+
+    .dict-def {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    /* EMPTY STATE */
+    .empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    .empty::before {
+      content: '[ NO DATA ]';
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--border);
+    }
+
+    /* TERMINAL BLOCK */
+    .terminal {
+      background: #020408;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--success);
+      line-height: 1.8;
+      margin-top: 0.8rem;
+    }
+
+    .terminal .prompt { color: var(--muted); }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      nav button { padding: 0.8rem 1rem; font-size: 0.75rem; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .dict-item { flex-direction: column; gap: 0.5rem; }
+      .dict-term { min-width: auto; }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section.active { animation: fadeIn 0.3s ease; }
+
+    /* ADD ENTRY BUTTON */
+    .btn {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      border: 1px solid var(--accent);
+      background: rgba(13,111,255,0.1);
+      color: var(--accent2);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(13,111,255,0.25);
+      box-shadow: 0 0 12px var(--glow);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(6,9,16,0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 640px;
+      box-shadow: 0 0 40px var(--glow);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal h2 {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.7rem 1rem;
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-textarea {
+      min-height: 90px;
+      resize: vertical;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--glow);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+
+    .btn-ghost {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">TBR</div>
+    <div class="logo-text">The<span>Blue</span>Revolution</div>
+  </div>
+  <div class="header-status">
+    <div class="status-dot"></div>
+    <span id="currentDate"></span>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="showSection('home')">Inicio</button>
+  <button onclick="showSection('diary')">Diario</button>
+  <button onclick="showSection('tools')">Herramientas</button>
+  <button onclick="showSection('dict')">Diccionario</button>
+  <button onclick="showSection('resources')">Recursos</button>
+</nav>
+
+<!-- HOME -->
+<div class="container">
+  <div id="home" class="section active">
+    <div class="hero">
+      <div class="hero-label">// thebluerevolution.github.io — Bitácora de Ciberseguridad</div>
+      <h1>
+        Diario<br>
+        <span class="blue">del Curso</span><br>
+        <span class="dim">_</span>
+      </h1>
+      <p class="hero-sub">
+        Registro personal del bootcamp de ciberseguridad. Todo en crudo: 
+        apuntes, herramientas, conceptos, errores y aprendizajes.
+      </p>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-value" id="statDays">0</span>
+          <span class="stat-label">Días de curso</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="statTools">0</span>
+          <span class="stat-label">Herramientas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="statTerms">0</span>
+          <span class="stat-label">Términos en dict.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIARY -->
+  <div id="diary" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">// <span>Diario</span></div>
+      </div>
+      <button class="btn" onclick="openModal('entry')">+ Nueva entrada</button>
+    </div>
+    <div class="entries-grid" id="entriesList">
+      <div class="empty">Aún no hay entradas. Empieza hoy.</div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div id="tools" class="section">
+    <div class="section-header">
+      <div class="section-title">// <span>Herramientas</span></div>
+      <button class="btn" onclick="openModal('tool')">+ Añadir herramienta</button>
+    </div>
+    <div class="tools-grid" id="toolsList">
+      <div class="empty">Nada todavía.</div>
+    </div>
+  </div>
+
+  <!-- DICT -->
+  <div id="dict" class="section">
+    <div class="section-header">
+      <div class="section-title">// <span>Diccionario</span></div>
+      <button class="btn" onclick="openModal('term')">+ Añadir término</button>
+    </div>
+    <div class="dict-search">
+      <input type="text" id="dictSearch" placeholder="Buscar término..." oninput="filterDict()" />
+    </div>
+    <div class="dict-list" id="dictList">
+      <div class="empty">El diccionario está vacío.</div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div id="resources" class="section">
+    <div class="section-header">
+      <div class="section-title">// <span>Recursos</span></div>
+      <button class="btn" onclick="openModal('resource')">+ Añadir recurso</button>
+    </div>
+    <div class="entries-grid" id="resourcesList">
+      <div class="empty">Sin recursos añadidos aún.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Nueva entrada -->
+<div class="modal-overlay" id="modal-entry">
+  <div class="modal">
+    <h2>// Nueva entrada del diario</h2>
+    <div class="form-group">
+      <label class="form-label">Título del día</label>
+      <input class="form-input" id="e-title" placeholder="Ej: Introducción a redes — Modelo OSI" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notas en crudo (lo que viste, tal cual)</label>
+      <textarea class="form-textarea" id="e-raw" placeholder="Escribe aquí tus apuntes sin filtro..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Resumen (lo más importante)</label>
+      <textarea class="form-textarea" id="e-summary" placeholder="¿Qué te llevas de hoy?"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Herramientas / Conceptos vistos (separados por coma)</label>
+      <input class="form-input" id="e-tags" placeholder="Ej: nmap, TCP/IP, Wireshark" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('entry')">Cancelar</button>
+      <button class="btn" onclick="saveEntry()">Guardar entrada</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Herramienta -->
+<div class="modal-overlay" id="modal-tool">
+  <div class="modal">
+    <h2>// Nueva herramienta</h2>
+    <div class="form-group">
+      <label class="form-label">Nombre</label>
+      <input class="form-input" id="t-name" placeholder="Ej: Nmap" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Categoría</label>
+      <input class="form-input" id="t-cat" placeholder="Ej: Reconocimiento, Análisis de red..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descripción y uso básico</label>
+      <textarea class="form-textarea" id="t-desc" placeholder="¿Para qué sirve? ¿Cómo se usa?"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Comandos clave (uno por línea)</label>
+      <textarea class="form-textarea" id="t-cmds" placeholder="nmap -sV 192.168.1.1&#10;nmap -A target"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('tool')">Cancelar</button>
+      <button class="btn" onclick="saveTool()">Guardar herramienta</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Término -->
+<div class="modal-overlay" id="modal-term">
+  <div class="modal">
+    <h2>// Nuevo término</h2>
+    <div class="form-group">
+      <label class="form-label">Término</label>
+      <input class="form-input" id="d-term" placeholder="Ej: Firewall" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Definición</label>
+      <textarea class="form-textarea" id="d-def" placeholder="Explícalo con tus propias palabras..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('term')">Cancelar</button>
+      <button class="btn" onclick="saveTerm()">Guardar término</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Recurso -->
+<div class="modal-overlay" id="modal-resource">
+  <div class="modal">
+    <h2>// Nuevo recurso</h2>
+    <div class="form-group">
+      <label class="form-label">Nombre / Título</label>
+      <input class="form-input" id="r-name" placeholder="Ej: TryHackMe — Introducción a Linux" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">URL</label>
+      <input class="form-input" id="r-url" placeholder="https://..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notas</label>
+      <textarea class="form-textarea" id="r-notes" placeholder="¿Por qué lo guardas? ¿Qué tiene de útil?"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('resource')">Cancelar</button>
+      <button class="btn" onclick="saveResource()">Guardar recurso</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // STATE
+  let entries = JSON.parse(localStorage.getItem('tbr-entries') || '[]');
+  let tools   = JSON.parse(localStorage.getItem('tbr-tools')   || '[]');
+  let terms   = JSON.parse(localStorage.getItem('tbr-terms')   || '[]');
+  let resources = JSON.parse(localStorage.getItem('tbr-resources') || '[]');
+
+  // DATE
+  const now = new Date();
+  document.getElementById('currentDate').textContent =
+    now.toLocaleDateString('es-ES', { weekday:'short', day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
+
+  // NAV
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    updateStats();
+  }
+
+  // MODALS
+  function openModal(type) {
+    document.getElementById('modal-' + type).classList.add('open');
+  }
+  function closeModal(type) {
+    document.getElementById('modal-' + type).classList.remove('open');
+  }
+
+  // SAVE ENTRY
+  function saveEntry() {
+    const title   = document.getElementById('e-title').value.trim();
+    const raw     = document.getElementById('e-raw').value.trim();
+    const summary = document.getElementById('e-summary').value.trim();
+    const tags    = document.getElementById('e-tags').value.trim();
+    if (!title) return;
+    const entry = {
+      id: Date.now(),
+      date: new Date().toLocaleDateString('es-ES'),
+      day: entries.length + 1,
+      title, raw, summary,
+      tags: tags ? tags.split(',').map(t => t.trim()).filter(Boolean) : []
+    };
+    entries.unshift(entry);
+    localStorage.setItem('tbr-entries', JSON.stringify(entries));
+    closeModal('entry');
+    ['e-title','e-raw','e-summary','e-tags'].forEach(id => document.getElementById(id).value = '');
+    renderEntries();
+    updateStats();
+  }
+
+  // SAVE TOOL
+  function saveTool() {
+    const name = document.getElementById('t-name').value.trim();
+    const cat  = document.getElementById('t-cat').value.trim();
+    const desc = document.getElementById('t-desc').value.trim();
+    const cmds = document.getElementById('t-cmds').value.trim();
+    if (!name) return;
+    tools.push({ id: Date.now(), name, cat, desc, cmds });
+    localStorage.setItem('tbr-tools', JSON.stringify(tools));
+    closeModal('tool');
+    ['t-name','t-cat','t-desc','t-cmds'].forEach(id => document.getElementById(id).value = '');
+    renderTools();
+    updateStats();
+  }
+
+  // SAVE TERM
+  function saveTerm() {
+    const term = document.getElementById('d-term').value.trim();
+    const def  = document.getElementById('d-def').value.trim();
+    if (!term) return;
+    terms.push({ id: Date.now(), term, def });
+    localStorage.setItem('tbr-terms', JSON.stringify(terms));
+    closeModal('term');
+    ['d-term','d-def'].forEach(id => document.getElementById(id).value = '');
+    renderTerms();
+    updateStats();
+  }
+
+  // SAVE RESOURCE
+  function saveResource() {
+    const name  = document.getElementById('r-name').value.trim();
+    const url   = document.getElementById('r-url').value.trim();
+    const notes = document.getElementById('r-notes').value.trim();
+    if (!name) return;
+    resources.push({ id: Date.now(), name, url, notes });
+    localStorage.setItem('tbr-resources', JSON.stringify(resources));
+    closeModal('resource');
+    ['r-name','r-url','r-notes'].forEach(id => document.getElementById(id).value = '');
+    renderResources();
+    updateStats();
+  }
+
+  // RENDER ENTRIES
+  function renderEntries() {
+    const el = document.getElementById('entriesList');
+    if (!entries.length) {
+      el.innerHTML = '<div class="empty">Aún no hay entradas. Empieza hoy.</div>';
+      return;
+    }
+    el.innerHTML = entries.map(e => `
+      <div class="entry" id="entry-${e.id}">
+        <div class="entry-header" onclick="toggleEntry(${e.id})">
+          <span class="entry-day">DÍA ${String(e.day).padStart(2,'0')} // ${e.date}</span>
+          <span class="entry-title">${e.title}</span>
+          <span class="entry-toggle">▼</span>
+        </div>
+        <div class="entry-body">
+          ${e.raw ? `
+          <div class="entry-section">
+            <div class="entry-section-label">Notas en crudo</div>
+            <p>${e.raw.replace(/\n/g,'<br>')}</p>
+          </div>` : ''}
+          ${e.summary ? `
+          <div class="entry-section">
+            <div class="entry-section-label">Resumen</div>
+            <p>${e.summary.replace(/\n/g,'<br>')}</p>
+          </div>` : ''}
+          ${e.tags.length ? `
+          <div class="entry-section">
+            <div class="entry-section-label">Temas / Herramientas</div>
+            <div class="tag-list">${e.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          </div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toggleEntry(id) {
+    document.getElementById('entry-' + id).classList.toggle('open');
+  }
+
+  // RENDER TOOLS
+  function renderTools() {
+    const el = document.getElementById('toolsList');
+    if (!tools.length) {
+      el.innerHTML = '<div class="empty">Nada todavía.</div>';
+      return;
+    }
+    el.innerHTML = tools.map(t => `
+      <div class="tool-card">
+        <div class="tool-name">${t.name}</div>
+        <div class="tool-category">${t.cat || 'Sin categoría'}</div>
+        <div class="tool-desc">${t.desc || ''}</div>
+        ${t.cmds ? `<div class="terminal">${t.cmds.split('\n').map(c => `<div><span class="prompt">$ </span>${c}</div>`).join('')}</div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  // RENDER TERMS
+  function renderTerms(filter = '') {
+    const el = document.getElementById('dictList');
+    const filtered = terms.filter(t =>
+      t.term.toLowerCase().includes(filter.toLowerCase()) ||
+      t.def.toLowerCase().includes(filter.toLowerCase())
+    );
+    if (!filtered.length) {
+      el.innerHTML = '<div class="empty">El diccionario está vacío.</div>';
+      return;
+    }
+    el.innerHTML = [...filtered]
+      .sort((a,b) => a.term.localeCompare(b.term))
+      .map(t => `
+        <div class="dict-item">
+          <span class="dict-term">${t.term}</span>
+          <span class="dict-def">${t.def}</span>
+        </div>
+      `).join('');
+  }
+
+  // RENDER RESOURCES
+  function renderResources() {
+    const el = document.getElementById('resourcesList');
+    if (!resources.length) {
+      el.innerHTML = '<div class="empty">Sin recursos añadidos aún.</div>';
+      return;
+    }
+    el.innerHTML = resources.map(r => `
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">${r.name}</span>
+          ${r.url ? `<span class="badge badge-blue">ENLACE</span>` : ''}
+        </div>
+        ${r.notes ? `<p style="color:var(--text);font-size:0.9rem;line-height:1.6;margin-bottom:0.8rem">${r.notes}</p>` : ''}
+        ${r.url ? `<a href="${r.url}" target="_blank" style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--accent2);text-decoration:none;">${r.url}</a>` : ''}
+      </div>
+    `).join('');
+  }
+
+  // FILTER DICT
+  function filterDict() {
+    renderTerms(document.getElementById('dictSearch').value);
+  }
+
+  // STATS
+  function updateStats() {
+    document.getElementById('statDays').textContent  = entries.length;
+    document.getElementById('statTools').textContent = tools.length;
+    document.getElementById('statTerms').textContent = terms.length;
+  }
+
+  // CLOSE MODAL ON OVERLAY CLICK
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) {
+        overlay.classList.remove('open');
+      }
+    });
+  });
+
+  // INIT
+  renderEntries();
+  renderTools();
+  renderTerms();
+  renderResources();
+  updateStats();
+</script>
+</body>
+</html>
