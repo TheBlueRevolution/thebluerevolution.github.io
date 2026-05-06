@@ -4,1168 +4,336 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TheBlueRevolution — Diario del Camino</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;700&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --black:     #02040a;
-      --deep:      #04080f;
-      --panel:     #070d1a;
-      --panel2:    #0a1220;
-      --border:    #0e2040;
-      --border2:   #1a3560;
-      --cyan:      #00f5ff;
-      --cyan2:     #00c8e0;
-      --cyan-dim:  #007a8a;
-      --cyan-glow: #00f5ff33;
-      --cyan-glow2:#00f5ff0d;
-      --white:     #e8f4ff;
-      --grey:      #3a5070;
-      --muted:     #1e3550;
-      --danger:    #ff2060;
-      --warn:      #ffaa00;
-      --success:   #00ff9d;
-      --glitch1:   #ff00aa;
-      --glitch2:   #00f5ff;
-    }
-
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      min-height: 100vh;
-      overflow-x: hidden;
-      cursor: crosshair;
-    }
-
-    /* BG GRID */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-      animation: gridDrift 30s linear infinite;
-    }
-
-    @keyframes gridDrift {
-      0%   { background-position: 0 0; }
-      100% { background-position: 60px 60px; }
-    }
-
-    /* VIGNETTE */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      background: radial-gradient(ellipse at 50% 40%, transparent 35%, rgba(2,4,10,0.8) 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* SCANLINES */
-    .scanlines {
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 3px,
-        rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
-      );
-      pointer-events: none;
-      z-index: 9998;
-    }
-
-    /* TOP GLITCH BAR */
-    .glitch-bar {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--cyan);
-      box-shadow: 0 0 20px var(--cyan), 0 0 60px var(--cyan-glow);
-      z-index: 9999;
-      animation: glitchBar 10s infinite;
-    }
-
-    @keyframes glitchBar {
-      0%,89%,100% { opacity:1; transform:scaleX(1) translateX(0); }
-      90%  { opacity:0.3; transform:scaleX(0.6) translateX(15%); }
-      92%  { opacity:1;   transform:scaleX(1.05); }
-      94%  { opacity:0.6; transform:scaleX(0.85) translateX(-5%); }
-      96%  { opacity:1;   transform:scaleX(1); }
-    }
-
-    /* ── HEADER ── */
-    header {
-      position: sticky; top: 0; z-index: 100;
-      height: 60px;
-      background: rgba(2,4,10,0.97);
-      border-bottom: 1px solid var(--border2);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem;
-      backdrop-filter: blur(20px);
-    }
-
-    header::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--cyan) 50%, transparent 100%);
-      animation: scanH 5s linear infinite;
-    }
-
-    @keyframes scanH {
-      0%   { opacity:0; background-position: -100% 0; }
-      20%  { opacity:1; }
-      80%  { opacity:1; }
-      100% { opacity:0; background-position: 200% 0; }
-    }
-
-    .logo { display:flex; align-items:center; gap:14px; }
-
-    .logo-mark {
-      position: relative;
-      width: 38px; height: 38px;
-      border: 1px solid var(--cyan);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', monospace;
-      font-size: 9px; font-weight: 900;
-      color: var(--cyan);
-      box-shadow: 0 0 15px var(--cyan-glow), inset 0 0 15px var(--cyan-glow2);
-      animation: logoPulse 4s ease-in-out infinite;
-    }
-
-    .logo-mark::before {
-      content: '';
-      position: absolute; top:-4px; right:-4px;
-      width:6px; height:6px;
-      background: var(--cyan);
-      box-shadow: 0 0 6px var(--cyan);
-    }
-
-    .logo-mark::after {
-      content: '';
-      position: absolute; bottom:-4px; left:-4px;
-      width:6px; height:6px;
-      background: var(--cyan);
-      box-shadow: 0 0 6px var(--cyan);
-    }
-
-    @keyframes logoPulse {
-      0%,100% { box-shadow: 0 0 15px var(--cyan-glow), inset 0 0 15px var(--cyan-glow2); }
-      50%      { box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 25px var(--cyan-glow); }
-    }
-
-    .logo-text {
-      font-family: 'Orbitron', monospace;
-      font-weight: 700; font-size: 0.85rem;
-      letter-spacing: 0.18em; line-height: 1.3;
-    }
-
-    .logo-text .hi { color: var(--cyan); }
-    .logo-text .lo {
-      display: block;
-      font-size: 0.55rem; color: var(--grey);
-      font-weight: 400; letter-spacing: 0.3em;
-    }
-
-    .header-right { display:flex; align-items:center; gap:2rem; }
-
-    .hud {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem; color: var(--grey);
-      line-height: 1.6; text-align: right;
-    }
-
-    .hud .v { display:block; color:var(--cyan); font-weight:700; }
-
-    .status-dot {
-      display: inline-block;
-      width:5px; height:5px; border-radius:50%;
-      background: var(--success);
-      box-shadow: 0 0 8px var(--success);
-      margin-right: 5px;
-      animation: blink 1.5s infinite;
-    }
-
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
-
-    /* ── NAV ── */
-    nav {
-      position: relative; z-index: 10;
-      background: var(--deep);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      padding: 0 2rem;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    nav::-webkit-scrollbar { display:none; }
-
-    nav button {
-      position: relative;
-      background: none; border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--grey);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; font-weight: 400;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      padding: 0.9rem 1.3rem;
-      cursor: crosshair;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    nav button::before {
-      content: attr(data-i);
-      position: absolute; top: 7px; left: 5px;
-      font-size: 0.42rem; color: var(--muted); letter-spacing: 0;
-    }
-
-    nav button:hover { color: var(--cyan2); }
-
-    nav button.active {
-      color: var(--cyan);
-      border-bottom-color: var(--cyan);
-      text-shadow: 0 0 12px var(--cyan);
-    }
-
-    /* ── LAYOUT ── */
-    .container {
-      position: relative; z-index: 10;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 2.5rem 2rem;
-    }
-
-    .section { display:none; }
-    .section.active { display:block; animation: fadeUp 0.25s ease; }
-
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(8px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    /* ── HERO ── */
-    .hero { padding: 3rem 0 2rem; }
-
-    .hero-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem; color: var(--cyan-dim);
-      letter-spacing: 0.25em; text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-
-    .hero-eyebrow::before { content:''; width:28px; height:1px; background:var(--cyan-dim); }
-
-    .hero h1 {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900;
-      font-size: clamp(2.8rem, 8vw, 5.5rem);
-      line-height: 0.92;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-      margin-bottom: 1.8rem;
-    }
-
-    .hero h1 .l1 { display:block; color:var(--white); }
-
-    .hero h1 .l2 {
-      display: block;
-      color: var(--cyan);
-      text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow);
-      animation: glitchText 8s infinite;
-    }
-
-    @keyframes glitchText {
-      0%,88%,100% { opacity:1; text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow); transform:none; }
-      89%  { opacity:0; transform:translateX(4px); }
-      90%  { opacity:1; text-shadow: 3px 0 var(--glitch1), -3px 0 var(--glitch2); transform:translateX(-2px); }
-      91%  { opacity:0.3; transform:translateX(0); }
-      92%  { opacity:1; text-shadow: -3px 0 var(--glitch1), 3px 0 var(--glitch2); transform:translateX(3px); }
-      93%  { opacity:0; transform:translateX(-3px); }
-      94%  { opacity:1; text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow); transform:none; }
-      95%  { opacity:0.6; }
-      96%  { opacity:1; }
-      97%  { opacity:0.2; }
-      98%  { opacity:1; text-shadow: 0 0 30px var(--cyan), 0 0 80px var(--cyan-glow); }
-    }
-
-    .hero h1 .l3 {
-      display: block;
-      font-size: 0.32em;
-      color: var(--border2);
-      letter-spacing: 0.45em;
-      margin-top: 0.8rem;
-    }
-
-    .hero-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; font-weight: 300;
-      color: var(--grey);
-      line-height: 1.9;
-      max-width: 480px;
-      margin-bottom: 3rem;
-      padding-left: 1rem;
-      border-left: 2px solid var(--border2);
-    }
-
-    /* ── STATS ── */
-    .stats-row {
-      display: flex;
-      gap: 0;
-      margin-bottom: 3rem;
-    }
-
-    .stat {
-      padding-right: 2.5rem;
-      margin-right: 2.5rem;
-      border-right: 1px solid var(--border);
-    }
-
-    .stat:last-child { border-right:none; margin-right:0; padding-right:0; }
-
-    .stat-n {
-      display: block;
-      font-family: 'Orbitron', monospace;
-      font-weight: 900; font-size: 2.8rem;
-      color: var(--cyan); line-height: 1;
-      text-shadow: 0 0 25px var(--cyan-glow);
-    }
-
-    .stat-l {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; color: var(--grey);
-      letter-spacing: 0.22em; text-transform: uppercase;
-      margin-top: 0.25rem;
-    }
-
-    /* ── PATH CARDS ── */
-    .path-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    @media (max-width: 580px) { .path-cards { grid-template-columns: 1fr; } }
-
-    .path-card {
-      position: relative;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 2rem;
-      cursor: crosshair;
-      transition: all 0.3s;
-      overflow: hidden;
-      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
-    }
-
-    .path-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(0,245,255,0.05) 0%, transparent 55%);
-      opacity: 0; transition: opacity 0.3s;
-    }
-
-    .path-card::after {
-      content: '';
-      position: absolute; top:0; left:0; right:0; height:1px;
-      background: linear-gradient(90deg, var(--cyan), transparent);
-      opacity: 0.3; transition: opacity 0.3s;
-    }
-
-    .path-card:hover { border-color: var(--cyan); box-shadow: 0 0 40px var(--cyan-glow), inset 0 0 40px rgba(0,245,255,0.04); transform: translateY(-3px); }
-    .path-card:hover::before { opacity: 1; }
-    .path-card:hover::after  { opacity: 1; }
-
-    .path-card-iron { border-color: rgba(255,32,96,0.25); }
-    .path-card-iron::after { background: linear-gradient(90deg, var(--danger), transparent); }
-    .path-card-iron::before { background: linear-gradient(135deg, rgba(255,32,96,0.06) 0%, transparent 55%); }
-    .path-card-iron:hover { border-color:var(--danger); box-shadow:0 0 40px rgba(255,32,96,0.2),inset 0 0 40px rgba(255,32,96,0.04); }
-
-    .path-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; color: var(--grey);
-      letter-spacing: 0.28em; margin-bottom: 1.2rem;
-    }
-
-    .path-title {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900; font-size: 2.2rem;
-      color: var(--cyan);
-      text-shadow: 0 0 20px var(--cyan-glow);
-      margin-bottom: 0.4rem;
-    }
-
-    .path-card-iron .path-title { color:var(--danger); text-shadow:0 0 20px rgba(255,32,96,0.35); }
-
-    .path-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; color: var(--grey); font-weight:300;
-    }
-
-    .path-arrow {
-      position: absolute; bottom:1.5rem; right:1.5rem;
-      font-family: 'Orbitron', monospace;
-      font-size: 1.2rem; color: var(--border2);
-      transition: all 0.3s;
-    }
-
-    .path-card:hover .path-arrow { color:var(--cyan); transform:translateX(5px); text-shadow:0 0 10px var(--cyan); }
-    .path-card-iron:hover .path-arrow { color:var(--danger); text-shadow:0 0 10px var(--danger); }
-
-    /* ── SECTION HEADER ── */
-    .sec-hd {
-      display: flex; align-items:flex-end; justify-content:space-between;
-      padding-bottom: 1.5rem; margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-
-    .sec-hd::after {
-      content:''; position:absolute; bottom:-1px; left:0;
-      width:70px; height:1px;
-      background:var(--cyan); box-shadow:0 0 10px var(--cyan);
-    }
-
-    .sec-title {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900; font-size: 1.5rem;
-      text-transform: uppercase;
-    }
-
-    .sec-title span { color: var(--cyan); }
-    .sec-meta { font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:var(--grey); letter-spacing:0.2em; margin-top:0.3rem; }
-
-    /* ── BTN ── */
-    .btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.63rem; font-weight:700;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      padding: 0.55rem 1.3rem;
-      border: 1px solid var(--cyan);
-      background: transparent; color: var(--cyan);
-      cursor: crosshair; transition: all 0.2s;
-      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-    }
-
-    .btn:hover { background:var(--cyan); color:var(--black); box-shadow:0 0 20px var(--cyan-glow); }
-
-    .btn-danger { border-color:var(--danger); color:var(--danger); }
-    .btn-danger:hover { background:var(--danger); color:var(--black); box-shadow:0 0 20px rgba(255,32,96,0.4); }
-
-    .btn-ghost {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.63rem; letter-spacing:0.15em; text-transform:uppercase;
-      padding: 0.55rem 1.2rem;
-      border: 1px solid var(--border2);
-      background: transparent; color: var(--grey);
-      cursor: crosshair; transition: all 0.2s;
-    }
-
-    .btn-ghost:hover { color:var(--white); border-color:var(--grey); }
-
-    /* ── ENTRIES ── */
-    .list { display:flex; flex-direction:column; gap:0.8rem; }
-
-    .entry {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      position: relative; overflow:hidden;
-      transition: border-color 0.2s;
-    }
-
-    .entry::before {
-      content:''; position:absolute;
-      left:0; top:0; bottom:0; width:2px;
-      background: var(--cyan);
-      box-shadow: 0 0 10px var(--cyan);
-      opacity: 0; transition: opacity 0.2s;
-    }
-
-    .entry:hover { border-color:var(--border2); }
-    .entry:hover::before, .entry.open::before { opacity:1; }
-
-    .entry-hd {
-      display:flex; align-items:center; gap:1rem;
-      padding: 1rem 1.5rem;
-      cursor: crosshair; user-select:none;
-    }
-
-    .entry-code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; color: var(--cyan-dim);
-      letter-spacing: 0.15em; min-width: 90px;
-    }
-
-    .entry-t {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 600; font-size:1rem;
-      letter-spacing:0.04em; flex:1;
-    }
-
-    .entry-chev {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--grey); font-size:0.7rem;
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    .entry.open .entry-chev { transform:rotate(180deg); color:var(--cyan); }
-
-    .entry-body {
-      display:none;
-      padding: 0 1.5rem 1.5rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .entry.open .entry-body { display:block; }
-
-    .esec { margin-top:1.2rem; }
-
-    .esec-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; color: var(--cyan-dim);
-      letter-spacing: 0.25em; text-transform:uppercase;
-      margin-bottom: 0.6rem;
-      display:flex; align-items:center; gap:0.8rem;
-    }
-
-    .esec-label::after { content:''; flex:1; height:1px; background:var(--border); }
-
-    .esec p {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; font-weight:300;
-      color: var(--white); line-height:1.9;
-    }
-
-    .tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
-
-    .tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
-      padding: 2px 10px;
-      border: 1px solid rgba(0,245,255,0.2);
-      color: var(--cyan2);
-      background: rgba(0,245,255,0.04);
-      letter-spacing: 0.08em;
-    }
-
-    .tag-r { border-color:rgba(255,32,96,0.25); color:var(--danger); background:rgba(255,32,96,0.04); }
-
-    /* ── TOOLS ── */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 1.2rem;
-    }
-
-    .tool-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 1.5rem;
-      transition: all 0.25s;
-      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
-    }
-
-    .tool-card:hover {
-      border-color: var(--border2);
-      box-shadow: 0 0 25px var(--cyan-glow2);
-      transform: translateY(-2px);
-    }
-
-    .tool-name {
-      font-family: 'Orbitron', monospace;
-      font-weight:700; font-size:0.88rem;
-      color: var(--cyan); margin-bottom:0.2rem;
-    }
-
-    .tool-cat {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; color:var(--grey);
-      letter-spacing: 0.15em; text-transform:uppercase;
-      margin-bottom: 0.8rem;
-    }
-
-    .tool-desc {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; font-weight:300;
-      color: var(--white); line-height:1.75;
-    }
-
-    .terminal {
-      margin-top: 1rem;
-      background: #010204;
-      border: 1px solid var(--border);
-      border-left: 2px solid var(--cyan-dim);
-      padding: 0.8rem 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; font-weight:300;
-      color: var(--success); line-height:1.8;
-    }
-
-    .terminal .p { color: var(--cyan-dim); }
-
-    /* ── DICT ── */
-    .dict-wrap { margin-bottom:1.5rem; position:relative; }
-
-    .dict-wrap::before {
-      content: '//';
-      position: absolute; left:1rem; top:50%; transform:translateY(-50%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; color: var(--cyan-dim);
-      pointer-events: none;
-    }
-
-    .dict-input {
-      width:100%;
-      background: var(--panel);
-      border: none; border-bottom: 1px solid var(--cyan-dim);
-      padding: 0.8rem 1rem 0.8rem 3rem;
-      color: var(--white);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem; font-weight:300;
-      outline: none; transition: all 0.2s;
-    }
-
-    .dict-input:focus { border-bottom-color:var(--cyan); }
-    .dict-input::placeholder { color:var(--grey); }
-
-    .dict-list { display:flex; flex-direction:column; gap:1px; }
-
-    .dict-row {
-      display: grid;
-      grid-template-columns: 190px 1fr;
-      gap: 1.5rem; align-items:start;
-      padding: 1rem 1.2rem;
-      background: var(--panel);
-      border: 1px solid transparent;
-      transition: all 0.15s;
-    }
-
-    .dict-row:hover { border-color:var(--border); background:var(--panel2); }
-
-    .dict-term {
-      font-family: 'Orbitron', monospace;
-      font-weight:700; font-size:0.72rem;
-      color: var(--cyan);
-    }
-
-    .dict-def {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; font-weight:300;
-      color: var(--white); line-height:1.75;
-    }
-
-    @media (max-width:580px) { .dict-row { grid-template-columns:1fr; gap:0.4rem; } }
-
-    /* ── RESOURCES ── */
-    .res-list { display:flex; flex-direction:column; gap:0.8rem; }
-
-    .res-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 1.1rem 1.4rem;
-      display: flex; align-items:center; gap:1.5rem;
-      transition: border-color 0.2s;
-    }
-
-    .res-card:hover { border-color:var(--border2); }
-
-    .res-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight:600; font-size:1rem; flex:1;
-    }
-
-    .res-note {
-      font-family: 'JetBrains Mono', monospace;
-      font-size:0.62rem; color:var(--grey); font-weight:300; flex:1;
-    }
-
-    .res-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem; color:var(--cyan);
-      text-decoration: none; letter-spacing:0.04em;
-    }
-
-    .res-link:hover { text-shadow:0 0 8px var(--cyan); }
-
-    /* ── IRON LAYOUT ── */
-    .iron-layout {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 2rem;
-      align-items: start;
-    }
-
-    @media (max-width: 780px) {
-      .iron-layout { grid-template-columns: 1fr; }
-    }
-
-    .iron-col-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem; color: var(--cyan-dim);
-      letter-spacing: 0.25em; text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    /* WEEKS */
-    .iron-weeks-list { display: flex; flex-direction: column; gap: 0.6rem; }
-
-    .iron-week-item {
-      display: flex; align-items: center; gap: 1rem;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 1rem 1.2rem;
-      cursor: crosshair;
-      transition: all 0.2s;
-      position: relative; overflow: hidden;
-    }
-
-    .iron-week-item::before {
-      content: '';
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 2px;
-      background: var(--cyan);
-      box-shadow: 0 0 8px var(--cyan);
-      opacity: 0; transition: opacity 0.2s;
-    }
-
-    .iron-week-item:hover { border-color: var(--border2); }
-    .iron-week-item:hover::before { opacity: 1; }
-
-    .iron-item-num {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900; font-size: 1.4rem;
-      color: var(--border2); min-width: 36px;
-      transition: color 0.2s;
-    }
-
-    .iron-week-item:hover .iron-item-num { color: var(--cyan); }
-
-    .iron-item-info { flex: 1; }
-
-    .iron-item-title {
-      display: block;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700; font-size: 1rem;
-      letter-spacing: 0.05em;
-    }
-
-    .iron-item-sub {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem; color: var(--grey);
-      font-weight: 300; margin-top: 0.1rem;
-    }
-
-    .iron-item-arrow {
-      color: var(--border2);
-      font-size: 1rem;
-      transition: all 0.2s;
-    }
-
-    .iron-week-item:hover .iron-item-arrow { color: var(--cyan); transform: translateX(4px); }
-
-    /* MODULES */
-    .iron-mods-list { display: flex; flex-direction: column; gap: 0.5rem; }
-
-    .iron-mod-item {
-      display: flex; align-items: center; gap: 0.8rem;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 0.75rem 1rem;
-      cursor: crosshair;
-      transition: all 0.2s;
-    }
-
-    .iron-mod-item:hover {
-      border-color: var(--mc, var(--cyan));
-      box-shadow: 0 0 12px color-mix(in srgb, var(--mc, var(--cyan)) 30%, transparent);
-    }
-
-    .iron-mod-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%; flex-shrink: 0;
-      box-shadow: 0 0 6px currentColor;
-    }
-
-    .iron-mod-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem; font-weight: 400;
-      flex: 1; color: var(--white);
-      letter-spacing: 0.03em;
-    }
-
-    .iron-mod-weeks {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.55rem; color: var(--grey);
-      font-weight: 700;
-    }
+      --black:#02040a; --deep:#04080f; --panel:#070d1a; --panel2:#0a1220;
+      --border:#0e2040; --border2:#1a3560;
+      --cyan:#00f5ff; --cyan2:#00c8e0; --cyan-dim:#007a8a;
+      --cyan-glow:#00f5ff33; --cyan-glow2:#00f5ff0d;
+      --white:#e8f4ff; --grey:#3a5070; --muted:#1e3550;
+      --danger:#ff2060; --warn:#ffaa00; --success:#00ff9d;
+      --glitch1:#ff00aa; --glitch2:#00f5ff;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--black);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:16px;min-height:100vh;overflow-x:hidden;cursor:crosshair;}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;animation:gridDrift 30s linear infinite;}
+    @keyframes gridDrift{0%{background-position:0 0}100%{background-position:60px 60px}}
+    body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 35%,rgba(2,4,10,0.8) 100%);pointer-events:none;z-index:0;}
+    .scanlines{position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.1) 3px,rgba(0,0,0,0.1) 4px);pointer-events:none;z-index:9998;}
+    .glitch-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--cyan);box-shadow:0 0 20px var(--cyan),0 0 60px var(--cyan-glow);z-index:9999;animation:glitchBar 10s infinite;}
+    @keyframes glitchBar{0%,89%,100%{opacity:1;transform:scaleX(1) translateX(0)}90%{opacity:0.3;transform:scaleX(0.6) translateX(15%)}92%{opacity:1;transform:scaleX(1.05)}94%{opacity:0.6;transform:scaleX(0.85) translateX(-5%)}96%{opacity:1;transform:scaleX(1)}}
+
+    /* HEADER */
+    header{position:sticky;top:0;z-index:100;height:60px;background:rgba(2,4,10,0.97);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;backdrop-filter:blur(20px);}
+    header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--cyan) 50%,transparent 100%);animation:scanH 5s linear infinite;}
+    @keyframes scanH{0%{opacity:0;background-position:-100% 0}20%{opacity:1}80%{opacity:1}100%{opacity:0;background-position:200% 0}}
+    .logo{display:flex;align-items:center;gap:14px;}
+    .logo-mark{position:relative;width:38px;height:38px;border:1px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:9px;font-weight:900;color:var(--cyan);box-shadow:0 0 15px var(--cyan-glow),inset 0 0 15px var(--cyan-glow2);animation:logoPulse 4s ease-in-out infinite;}
+    .logo-mark::before{content:'';position:absolute;top:-4px;right:-4px;width:6px;height:6px;background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
+    .logo-mark::after{content:'';position:absolute;bottom:-4px;left:-4px;width:6px;height:6px;background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
+    @keyframes logoPulse{0%,100%{box-shadow:0 0 15px var(--cyan-glow),inset 0 0 15px var(--cyan-glow2)}50%{box-shadow:0 0 30px var(--cyan-glow),inset 0 0 25px var(--cyan-glow)}}
+    .logo-text{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.18em;line-height:1.3;}
+    .logo-text .hi{color:var(--cyan);}
+    .logo-text .lo{display:block;font-size:0.55rem;color:var(--grey);font-weight:400;letter-spacing:0.3em;}
+    .header-right{display:flex;align-items:center;gap:2rem;}
+    .hud{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey);line-height:1.6;text-align:right;}
+    .hud .v{display:block;color:var(--cyan);font-weight:700;}
+    .status-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success);margin-right:5px;animation:blink 1.5s infinite;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.15}}
+
+    /* NAV */
+    nav{position:relative;z-index:200;background:var(--deep);border-bottom:1px solid var(--border);display:flex;padding:0 2rem;overflow-x:auto;scrollbar-width:none;}
+    nav::-webkit-scrollbar{display:none;}
+    .nav-item{position:relative;}
+    nav button{position:relative;background:none;border:none;border-bottom:2px solid transparent;color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:0.9rem 1.3rem;cursor:crosshair;transition:all 0.2s;white-space:nowrap;}
+    nav button::before{content:attr(data-i);position:absolute;top:7px;left:5px;font-size:0.42rem;color:var(--muted);letter-spacing:0;}
+    nav button:hover{color:var(--cyan2);}
+    nav button.active{color:var(--cyan);border-bottom-color:var(--cyan);text-shadow:0 0 12px var(--cyan);}
+
+    /* DROPDOWN */
+    .nav-dropdown{position:absolute;top:100%;left:0;background:rgba(4,8,15,0.98);border:1px solid var(--border2);border-top:none;min-width:180px;display:none;flex-direction:column;z-index:300;backdrop-filter:blur(20px);}
+    .nav-item:hover .nav-dropdown{display:flex;}
+    .nav-dropdown button{border-bottom:none;border-left:2px solid transparent;text-align:left;padding:0.7rem 1.2rem;font-size:0.65rem;}
+    .nav-dropdown button:hover{border-left-color:var(--cyan);color:var(--cyan);background:rgba(0,245,255,0.04);}
+    .nav-dropdown button.active{border-left-color:var(--cyan);color:var(--cyan);}
+
+    /* LAYOUT */
+    .container{position:relative;z-index:10;max-width:1140px;margin:0 auto;padding:2.5rem 2rem;}
+    .section{display:none;}
+    .section.active{display:block;animation:fadeUp 0.25s ease;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    /* HERO */
+    .hero{padding:3rem 0 2rem;}
+    .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--cyan-dim);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+    .hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--cyan-dim);}
+    .hero h1{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2.8rem,8vw,5.5rem);line-height:0.92;letter-spacing:-0.02em;text-transform:uppercase;margin-bottom:1.8rem;}
+    .hero h1 .l1{display:block;color:var(--white);}
+    .hero h1 .l2{display:block;color:var(--cyan);text-shadow:0 0 30px var(--cyan),0 0 80px var(--cyan-glow);animation:glitchText 8s infinite;}
+    @keyframes glitchText{0%,88%,100%{opacity:1;text-shadow:0 0 30px var(--cyan),0 0 80px var(--cyan-glow);transform:none}89%{opacity:0;transform:translateX(4px)}90%{opacity:1;text-shadow:3px 0 var(--glitch1),-3px 0 var(--glitch2);transform:translateX(-2px)}91%{opacity:0.3;transform:translateX(0)}92%{opacity:1;text-shadow:-3px 0 var(--glitch1),3px 0 var(--glitch2);transform:translateX(3px)}93%{opacity:0;transform:translateX(-3px)}94%{opacity:1;text-shadow:0 0 30px var(--cyan),0 0 80px var(--cyan-glow);transform:none}95%{opacity:0.6}96%{opacity:1}97%{opacity:0.2}98%{opacity:1}}
+    .hero h1 .l3{display:block;font-size:0.32em;color:var(--border2);letter-spacing:0.45em;margin-top:0.8rem;}
+    .hero-sub{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:300;color:var(--grey);line-height:1.9;max-width:480px;margin-bottom:3rem;padding-left:1rem;border-left:2px solid var(--border2);}
+    .stats-row{display:flex;gap:0;margin-bottom:3rem;}
+    .stat{padding-right:2.5rem;margin-right:2.5rem;border-right:1px solid var(--border);}
+    .stat:last-child{border-right:none;margin-right:0;padding-right:0;}
+    .stat-n{display:block;font-family:'Orbitron',monospace;font-weight:900;font-size:2.8rem;color:var(--cyan);line-height:1;text-shadow:0 0 25px var(--cyan-glow);}
+    .stat-l{display:block;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--grey);letter-spacing:0.22em;text-transform:uppercase;margin-top:0.25rem;}
+
+    /* PATH CARDS */
+    .path-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+    @media(max-width:580px){.path-cards{grid-template-columns:1fr}}
+    .path-card{position:relative;background:var(--panel);border:1px solid var(--border);padding:2rem;cursor:crosshair;transition:all 0.3s;overflow:hidden;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px));}
+    .path-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,245,255,0.05) 0%,transparent 55%);opacity:0;transition:opacity 0.3s;}
+    .path-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);opacity:0.3;transition:opacity 0.3s;}
+    .path-card:hover{border-color:var(--cyan);box-shadow:0 0 40px var(--cyan-glow),inset 0 0 40px rgba(0,245,255,0.04);transform:translateY(-3px);}
+    .path-card:hover::before{opacity:1}.path-card:hover::after{opacity:1}
+    .path-card-iron{border-color:rgba(0,245,255,0.15);}
+    .path-card-iron::after{background:linear-gradient(90deg,var(--cyan),transparent);}
+    .path-card-iron:hover{border-color:var(--cyan);box-shadow:0 0 40px var(--cyan-glow),inset 0 0 40px rgba(0,245,255,0.04);}
+    .path-card-grado{border-color:rgba(255,32,96,0.2);}
+    .path-card-grado::after{background:linear-gradient(90deg,var(--danger),transparent);}
+    .path-card-grado:hover{border-color:var(--danger);box-shadow:0 0 40px rgba(255,32,96,0.2),inset 0 0 40px rgba(255,32,96,0.04);}
+    .path-tag{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--grey);letter-spacing:0.28em;margin-bottom:1.2rem;}
+    .path-title{font-family:'Orbitron',monospace;font-weight:900;font-size:2.2rem;color:var(--cyan);text-shadow:0 0 20px var(--cyan-glow);margin-bottom:0.4rem;}
+    .path-card-grado .path-title{color:var(--danger);text-shadow:0 0 20px rgba(255,32,96,0.35);}
+    .path-sub{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--grey);font-weight:300;}
+    .path-arrow{position:absolute;bottom:1.5rem;right:1.5rem;font-family:'Orbitron',monospace;font-size:1.2rem;color:var(--border2);transition:all 0.3s;}
+    .path-card:hover .path-arrow{color:var(--cyan);transform:translateX(5px);text-shadow:0 0 10px var(--cyan);}
+    .path-card-grado:hover .path-arrow{color:var(--danger);text-shadow:0 0 10px var(--danger);}
+
+    /* SEC HEADER */
+    .sec-hd{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:1.5rem;margin-bottom:2rem;border-bottom:1px solid var(--border);position:relative;}
+    .sec-hd::after{content:'';position:absolute;bottom:-1px;left:0;width:70px;height:1px;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+    .sec-title{font-family:'Orbitron',monospace;font-weight:900;font-size:1.5rem;text-transform:uppercase;}
+    .sec-title span{color:var(--cyan);}
+    .sec-meta{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--grey);letter-spacing:0.2em;margin-top:0.3rem;}
+
+    /* BUTTONS */
+    .btn{font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.55rem 1.3rem;border:1px solid var(--cyan);background:transparent;color:var(--cyan);cursor:crosshair;transition:all 0.2s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));}
+    .btn:hover{background:var(--cyan);color:var(--black);box-shadow:0 0 20px var(--cyan-glow);}
+    .btn-danger{border-color:var(--danger);color:var(--danger);}
+    .btn-danger:hover{background:var(--danger);color:var(--black);box-shadow:0 0 20px rgba(255,32,96,0.4);}
+    .btn-ghost{font-family:'JetBrains Mono',monospace;font-size:0.63rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.55rem 1.2rem;border:1px solid var(--border2);background:transparent;color:var(--grey);cursor:crosshair;transition:all 0.2s;}
+    .btn-ghost:hover{color:var(--white);border-color:var(--grey);}
+
+    /* IRON LAYOUT */
+    .iron-layout{display:grid;grid-template-columns:1fr 300px;gap:2rem;align-items:start;}
+    @media(max-width:780px){.iron-layout{grid-template-columns:1fr}}
+    .iron-col-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--cyan-dim);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:1rem;}
+    .iron-weeks-list,.iron-mods-list{display:flex;flex-direction:column;gap:0.6rem;}
+    .iron-week-item{display:flex;align-items:center;gap:1rem;background:var(--panel);border:1px solid var(--border);padding:1rem 1.2rem;cursor:crosshair;transition:all 0.2s;position:relative;overflow:hidden;}
+    .iron-week-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);opacity:0;transition:opacity 0.2s;}
+    .iron-week-item:hover{border-color:var(--border2);}
+    .iron-week-item:hover::before{opacity:1;}
+    .iron-item-num{font-family:'Orbitron',monospace;font-weight:900;font-size:1.4rem;color:var(--border2);min-width:36px;transition:color 0.2s;}
+    .iron-week-item:hover .iron-item-num{color:var(--cyan);}
+    .iron-item-info{flex:1;}
+    .iron-item-title{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.05em;}
+    .iron-item-sub{display:block;font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey);font-weight:300;margin-top:0.1rem;}
+    .iron-item-arrow{color:var(--border2);font-size:1rem;transition:all 0.2s;}
+    .iron-week-item:hover .iron-item-arrow{color:var(--cyan);transform:translateX(4px);}
+    .iron-mods-list{gap:0.5rem;}
+    .iron-mod-item{display:flex;align-items:center;gap:0.8rem;background:var(--panel);border:1px solid var(--border);padding:0.75rem 1rem;cursor:crosshair;transition:all 0.2s;}
+    .iron-mod-item:hover{border-color:var(--mc,var(--cyan));}
+    .iron-mod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .iron-mod-name{font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:400;flex:1;color:var(--white);letter-spacing:0.03em;}
+    .iron-mod-weeks{font-family:'Orbitron',monospace;font-size:0.55rem;color:var(--grey);font-weight:700;}
 
     /* IRON DETAIL */
-    .iron-detail-section { padding-top: 0; }
+    .iron-detail-header{display:flex;align-items:center;gap:1.5rem;padding-bottom:1.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+    .iron-back-btn{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:var(--grey);background:none;border:none;cursor:crosshair;transition:color 0.2s;padding:0.4rem 0;white-space:nowrap;}
+    .iron-back-btn:hover{color:var(--cyan);}
+    .iron-detail-title{font-family:'Orbitron',monospace;font-weight:900;font-size:1.3rem;color:var(--cyan);text-transform:uppercase;}
+    .iron-detail-sub{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--grey);margin-top:0.2rem;letter-spacing:0.1em;}
+    .iron-day-tabs{display:flex;gap:0.4rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+    .iron-day-tabs.hidden{display:none;}
+    .iron-day-tab{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.5rem 1rem;background:var(--panel);border:1px solid var(--border);color:var(--grey);cursor:crosshair;transition:all 0.2s;}
+    .iron-day-tab:hover{color:var(--white);border-color:var(--border2);}
+    .iron-day-tab.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,245,255,0.05);}
 
-    .iron-detail-header {
-      display: flex; align-items: center; gap: 1.5rem;
-      padding-bottom: 1.5rem; margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
+    /* DAY SUMMARY */
+    .day-summary{background:rgba(0,245,255,0.04);border:1px solid var(--border);border-left:2px solid var(--cyan);padding:1.2rem 1.5rem;margin-bottom:1.5rem;}
+    .day-sum-label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--cyan-dim);letter-spacing:0.25em;margin-bottom:0.6rem;}
+    .day-summary p{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:300;color:var(--white);line-height:1.9;}
 
-    .iron-back-btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem; letter-spacing: 0.1em;
-      color: var(--grey); background: none; border: none;
-      cursor: crosshair; transition: color 0.2s;
-      padding: 0.4rem 0; white-space: nowrap;
-    }
+    /* STATIC ITEMS */
+    .static-item{background:var(--panel);border:1px solid var(--border);margin-bottom:0.8rem;transition:border-color 0.2s;}
+    .static-item:hover{border-color:var(--border2);}
+    .si-head{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.2rem;cursor:crosshair;user-select:none;gap:1rem;}
+    .si-left{display:flex;align-items:center;gap:0.8rem;flex:1;flex-wrap:wrap;}
+    .si-type{font-family:'JetBrains Mono',monospace;font-size:0.55rem;font-weight:700;letter-spacing:0.15em;padding:2px 7px;border:1px solid;white-space:nowrap;}
+    .si-mandatory{font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--warn);border:1px solid rgba(255,170,0,0.4);padding:1px 6px;letter-spacing:0.1em;white-space:nowrap;}
+    .si-title{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:0.95rem;letter-spacing:0.03em;}
+    .si-right{display:flex;align-items:center;gap:0.8rem;flex-shrink:0;}
+    .si-status{font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;}
+    .si-chev{font-size:0.7rem;color:var(--grey);transition:transform 0.2s;}
+    .static-item.open .si-chev{transform:rotate(180deg);}
+    .si-body{display:none;padding:0 1.2rem 1.2rem;border-top:1px solid var(--border);}
+    .static-item.open .si-body{display:block;}
+    .si-core{background:rgba(0,245,255,0.03);border-left:2px solid var(--cyan-dim);padding:0.8rem 1rem;margin:1rem 0;}
+    .si-core-label{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--cyan-dim);letter-spacing:0.25em;display:block;margin-bottom:0.4rem;}
+    .si-core p{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:700;color:var(--white);line-height:1.8;}
+    .si-sec-label{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--grey);letter-spacing:0.2em;text-transform:uppercase;margin:1rem 0 0.6rem;display:flex;align-items:center;gap:0.6rem;}
+    .si-sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+    .concept-row{display:grid;grid-template-columns:180px 1fr;gap:1rem;align-items:start;padding:0.5rem 0;border-bottom:1px solid var(--border);}
+    .concept-row:last-child{border-bottom:none;}
+    .concept-term{font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;color:var(--cyan2);}
+    .concept-def{font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:300;color:var(--white);line-height:1.7;}
+    .si-detail p,.si-full p{font-family:'JetBrains Mono',monospace;font-size:0.7rem;font-weight:300;color:var(--white);line-height:1.9;margin-bottom:0.6rem;}
+    .si-full ul{padding-left:1.2rem;margin:0.4rem 0;}
+    .si-full li{font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:300;color:var(--white);line-height:1.9;list-style:none;padding-left:0.5rem;}
+    .si-full li::before{content:'→ ';color:var(--cyan-dim);}
+    .si-full h4{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--cyan2);margin:1rem 0 0.4rem;letter-spacing:0.1em;}
+    .si-link{display:inline-block;margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--warn);text-decoration:none;letter-spacing:0.05em;border:1px solid rgba(255,170,0,0.3);padding:0.4rem 0.8rem;transition:all 0.2s;}
+    .si-link:hover{background:rgba(255,170,0,0.08);}
+    .si-score{margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--grey);}
+    .si-score span{font-size:1.2rem;font-weight:700;color:var(--warn);font-family:'Orbitron',monospace;}
+    .missed-row{font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:300;color:var(--danger);line-height:1.7;padding:0.3rem 0;border-bottom:1px solid var(--border);}
+    .missed-row:last-child{border-bottom:none;}
+    .mod-week-header{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--cyan-dim);letter-spacing:0.2em;text-transform:uppercase;margin:1.5rem 0 0.8rem;}
+    @media(max-width:580px){.concept-row{grid-template-columns:1fr;gap:0.3rem}.si-left{flex-wrap:wrap}}
 
-    .iron-back-btn:hover { color: var(--cyan); }
+    /* DICT */
+    .dict-wrap{margin-bottom:1.5rem;position:relative;}
+    .dict-wrap::before{content:'//';position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--cyan-dim);pointer-events:none;}
+    .dict-input{width:100%;background:var(--panel);border:none;border-bottom:1px solid var(--cyan-dim);padding:0.8rem 1rem 0.8rem 3rem;color:var(--white);font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:300;outline:none;transition:all 0.2s;}
+    .dict-input:focus{border-bottom-color:var(--cyan);}
+    .dict-input::placeholder{color:var(--grey);}
+    .dict-list{display:flex;flex-direction:column;gap:1px;}
+    .dict-row{display:grid;grid-template-columns:190px 1fr;gap:1.5rem;align-items:start;padding:1rem 1.2rem;background:var(--panel);border:1px solid transparent;transition:all 0.15s;}
+    .dict-row:hover{border-color:var(--border);background:var(--panel2);}
+    .dict-term{font-family:'Orbitron',monospace;font-weight:700;font-size:0.72rem;color:var(--cyan);}
+    .dict-def{font-family:'JetBrains Mono',monospace;font-size:0.7rem;font-weight:300;color:var(--white);line-height:1.75;}
+    @media(max-width:580px){.dict-row{grid-template-columns:1fr;gap:0.4rem}}
 
-    .iron-detail-title {
-      font-family: 'Orbitron', monospace;
-      font-weight: 900; font-size: 1.3rem;
-      color: var(--cyan); text-transform: uppercase;
-    }
+    /* TOOLS */
+    .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;}
+    .tool-card{background:var(--panel);border:1px solid var(--border);padding:1.5rem;transition:all 0.25s;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);position:relative;}
+    .tool-card:hover{border-color:var(--border2);box-shadow:0 0 25px var(--cyan-glow2);transform:translateY(-2px);}
+    .tool-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.8rem;}
+    .tool-name{font-family:'Orbitron',monospace;font-weight:700;font-size:0.88rem;color:var(--cyan);}
+    .tool-cat{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--grey);letter-spacing:0.15em;text-transform:uppercase;margin-top:0.2rem;}
+    .tool-desc{font-family:'JetBrains Mono',monospace;font-size:0.7rem;font-weight:300;color:var(--white);line-height:1.75;margin-bottom:0.8rem;}
+    .semaforo{display:flex;gap:0.4rem;align-items:center;}
+    .sem-dot{width:12px;height:12px;border-radius:50%;border:1px solid var(--border2);cursor:crosshair;transition:all 0.2s;flex-shrink:0;}
+    .sem-dot:hover{transform:scale(1.3);}
+    .sem-dot.red.active{background:#ff2060;box-shadow:0 0 8px #ff2060;}
+    .sem-dot.orange.active{background:#ff9f43;box-shadow:0 0 8px #ff9f43;}
+    .sem-dot.green.active{background:#00ff9d;box-shadow:0 0 8px #00ff9d;}
+    .sem-label{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--grey);margin-left:0.3rem;}
+    .terminal{margin-top:0.8rem;background:#010204;border:1px solid var(--border);border-left:2px solid var(--cyan-dim);padding:0.8rem 1rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:300;color:var(--success);line-height:1.8;}
+    .terminal .p{color:var(--cyan-dim);}
 
-    .iron-detail-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem; color: var(--grey);
-      margin-top: 0.2rem; letter-spacing: 0.1em;
-    }
+    /* RESOURCES */
+    .res-list{display:flex;flex-direction:column;gap:0.8rem;}
+    .res-card{background:var(--panel);border:1px solid var(--border);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:1.5rem;transition:border-color 0.2s;}
+    .res-card:hover{border-color:var(--border2);}
+    .res-name{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;flex:1;}
+    .res-note{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--grey);font-weight:300;flex:1;}
+    .res-link{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--cyan);text-decoration:none;letter-spacing:0.04em;}
+    .res-link:hover{text-shadow:0 0 8px var(--cyan);}
+    .res-cat-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--cyan-dim);letter-spacing:0.2em;text-transform:uppercase;margin:1.5rem 0 0.8rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border);}
 
-    /* DAY TABS */
-    .iron-day-tabs {
-      display: flex; gap: 0.4rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
+    /* RADAR */
+    .radar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;}
+    .radar-card{background:var(--panel);border:1px solid var(--border);padding:1.3rem;transition:all 0.2s;position:relative;overflow:hidden;}
+    .radar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,#a29bfe,transparent);opacity:0.4;}
+    .radar-card:hover{border-color:#a29bfe;box-shadow:0 0 20px rgba(162,155,254,0.15);}
+    .radar-name{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;color:#a29bfe;margin-bottom:0.3rem;}
+    .radar-why{font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:300;color:var(--white);line-height:1.7;margin-bottom:0.6rem;}
+    .radar-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+    .radar-tag{font-family:'JetBrains Mono',monospace;font-size:0.55rem;padding:2px 8px;border:1px solid rgba(162,155,254,0.3);color:#a29bfe;background:rgba(162,155,254,0.05);}
 
-    .iron-day-tabs.hidden { display: none; }
+    /* OCIO */
+    .ocio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;}
+    .ocio-card{background:var(--panel);border:1px solid var(--border);padding:1.3rem;transition:all 0.2s;position:relative;}
+    .ocio-card:hover{border-color:var(--border2);}
+    .ocio-type-badge{font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.15em;padding:2px 7px;border:1px solid;margin-bottom:0.6rem;display:inline-block;}
+    .ocio-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:0.3rem;}
+    .ocio-desc{font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:300;color:var(--grey);line-height:1.6;margin-bottom:0.8rem;}
+    .ocio-footer{display:flex;align-items:center;justify-content:space-between;}
+    .ocio-status{font-family:'JetBrains Mono',monospace;font-size:0.58rem;padding:2px 8px;border:1px solid;letter-spacing:0.1em;}
+    .status-pending{color:var(--grey);border-color:var(--border2);}
+    .status-progress{color:var(--warn);border-color:rgba(255,170,0,0.4);}
+    .status-done{color:var(--success);border-color:rgba(0,255,157,0.4);}
+    .ocio-score{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;}
+    .ocio-cat-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--cyan-dim);letter-spacing:0.2em;text-transform:uppercase;margin:1.5rem 0 0.8rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border);}
 
-    .iron-day-tab {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
-      padding: 0.5rem 1rem;
-      background: var(--panel); border: 1px solid var(--border);
-      color: var(--grey); cursor: crosshair; transition: all 0.2s;
-    }
+    /* GRADO */
+    .list{display:flex;flex-direction:column;gap:0.8rem;}
+    .entry{background:var(--panel);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color 0.2s;}
+    .entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--cyan);box-shadow:0 0 10px var(--cyan);opacity:0;transition:opacity 0.2s;}
+    .entry:hover{border-color:var(--border2);}
+    .entry:hover::before,.entry.open::before{opacity:1;}
+    .entry-hd{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;cursor:crosshair;user-select:none;}
+    .entry-code{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--cyan-dim);letter-spacing:0.15em;min-width:90px;}
+    .entry-t{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;letter-spacing:0.04em;flex:1;}
+    .entry-chev{font-family:'JetBrains Mono',monospace;color:var(--grey);font-size:0.7rem;transition:transform 0.2s,color 0.2s;}
+    .entry.open .entry-chev{transform:rotate(180deg);color:var(--cyan);}
+    .entry-body{display:none;padding:0 1.5rem 1.5rem;border-top:1px solid var(--border);}
+    .entry.open .entry-body{display:block;}
+    .esec{margin-top:1.2rem;}
+    .esec-label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--cyan-dim);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.8rem;}
+    .esec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+    .esec p{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:300;color:var(--white);line-height:1.9;}
+    .tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+    .tag{font-family:'JetBrains Mono',monospace;font-size:0.58rem;padding:2px 10px;border:1px solid rgba(0,245,255,0.2);color:var(--cyan2);background:rgba(0,245,255,0.04);letter-spacing:0.08em;}
 
-    .iron-day-tab:hover { color: var(--white); border-color: var(--border2); }
-    .iron-day-tab.active { color: var(--cyan); border-color: var(--cyan); background: rgba(0,245,255,0.05); }
+    /* MODAL */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(2,4,10,0.95);z-index:500;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px);}
+    .overlay.open{display:flex;}
+    .modal{background:var(--panel);border:1px solid var(--cyan);box-shadow:0 0 60px var(--cyan-glow),inset 0 0 60px var(--cyan-glow2);padding:2rem;width:100%;max-width:620px;animation:fadeUp 0.2s ease;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));}
+    .modal-title{font-family:'Orbitron',monospace;font-weight:900;font-size:0.95rem;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.8rem;}
+    .field{margin-bottom:1.1rem;}
+    .field label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--grey);letter-spacing:0.2em;text-transform:uppercase;display:block;margin-bottom:0.4rem;}
+    .field input,.field textarea{width:100%;background:var(--deep);border:none;border-bottom:1px solid var(--border2);padding:0.65rem 0.8rem;color:var(--white);font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:300;outline:none;transition:border-color 0.2s;}
+    .field textarea{min-height:85px;resize:vertical;}
+    .field input:focus,.field textarea:focus{border-bottom-color:var(--cyan);}
+    .field input::placeholder,.field textarea::placeholder{color:var(--grey);}
+    .modal-actions{display:flex;gap:1rem;justify-content:flex-end;margin-top:1.8rem;}
 
-    .iron-detail-body { min-height: 200px; }
+    /* EMPTY */
+    .empty{text-align:center;padding:4rem 2rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.15em;}
+    .empty::before{content:'[ NULL ]';display:block;font-family:'Orbitron',monospace;font-size:1.8rem;color:var(--border);font-weight:900;margin-bottom:1rem;}
 
-    /* ── STATIC ITEMS (lessons, labs, quizzes) ── */
-    .day-summary {
-      background: rgba(0,245,255,0.04);
-      border: 1px solid var(--border);
-      border-left: 2px solid var(--cyan);
-      padding: 1.2rem 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .day-sum-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; color: var(--cyan-dim);
-      letter-spacing: 0.25em; margin-bottom: 0.6rem;
-    }
-
-    .day-summary p {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; font-weight: 300;
-      color: var(--white); line-height: 1.9;
-    }
-
-    .static-item {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      margin-bottom: 0.8rem;
-      transition: border-color 0.2s;
-    }
-
-    .static-item:hover { border-color: var(--border2); }
-
-    .si-head {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.9rem 1.2rem;
-      cursor: crosshair; user-select: none;
-      gap: 1rem;
-    }
-
-    .si-left { display: flex; align-items: center; gap: 0.8rem; flex: 1; }
-
-    .si-type {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.55rem; font-weight: 700;
-      letter-spacing: 0.15em;
-      padding: 2px 7px;
-      border: 1px solid;
-      white-space: nowrap;
-    }
-
-    .si-mandatory {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.5rem; color: var(--warn);
-      border: 1px solid rgba(255,170,0,0.4);
-      padding: 1px 6px; letter-spacing: 0.1em;
-      white-space: nowrap;
-    }
-
-    .si-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 600; font-size: 0.95rem;
-      letter-spacing: 0.03em;
-    }
-
-    .si-right { display: flex; align-items: center; gap: 0.8rem; }
-
-    .si-status {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem; font-weight: 700;
-    }
-
-    .si-chev {
-      font-size: 0.7rem; color: var(--grey);
-      transition: transform 0.2s;
-    }
-
-    .static-item.open .si-chev { transform: rotate(180deg); }
-
-    .si-body {
-      display: none;
-      padding: 0 1.2rem 1.2rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .static-item.open .si-body { display: block; }
-
-    .si-core {
-      background: rgba(0,245,255,0.03);
-      border-left: 2px solid var(--cyan-dim);
-      padding: 0.8rem 1rem;
-      margin: 1rem 0;
-    }
-
-    .si-core-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.55rem; color: var(--cyan-dim);
-      letter-spacing: 0.25em; display: block; margin-bottom: 0.4rem;
-    }
-
-    .si-core p {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; font-weight: 700;
-      color: var(--white); line-height: 1.8;
-    }
-
-    .si-sec-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.55rem; color: var(--grey);
-      letter-spacing: 0.2em; text-transform: uppercase;
-      margin: 1rem 0 0.6rem;
-      display: flex; align-items: center; gap: 0.6rem;
-    }
-
-    .si-sec-label::after { content:''; flex:1; height:1px; background:var(--border); }
-
-    .concept-row {
-      display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 1rem; align-items: start;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .concept-row:last-child { border-bottom: none; }
-
-    .concept-term {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.62rem; font-weight: 700;
-      color: var(--cyan2);
-    }
-
-    .concept-def {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; font-weight: 300;
-      color: var(--white); line-height: 1.7;
-    }
-
-    .si-detail p {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; font-weight: 300;
-      color: var(--white); line-height: 1.9;
-    }
-
-    .si-link {
-      display: inline-block;
-      margin-top: 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem; color: var(--warn);
-      text-decoration: none; letter-spacing: 0.05em;
-      border: 1px solid rgba(255,170,0,0.3);
-      padding: 0.4rem 0.8rem;
-      transition: all 0.2s;
-    }
-
-    .si-link:hover { background: rgba(255,170,0,0.08); }
-
-    .si-score {
-      margin-top: 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; color: var(--grey);
-    }
-
-    .si-score span {
-      font-size: 1.2rem; font-weight: 700;
-      color: var(--warn); font-family: 'Orbitron', monospace;
-    }
-
-    .missed-row {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; font-weight: 300;
-      color: var(--danger); line-height: 1.7;
-      padding: 0.3rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .missed-row:last-child { border-bottom: none; }
-
-    .mod-week-header {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem; color: var(--cyan-dim);
-      letter-spacing: 0.2em; text-transform: uppercase;
-      margin: 1.5rem 0 0.8rem;
-    }
-
-    @media (max-width:580px) {
-      .concept-row { grid-template-columns: 1fr; gap: 0.3rem; }
-      .si-left { flex-wrap: wrap; }
-    }
-
-    /* ── MODAL ── */
-    .overlay {
-      display:none; position:fixed; inset:0;
-      background: rgba(2,4,10,0.95);
-      z-index:500; align-items:center; justify-content:center;
-      padding:1rem; backdrop-filter:blur(6px);
-    }
-
-    .overlay.open { display:flex; }
-
-    .modal {
-      background: var(--panel);
-      border: 1px solid var(--cyan);
-      box-shadow: 0 0 60px var(--cyan-glow), inset 0 0 60px var(--cyan-glow2);
-      padding: 2rem; width:100%; max-width:620px;
-      animation: fadeUp 0.2s ease;
-      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-    }
-
-    .modal-iron { border-color:var(--danger); box-shadow:0 0 60px rgba(255,32,96,0.2),inset 0 0 60px rgba(255,32,96,0.04); }
-
-    .modal-title {
-      font-family: 'Orbitron', monospace;
-      font-weight:900; font-size:0.95rem;
-      color:var(--cyan); letter-spacing:0.1em;
-      text-transform:uppercase; margin-bottom:1.8rem;
-    }
-
-    .modal-iron .modal-title { color:var(--danger); }
-
-    .field { margin-bottom:1.1rem; }
-
-    .field label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; color:var(--grey);
-      letter-spacing: 0.2em; text-transform:uppercase;
-      display:block; margin-bottom:0.4rem;
-    }
-
-    .field input, .field textarea {
-      width:100%;
-      background: var(--deep);
-      border: none; border-bottom:1px solid var(--border2);
-      padding: 0.65rem 0.8rem;
-      color: var(--white);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem; font-weight:300;
-      outline:none; transition:border-color 0.2s;
-    }
-
-    .field textarea { min-height:85px; resize:vertical; }
-    .field input:focus, .field textarea:focus { border-bottom-color:var(--cyan); }
-    .modal-iron .field input:focus, .modal-iron .field textarea:focus { border-bottom-color:var(--danger); }
-    .field input::placeholder, .field textarea::placeholder { color:var(--grey); }
-
-    .modal-actions { display:flex; gap:1rem; justify-content:flex-end; margin-top:1.8rem; }
-
-    /* ── EMPTY ── */
-    .empty {
-      text-align:center; padding:5rem 2rem;
-      font-family:'JetBrains Mono',monospace;
-      font-size:0.68rem; color:var(--muted);
-      letter-spacing:0.15em;
-    }
-
-    .empty::before {
-      content:'[ NULL ]';
-      display:block;
-      font-family:'Orbitron',monospace;
-      font-size:1.8rem; color:var(--border);
-      font-weight:900; margin-bottom:1rem;
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width:600px) {
-      .container { padding:1.5rem 1rem; }
-      nav button { padding:0.75rem 0.9rem; font-size:0.6rem; }
-      .tools-grid { grid-template-columns:1fr; }
-      .header-right { display:none; }
-      .stats-row { flex-wrap:wrap; gap:1.5rem; }
-    }
+    @media(max-width:600px){.container{padding:1.5rem 1rem}nav button{padding:0.75rem 0.9rem;font-size:0.6rem}.tools-grid{grid-template-columns:1fr}.header-right{display:none}.stats-row{flex-wrap:wrap;gap:1.5rem}}
   </style>
 </head>
 <body>
-
 <div class="glitch-bar"></div>
 <div class="scanlines"></div>
 
-<!-- HEADER -->
 <header>
   <div class="logo">
     <div class="logo-mark">TBR</div>
     <div class="logo-text">
       <span class="hi">TheBlue<span style="color:var(--white)">Revolution</span></span>
-      <span class="lo">// sistema.diario.v1.0</span>
+      <span class="lo">// sistema.diario.v2.0</span>
     </div>
   </div>
   <div class="header-right">
-    <div class="hud">
-      <span class="v" id="hdDate"></span>TIMESTAMP
-    </div>
-    <div class="hud">
-      <span class="v"><span class="status-dot"></span>ONLINE</span>ESTADO
-    </div>
+    <div class="hud"><span class="v" id="hdDate"></span>TIMESTAMP</div>
+    <div class="hud"><span class="v"><span class="status-dot"></span>ONLINE</span>ESTADO</div>
   </div>
 </header>
 
-<!-- NAV -->
 <nav>
-  <button data-i="00" class="active" onclick="go('home',this)">Inicio</button>
-  <button data-i="01" onclick="go('diary',this)">Diario</button>
-  <button data-i="02" onclick="go('tools',this)">Herramientas</button>
-  <button data-i="03" onclick="go('dict',this)">Diccionario</button>
-  <button data-i="04" onclick="go('resources',this)">Recursos</button>
-  <button data-i="05" onclick="go('grado',this)">Grado</button>
-  <button data-i="06" onclick="go('iron',this)">Iron</button>
+  <div class="nav-item">
+    <button data-i="00" class="active" onclick="go('home',this)">Inicio</button>
+    <div class="nav-dropdown">
+      <button onclick="goSub('grado',this)">→ Grado</button>
+      <button onclick="goSub('iron',this)">→ Iron</button>
+    </div>
+  </div>
+  <div class="nav-item"><button data-i="01" onclick="go('dict',this)">Diccionario</button></div>
+  <div class="nav-item"><button data-i="02" onclick="go('tools',this)">Herramientas</button></div>
+  <div class="nav-item"><button data-i="03" onclick="go('resources',this)">Recursos</button></div>
+  <div class="nav-item"><button data-i="04" onclick="go('radar',this)">Radar</button></div>
+  <div class="nav-item"><button data-i="05" onclick="go('ocio',this)">Ocio</button></div>
 </nav>
 
-<!-- MAIN -->
 <div class="container">
 
   <!-- HOME -->
@@ -1177,31 +345,20 @@
         <span class="l2">del Camino</span>
         <span class="l3">// ciberseguridad — 2025/2026</span>
       </h1>
-      <p class="hero-sub">
-        registro personal de un camino hacia la ciberseguridad.
-      </p>
+      <p class="hero-sub">registro personal de un camino hacia la ciberseguridad.</p>
       <div class="stats-row">
-        <div class="stat">
-          <span class="stat-n" id="sDays">0</span>
-          <span class="stat-l">días en el camino</span>
-        </div>
-        <div class="stat">
-          <span class="stat-n" id="sTools">0</span>
-          <span class="stat-l">herramientas</span>
-        </div>
-        <div class="stat">
-          <span class="stat-n" id="sTerms">0</span>
-          <span class="stat-l">términos</span>
-        </div>
+        <div class="stat"><span class="stat-n" id="sDays">0</span><span class="stat-l">días en el camino</span></div>
+        <div class="stat"><span class="stat-n" id="sTools">0</span><span class="stat-l">herramientas</span></div>
+        <div class="stat"><span class="stat-n" id="sTerms">0</span><span class="stat-l">términos</span></div>
       </div>
       <div class="path-cards">
-        <div class="path-card path-card-iron" onclick="go('grado', document.querySelectorAll('nav button')[5])">
+        <div class="path-card path-card-grado" onclick="go('grado',null)">
           <div class="path-tag">// RUTA_01 — FORMACIÓN REGLADA</div>
-          <div class="path-title" style="color:var(--danger);text-shadow:0 0 20px rgba(255,32,96,0.35)">Grado</div>
+          <div class="path-title">Grado</div>
           <div class="path-sub">Preparatoria → DAM</div>
           <div class="path-arrow">→</div>
         </div>
-        <div class="path-card" onclick="go('iron', document.querySelectorAll('nav button')[6])">
+        <div class="path-card path-card-iron" onclick="go('iron',null)">
           <div class="path-tag">// RUTA_02 — BOOTCAMP</div>
           <div class="path-title">Iron</div>
           <div class="path-sub">IronHack — CompTIA Security+</div>
@@ -1211,222 +368,39 @@
     </div>
   </div>
 
-  <!-- DIARY -->
-  <div id="diary" class="section">
-    <div class="sec-hd">
-      <div>
-        <div class="sec-title">// <span>Diario</span></div>
-        <div class="sec-meta" id="dMeta">0 entradas</div>
-      </div>
-      <button class="btn" onclick="openM('entry')">+ nueva entrada</button>
-    </div>
-    <div class="list" id="entriesList"><div class="empty">aún no hay entradas. empieza hoy.</div></div>
-  </div>
-
-  <!-- TOOLS -->
-  <div id="tools" class="section">
-    <div class="sec-hd">
-      <div class="sec-title">// <span>Herramientas</span></div>
-      <button class="btn" onclick="openM('tool')">+ añadir</button>
-    </div>
-    <div class="tools-grid" id="toolsList"><div class="empty">sin herramientas.</div></div>
-  </div>
-
-  <!-- DICT -->
-  <div id="dict" class="section">
-    <div class="sec-hd">
-      <div class="sec-title">// <span>Diccionario</span></div>
-      <button class="btn" onclick="openM('term')">+ añadir término</button>
-    </div>
-    <div class="dict-wrap">
-      <input class="dict-input" id="dictQ" placeholder="buscar término..." oninput="renderTerms(this.value)"/>
-    </div>
-    <div class="dict-list" id="dictList"><div class="empty">diccionario vacío.</div></div>
-  </div>
-
-  <!-- RESOURCES -->
-  <div id="resources" class="section">
-    <div class="sec-hd">
-      <div class="sec-title">// <span>Recursos</span></div>
-      <button class="btn" onclick="openM('resource')">+ añadir</button>
-    </div>
-    <div class="res-list" id="resourcesList"><div class="empty">sin recursos guardados.</div></div>
-  </div>
-
   <!-- GRADO -->
   <div id="grado" class="section">
     <div class="sec-hd">
-      <div>
-        <div class="sec-title">// <span>Grado</span></div>
-        <div class="sec-meta">Preparatoria → DAM</div>
-      </div>
+      <div><div class="sec-title">// <span>Grado</span></div><div class="sec-meta">Preparatoria → DAM</div></div>
       <button class="btn" onclick="openM('grado')">+ añadir material</button>
     </div>
-    <div class="list" id="gradoList"><div class="empty">sin material del grado.</div></div>
+    <div class="list" id="gradoList"><div class="empty">sin material del grado todavía.</div></div>
   </div>
 
   <!-- IRON -->
   <div id="iron" class="section">
     <div class="sec-hd">
-      <div>
-        <div class="sec-title">// <span style="color:var(--cyan)">Iron</span></div>
-        <div class="sec-meta">IronHack Bootcamp — CompTIA Security+</div>
-      </div>
+      <div><div class="sec-title">// <span style="color:var(--cyan)">Iron</span></div><div class="sec-meta">IronHack Bootcamp — CompTIA Security+</div></div>
     </div>
-
-    <!-- TWO COLUMN LAYOUT -->
     <div class="iron-layout">
-
-      <!-- LEFT: WEEKS -->
       <div class="iron-weeks-col">
         <div class="iron-col-label">// semanas</div>
-        <div class="iron-weeks-list">
-          <div class="iron-week-item" onclick="openIronView('week',1)">
-            <span class="iron-item-num">01</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 1</span>
-              <span class="iron-item-sub">Network Administration</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',2)">
-            <span class="iron-item-num">02</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 2</span>
-              <span class="iron-item-sub">Network &amp; Application Security</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',3)">
-            <span class="iron-item-num">03</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 3</span>
-              <span class="iron-item-sub">Network &amp; App Sec + Threats</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',4)">
-            <span class="iron-item-num">04</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 4</span>
-              <span class="iron-item-sub">Threats + Digital Forensics</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',5)">
-            <span class="iron-item-num">05</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 5</span>
-              <span class="iron-item-sub">Digital Forensics + Ethical Hacking</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',6)">
-            <span class="iron-item-num">06</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 6</span>
-              <span class="iron-item-sub">Ethical Hacking &amp; Incident Response</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',7)">
-            <span class="iron-item-num">07</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 7</span>
-              <span class="iron-item-sub">Secure Design + Risk Management</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',8)">
-            <span class="iron-item-num">08</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 8</span>
-              <span class="iron-item-sub">Threat Intelligence + Intro to Programming</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-          <div class="iron-week-item" onclick="openIronView('week',9)">
-            <span class="iron-item-num">09</span>
-            <div class="iron-item-info">
-              <span class="iron-item-title">Semana 9</span>
-              <span class="iron-item-sub">Final Scenarios + Final Exam</span>
-            </div>
-            <span class="iron-item-arrow">→</span>
-          </div>
-        </div>
+        <div class="iron-weeks-list" id="weeksList"></div>
       </div>
-
-      <!-- RIGHT: MODULES -->
       <div class="iron-mods-col">
         <div class="iron-col-label">// módulos</div>
-        <div class="iron-mods-list">
-          <div class="iron-mod-item" style="--mc:#ff6b6b" onclick="openIronView('mod','network-admin')">
-            <span class="iron-mod-dot" style="background:#ff6b6b"></span>
-            <span class="iron-mod-name">Network Administration</span>
-            <span class="iron-mod-weeks">W1</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#ff9f43" onclick="openIronView('mod','network-app')">
-            <span class="iron-mod-dot" style="background:#ff9f43"></span>
-            <span class="iron-mod-name">Network &amp; App Security</span>
-            <span class="iron-mod-weeks">W2–3</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#ffd32a" onclick="openIronView('mod','threats')">
-            <span class="iron-mod-dot" style="background:#ffd32a"></span>
-            <span class="iron-mod-name">Threats, Attacks &amp; Tools</span>
-            <span class="iron-mod-weeks">W3–4</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#0be881" onclick="openIronView('mod','forensics')">
-            <span class="iron-mod-dot" style="background:#0be881"></span>
-            <span class="iron-mod-name">Digital Forensics &amp; Malware</span>
-            <span class="iron-mod-weeks">W4–5</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#00d2d3" onclick="openIronView('mod','ethical')">
-            <span class="iron-mod-dot" style="background:#00d2d3"></span>
-            <span class="iron-mod-name">Ethical Hacking &amp; IR</span>
-            <span class="iron-mod-weeks">W5–6</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#54a0ff" onclick="openIronView('mod','secure-design')">
-            <span class="iron-mod-dot" style="background:#54a0ff"></span>
-            <span class="iron-mod-name">Secure Design</span>
-            <span class="iron-mod-weeks">W7</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#5f27cd" onclick="openIronView('mod','risk')">
-            <span class="iron-mod-dot" style="background:#5f27cd"></span>
-            <span class="iron-mod-name">Risk Management</span>
-            <span class="iron-mod-weeks">W7</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#a29bfe" onclick="openIronView('mod','threat-intel')">
-            <span class="iron-mod-dot" style="background:#a29bfe"></span>
-            <span class="iron-mod-name">Threat Intelligence</span>
-            <span class="iron-mod-weeks">W8</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#fd79a8" onclick="openIronView('mod','programming')">
-            <span class="iron-mod-dot" style="background:#fd79a8"></span>
-            <span class="iron-mod-name">Intro to Programming</span>
-            <span class="iron-mod-weeks">W8</span>
-          </div>
-          <div class="iron-mod-item" style="--mc:#b2bec3" onclick="openIronView('mod','final')">
-            <span class="iron-mod-dot" style="background:#b2bec3"></span>
-            <span class="iron-mod-name">Final Scenarios &amp; Exam</span>
-            <span class="iron-mod-weeks">W9</span>
-          </div>
-        </div>
+        <div class="iron-mods-list" id="modsList"></div>
       </div>
-
-    </div><!-- /iron-layout -->
+    </div>
   </div>
 
-  <!-- IRON DETAIL VIEW (full screen) -->
-  <div id="iron-detail" class="section iron-detail-section">
+  <!-- IRON DETAIL -->
+  <div id="iron-detail" class="section">
     <div class="iron-detail-header">
-      <button class="iron-back-btn" onclick="go('iron', document.querySelectorAll('nav button')[6])">← volver</button>
-      <div>
-        <div class="iron-detail-title" id="ironDetailTitle"></div>
-        <div class="iron-detail-sub" id="ironDetailSub"></div>
-      </div>
-      <button class="btn" id="ironAddBtn" onclick="openIronEntryModal()">+ añadir entrada</button>
+      <button class="iron-back-btn" onclick="go('iron',null)">← volver</button>
+      <div><div class="iron-detail-title" id="ironDetailTitle"></div><div class="iron-detail-sub" id="ironDetailSub"></div></div>
+      <button class="btn" onclick="openIronEntryModal()">+ añadir nota</button>
     </div>
-    <!-- Day tabs (for week view) -->
     <div class="iron-day-tabs" id="ironDayTabs">
       <button class="iron-day-tab active" onclick="switchDay(this,1)">Lunes</button>
       <button class="iron-day-tab" onclick="switchDay(this,2)">Martes</button>
@@ -1434,116 +408,183 @@
       <button class="iron-day-tab" onclick="switchDay(this,4)">Jueves</button>
       <button class="iron-day-tab" onclick="switchDay(this,5)">Viernes</button>
     </div>
-    <div class="iron-detail-body" id="ironDetailBody"></div>
+    <div id="ironDetailBody"></div>
   </div>
 
-</div>
-
-<!-- ── MODALS ── -->
-<div class="overlay" id="ov-entry">
-  <div class="modal">
-    <div class="modal-title">// nueva entrada del diario</div>
-    <div class="field"><label>Título del día</label><input id="e-title" placeholder="Ej: Modelo OSI — capas y protocolos"/></div>
-    <div class="field"><label>Notas en crudo</label><textarea id="e-raw" placeholder="Todo lo que aprendiste, sin filtro..."></textarea></div>
-    <div class="field"><label>Resumen</label><textarea id="e-sum" placeholder="¿Qué te llevas de hoy?"></textarea></div>
-    <div class="field"><label>Herramientas / Conceptos (coma)</label><input id="e-tags" placeholder="nmap, TCP/IP, Wireshark..."/></div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeM('entry')">cancelar</button>
-      <button class="btn" onclick="saveEntry()">guardar entrada</button>
+  <!-- DICCIONARIO -->
+  <div id="dict" class="section">
+    <div class="sec-hd">
+      <div class="sec-title">// <span>Diccionario</span></div>
+      <button class="btn" onclick="openM('term')">+ añadir término</button>
     </div>
+    <div class="dict-wrap"><input class="dict-input" id="dictQ" placeholder="buscar término..." oninput="renderTerms(this.value)"/></div>
+    <div class="dict-list" id="dictList"><div class="empty">diccionario vacío.</div></div>
   </div>
-</div>
 
-<div class="overlay" id="ov-tool">
-  <div class="modal">
-    <div class="modal-title">// nueva herramienta</div>
-    <div class="field"><label>Nombre</label><input id="t-name" placeholder="Ej: Nmap"/></div>
-    <div class="field"><label>Categoría</label><input id="t-cat" placeholder="Ej: Reconocimiento..."/></div>
-    <div class="field"><label>Descripción</label><textarea id="t-desc" placeholder="¿Para qué sirve?"></textarea></div>
-    <div class="field"><label>Comandos (uno por línea)</label><textarea id="t-cmds" placeholder="nmap -sV 192.168.1.1"></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeM('tool')">cancelar</button>
-      <button class="btn" onclick="saveTool()">guardar</button>
+  <!-- HERRAMIENTAS -->
+  <div id="tools" class="section">
+    <div class="sec-hd">
+      <div class="sec-title">// <span>Herramientas</span></div>
+      <button class="btn" onclick="openM('tool')">+ añadir</button>
     </div>
+    <div class="tools-grid" id="toolsList"></div>
   </div>
-</div>
 
-<div class="overlay" id="ov-term">
-  <div class="modal">
-    <div class="modal-title">// nuevo término</div>
-    <div class="field"><label>Término</label><input id="d-term" placeholder="Ej: Firewall"/></div>
-    <div class="field"><label>Definición</label><textarea id="d-def" placeholder="Con tus propias palabras..."></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeM('term')">cancelar</button>
-      <button class="btn" onclick="saveTerm()">guardar</button>
+  <!-- RECURSOS -->
+  <div id="resources" class="section">
+    <div class="sec-hd"><div class="sec-title">// <span>Recursos</span></div><button class="btn" onclick="openM('resource')">+ añadir</button></div>
+    <div id="resourcesList"></div>
+  </div>
+
+  <!-- RADAR -->
+  <div id="radar" class="section">
+    <div class="sec-hd">
+      <div><div class="sec-title">// <span>Radar</span></div><div class="sec-meta">cosas que le llaman la atención a Tania</div></div>
+      <button class="btn" onclick="openM('radar')">+ añadir</button>
     </div>
+    <div class="radar-grid" id="radarList"></div>
   </div>
-</div>
 
-<div class="overlay" id="ov-resource">
-  <div class="modal">
-    <div class="modal-title">// nuevo recurso</div>
-    <div class="field"><label>Nombre</label><input id="r-name" placeholder="Ej: TryHackMe — Intro Linux"/></div>
-    <div class="field"><label>URL</label><input id="r-url" placeholder="https://..."/></div>
-    <div class="field"><label>Notas</label><textarea id="r-notes" placeholder="¿Por qué lo guardas?"></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeM('resource')">cancelar</button>
-      <button class="btn" onclick="saveResource()">guardar</button>
+  <!-- OCIO -->
+  <div id="ocio" class="section">
+    <div class="sec-hd">
+      <div><div class="sec-title">// <span>Ocio</span></div><div class="sec-meta">libros · series · pelis — relacionados con el mundillo</div></div>
+      <button class="btn" onclick="openM('ocio')">+ añadir</button>
     </div>
+    <div id="ocioContent"></div>
   </div>
-</div>
 
-<div class="overlay" id="ov-grado">
-  <div class="modal">
-    <div class="modal-title">// material — grado</div>
-    <div class="field"><label>Título / Tema</label><input id="g-title" placeholder="Ej: Bases de datos — SQL"/></div>
-    <div class="field"><label>Módulo / Asignatura</label><input id="g-mod" placeholder="Ej: Programación, Redes..."/></div>
-    <div class="field"><label>Apuntes</label><textarea id="g-notes" placeholder="Todo lo que quieras guardar..."></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeM('grado')">cancelar</button>
-      <button class="btn" onclick="saveGrado()">guardar</button>
-    </div>
+</div><!-- /container -->
+
+<!-- MODALS -->
+<div class="overlay" id="ov-grado"><div class="modal">
+  <div class="modal-title">// material — grado</div>
+  <div class="field"><label>Título</label><input id="g-title" placeholder="Ej: Bases de datos — SQL"/></div>
+  <div class="field"><label>Módulo</label><input id="g-mod" placeholder="Ej: Programación, Redes..."/></div>
+  <div class="field"><label>Apuntes</label><textarea id="g-notes" placeholder="Todo lo que quieras guardar..."></textarea></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeM('grado')">cancelar</button><button class="btn" onclick="saveGrado()">guardar</button></div>
+</div></div>
+
+<div class="overlay" id="ov-term"><div class="modal">
+  <div class="modal-title">// nuevo término</div>
+  <div class="field"><label>Término</label><input id="d-term" placeholder="Ej: DNS"/></div>
+  <div class="field"><label>Definición</label><textarea id="d-def" placeholder="Con tus propias palabras..."></textarea></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeM('term')">cancelar</button><button class="btn" onclick="saveTerm()">guardar</button></div>
+</div></div>
+
+<div class="overlay" id="ov-tool"><div class="modal">
+  <div class="modal-title">// nueva herramienta</div>
+  <div class="field"><label>Nombre</label><input id="t-name" placeholder="Ej: Nmap"/></div>
+  <div class="field"><label>Categoría</label><input id="t-cat" placeholder="Ej: Análisis forense..."/></div>
+  <div class="field"><label>Descripción</label><textarea id="t-desc" placeholder="¿Para qué sirve?"></textarea></div>
+  <div class="field"><label>Comandos clave (uno por línea)</label><textarea id="t-cmds" placeholder="nmap -sV 192.168.1.1"></textarea></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeM('tool')">cancelar</button><button class="btn" onclick="saveTool()">guardar</button></div>
+</div></div>
+
+<div class="overlay" id="ov-resource"><div class="modal">
+  <div class="modal-title">// nuevo recurso</div>
+  <div class="field"><label>Nombre</label><input id="r-name" placeholder="Ej: VirusTotal"/></div>
+  <div class="field"><label>URL</label><input id="r-url" placeholder="https://..."/></div>
+  <div class="field"><label>Categoría</label><input id="r-cat" placeholder="Ej: Análisis, OSINT, Comunidad..."/></div>
+  <div class="field"><label>Descripción</label><textarea id="r-notes" placeholder="¿Para qué sirve?"></textarea></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeM('resource')">cancelar</button><button class="btn" onclick="saveResource()">guardar</button></div>
+</div></div>
+
+<div class="overlay" id="ov-radar"><div class="modal">
+  <div class="modal-title">// nuevo radar</div>
+  <div class="field"><label>Nombre / Concepto</label><input id="ra-name" placeholder="Ej: YubiKey"/></div>
+  <div class="field"><label>¿Por qué te llama la atención?</label><textarea id="ra-why" placeholder="Lo que sea..."></textarea></div>
+  <div class="field"><label>Tags (coma)</label><input id="ra-tags" placeholder="hardware, autenticación..."/></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeM('radar')">cancelar</button><button class="btn" onclick="saveRadar()">guardar</button></div>
+</div></div>
+
+<div class="overlay" id="ov-ocio"><div class="modal">
+  <div class="modal-title">// nuevo ocio</div>
+  <div class="field"><label>Título</label><input id="oc-title" placeholder="Ej: Mr. Robot"/></div>
+  <div class="field"><label>Tipo</label>
+    <select id="oc-type" style="width:100%;background:var(--deep);border:none;border-bottom:1px solid var(--border2);padding:0.65rem 0.8rem;color:var(--white);font-family:'JetBrains Mono',monospace;font-size:0.75rem;outline:none;">
+      <option value="serie">Serie</option>
+      <option value="pelicula">Película</option>
+      <option value="libro">Libro</option>
+      <option value="podcast">Podcast</option>
+      <option value="documental">Documental</option>
+    </select>
   </div>
-</div>
-
-<!-- Iron entry modal -->
-<div class="overlay" id="ov-iron-entry">
-  <div class="modal modal-iron">
-    <div class="modal-title" id="ironModalTitle">// nueva entrada</div>
-    <div class="field"><label>Título</label><input id="ie-title" placeholder="Ej: Reconocimiento con Nmap"/></div>
-    <div class="field"><label>Notas en crudo</label><textarea id="ie-raw" placeholder="Todo lo que aprendiste, sin filtro..."></textarea></div>
-    <div class="field"><label>Resumen</label><textarea id="ie-sum" placeholder="¿Qué te llevas?"></textarea></div>
-    <div class="field"><label>Herramientas / Conceptos (coma)</label><input id="ie-tags" placeholder="nmap, netcat..."/></div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeM('iron-entry')">cancelar</button>
-      <button class="btn" onclick="saveIronEntry()">guardar</button>
-    </div>
+  <div class="field"><label>Descripción breve</label><textarea id="oc-desc" placeholder="¿De qué va?"></textarea></div>
+  <div class="field"><label>Estado</label>
+    <select id="oc-status" style="width:100%;background:var(--deep);border:none;border-bottom:1px solid var(--border2);padding:0.65rem 0.8rem;color:var(--white);font-family:'JetBrains Mono',monospace;font-size:0.75rem;outline:none;">
+      <option value="pending">Pendiente</option>
+      <option value="progress">En progreso</option>
+      <option value="done">Completado</option>
+    </select>
   </div>
-</div>
+  <div class="field"><label>Puntuación (1-10, solo si completado)</label><input id="oc-score" type="number" min="1" max="10" placeholder="—"/></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeM('ocio')">cancelar</button><button class="btn" onclick="saveOcio()">guardar</button></div>
+</div></div>
 
-
+<div class="overlay" id="ov-iron-entry"><div class="modal">
+  <div class="modal-title" id="ironModalTitle">// nueva nota</div>
+  <div class="field"><label>Título</label><input id="ie-title" placeholder="Tu nota o reflexión..."/></div>
+  <div class="field"><label>Contenido</label><textarea id="ie-raw" placeholder="Lo que quieras añadir..."></textarea></div>
+  <div class="field"><label>Tags (coma)</label><input id="ie-tags" placeholder="nmap, VPN..."/></div>
+  <div class="modal-actions"><button class="btn-ghost" onclick="closeM('iron-entry')">cancelar</button><button class="btn" onclick="saveIronEntry()">guardar</button></div>
+</div></div>
 
 <script>
-  // STATE
-  let entries   = JSON.parse(localStorage.getItem('tbr-entries')   || '[]');
-  let tools     = JSON.parse(localStorage.getItem('tbr-tools')     || '[]');
-  let terms     = JSON.parse(localStorage.getItem('tbr-terms')     || '[]');
-  let resources = JSON.parse(localStorage.getItem('tbr-resources') || '[]');
+  // ── STATE ──
   let grado     = JSON.parse(localStorage.getItem('tbr-grado')     || '[]');
-  let iron      = JSON.parse(localStorage.getItem('tbr-iron')      || '[]');
+  let terms     = JSON.parse(localStorage.getItem('tbr-terms')     || '[]');
+  let tools     = JSON.parse(localStorage.getItem('tbr-tools-v2')  || 'null') || INIT_TOOLS();
+  let resources = JSON.parse(localStorage.getItem('tbr-resources') || '[]');
+  let radar     = JSON.parse(localStorage.getItem('tbr-radar')     || 'null') || INIT_RADAR();
+  let ocio      = JSON.parse(localStorage.getItem('tbr-ocio')      || 'null') || INIT_OCIO();
+  let ironNotes = JSON.parse(localStorage.getItem('tbr-iron-notes')|| '[]');
 
-  // DATE
+  function INIT_TOOLS() {
+    return [
+      { id:'t1', name:'Wireshark', cat:'Análisis de tráfico de red', level:'orange',
+        desc:'Analizador de protocolos de red. Captura y examina el tráfico en tiempo real. Permite ver exactamente qué datos viajan por la red, paquete a paquete.', cmds:'' },
+      { id:'t2', name:'Cisco Packet Tracer', cat:'Simulación de redes', level:'orange',
+        desc:'Simulador de redes de Cisco. Permite diseñar, configurar y probar redes virtuales sin necesidad de hardware físico. Muy usado en formación.', cmds:'' },
+      { id:'t3', name:'Oracle VirtualBox', cat:'Virtualización', level:'green',
+        desc:'Software de virtualización. Permite crear y ejecutar máquinas virtuales con distintos sistemas operativos dentro de tu equipo principal.', cmds:'' },
+      { id:'t4', name:'Kleopatra', cat:'Criptografía / Certificados', level:'red',
+        desc:'Gestor de certificados y herramienta de cifrado. Parte de la suite GnuPG. Permite cifrar y firmar archivos y correos electrónicos.', cmds:'' },
+      { id:'t5', name:'Autopsy', cat:'Análisis forense digital', level:'orange',
+        desc:'Plataforma de análisis forense digital. Permite examinar discos duros, imágenes de sistemas y dispositivos para recuperar evidencias digitales.', cmds:'' },
+      { id:'t6', name:'OpenStego', cat:'Esteganografía', level:'red',
+        desc:'Herramienta de esteganografía. Permite ocultar información dentro de archivos de imagen sin que sea visible a simple vista.', cmds:'' },
+      { id:'t7', name:'ffuf', cat:'Fuzzing web', level:'orange',
+        desc:'Fuzzer web rápido escrito en Go. Se usa para descubrir directorios, parámetros y recursos ocultos en aplicaciones web mediante fuerza bruta.', cmds:'ffuf -w wordlist.txt -u https://target.com/FUZZ\nffuf -w wordlist.txt -u https://target.com/FUZZ -fc 404' },
+      { id:'t8', name:'Hydra', cat:'Ataques de autenticación', level:'orange',
+        desc:'Herramienta de cracking de contraseñas en línea. Realiza ataques de fuerza bruta contra servicios de red como SSH, FTP, HTTP, SMB y muchos más.', cmds:'hydra -l admin -P passwords.txt ssh://192.168.1.1\nhydra -L users.txt -P pass.txt ftp://target.com' },
+    ];
+  }
+
+  function INIT_RADAR() {
+    return [
+      { id:'r1', name:'YubiKey', why:'Dispositivo físico de autenticación de dos factores. Mencionado en clase — me llama la atención como alternativa hardware a los autenticadores de móvil. Parece que se usa mucho en entornos corporativos seguros.', tags:['hardware','autenticación','2FA','seguridad física'] }
+    ];
+  }
+
+  function INIT_OCIO() {
+    return [
+      { id:'o1', type:'serie', title:'Mr. Robot', desc:'Serie sobre un hacker con trastorno de disociación que se une a un grupo de hacktivistas para derruir las corporaciones que controlan el mundo. Famosa por su realismo técnico.', status:'pending', score:null },
+      { id:'o2', type:'pelicula', title:'Snowden', desc:'Película biográfica sobre Edward Snowden, el analista de la NSA que filtró información clasificada sobre los programas de vigilancia masiva del gobierno de EE.UU.', status:'pending', score:null },
+    ];
+  }
+
+  // ── DATE ──
   const now = new Date();
   document.getElementById('hdDate').textContent =
     now.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'.');
 
   function daysSince(d) {
-    const s=new Date(d), t=new Date();
-    t.setHours(0,0,0,0); s.setHours(0,0,0,0);
-    return Math.floor((t-s)/(864e5));
+    const s=new Date(d),t=new Date(); t.setHours(0,0,0,0); s.setHours(0,0,0,0);
+    return Math.floor((t-s)/864e5);
   }
 
-  // NAV
+  // ── NAV ──
   function go(id, btn) {
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
@@ -1552,387 +593,597 @@
     updateStats();
   }
 
-  // MODALS
+  function goSub(id, btn) {
+    go(id, null);
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  }
+
+  // ── MODALS ──
   function openM(k){ document.getElementById('ov-'+k).classList.add('open'); }
   function closeM(k){ document.getElementById('ov-'+k).classList.remove('open'); }
   document.querySelectorAll('.overlay').forEach(o=>{
     o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); });
   });
-
   function clr(ids){ ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; }); }
 
-  // SAVES
-  function saveEntry(){
-    const title=document.getElementById('e-title').value.trim(); if(!title) return;
-    entries.unshift({ id:Date.now(), day:entries.length+1,
-      date: now.toLocaleDateString('es-ES'), title,
-      raw: document.getElementById('e-raw').value.trim(),
-      sum: document.getElementById('e-sum').value.trim(),
-      tags: document.getElementById('e-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
-    });
-    localStorage.setItem('tbr-entries',JSON.stringify(entries));
-    closeM('entry'); clr(['e-title','e-raw','e-sum','e-tags']);
-    renderEntries(); updateStats();
-  }
+  // ── TOGGLE ──
+  function tog(id){ document.getElementById(id)?.classList.toggle('open'); }
 
-  function saveTool(){
-    const name=document.getElementById('t-name').value.trim(); if(!name) return;
-    tools.push({ id:Date.now(), name,
-      cat:  document.getElementById('t-cat').value.trim(),
-      desc: document.getElementById('t-desc').value.trim(),
-      cmds: document.getElementById('t-cmds').value.trim()
+  // ── SAVES ──
+  function saveGrado(){
+    const title=document.getElementById('g-title').value.trim(); if(!title) return;
+    grado.unshift({ id:Date.now(), date:now.toLocaleDateString('es-ES'), title,
+      mod:document.getElementById('g-mod').value.trim(),
+      notes:document.getElementById('g-notes').value.trim()
     });
-    localStorage.setItem('tbr-tools',JSON.stringify(tools));
-    closeM('tool'); clr(['t-name','t-cat','t-desc','t-cmds']);
-    renderTools(); updateStats();
+    localStorage.setItem('tbr-grado',JSON.stringify(grado));
+    closeM('grado'); clr(['g-title','g-mod','g-notes']); renderGrado();
   }
 
   function saveTerm(){
     const term=document.getElementById('d-term').value.trim(); if(!term) return;
     terms.push({ id:Date.now(), term, def:document.getElementById('d-def').value.trim() });
     localStorage.setItem('tbr-terms',JSON.stringify(terms));
-    closeM('term'); clr(['d-term','d-def']);
-    renderTerms(); updateStats();
+    closeM('term'); clr(['d-term','d-def']); renderTerms(); updateStats();
+  }
+
+  function saveTool(){
+    const name=document.getElementById('t-name').value.trim(); if(!name) return;
+    tools.push({ id:Date.now(), name, level:'red',
+      cat:document.getElementById('t-cat').value.trim(),
+      desc:document.getElementById('t-desc').value.trim(),
+      cmds:document.getElementById('t-cmds').value.trim()
+    });
+    localStorage.setItem('tbr-tools-v2',JSON.stringify(tools));
+    closeM('tool'); clr(['t-name','t-cat','t-desc','t-cmds']); renderTools(); updateStats();
   }
 
   function saveResource(){
     const name=document.getElementById('r-name').value.trim(); if(!name) return;
     resources.push({ id:Date.now(), name,
-      url:   document.getElementById('r-url').value.trim(),
-      notes: document.getElementById('r-notes').value.trim()
+      url:document.getElementById('r-url').value.trim(),
+      cat:document.getElementById('r-cat').value.trim(),
+      notes:document.getElementById('r-notes').value.trim()
     });
     localStorage.setItem('tbr-resources',JSON.stringify(resources));
-    closeM('resource'); clr(['r-name','r-url','r-notes']);
-    renderResources();
+    closeM('resource'); clr(['r-name','r-url','r-cat','r-notes']); renderResources();
   }
 
-  function saveGrado(){
-    const title=document.getElementById('g-title').value.trim(); if(!title) return;
-    grado.unshift({ id:Date.now(), date:now.toLocaleDateString('es-ES'), title,
-      mod:   document.getElementById('g-mod').value.trim(),
-      notes: document.getElementById('g-notes').value.trim()
+  function saveRadar(){
+    const name=document.getElementById('ra-name').value.trim(); if(!name) return;
+    radar.push({ id:Date.now(), name,
+      why:document.getElementById('ra-why').value.trim(),
+      tags:document.getElementById('ra-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
     });
-    localStorage.setItem('tbr-grado',JSON.stringify(grado));
-    closeM('grado'); clr(['g-title','g-mod','g-notes']);
-    renderGrado();
+    localStorage.setItem('tbr-radar',JSON.stringify(radar));
+    closeM('radar'); clr(['ra-name','ra-why','ra-tags']); renderRadar();
   }
 
-  // ── IRON DATA ──
-  // ironEntries: { id, week(1-9), day(1-5), mod(string), title, raw, sum, tags[] }
-  let ironEntries = JSON.parse(localStorage.getItem('tbr-iron-v2') || '[]');
+  function saveOcio(){
+    const title=document.getElementById('oc-title').value.trim(); if(!title) return;
+    ocio.push({ id:Date.now(), title,
+      type:document.getElementById('oc-type').value,
+      desc:document.getElementById('oc-desc').value.trim(),
+      status:document.getElementById('oc-status').value,
+      score:document.getElementById('oc-score').value||null
+    });
+    localStorage.setItem('tbr-ocio',JSON.stringify(ocio));
+    closeM('ocio'); clr(['oc-title','oc-desc','oc-score']); renderOcio();
+  }
 
-  const WEEK_MODS = {
-    1: ['network-admin'],
-    2: ['network-app'],
-    3: ['network-app','threats'],
-    4: ['threats','forensics'],
-    5: ['forensics','ethical'],
-    6: ['ethical'],
-    7: ['secure-design','risk'],
-    8: ['threat-intel','programming'],
-    9: ['final']
-  };
+  function setSemaforo(toolId, level) {
+    const t = tools.find(x=>x.id===toolId); if(!t) return;
+    t.level = level;
+    localStorage.setItem('tbr-tools-v2',JSON.stringify(tools));
+    renderTools();
+  }
 
-  const MOD_META = {
-    'network-admin':  { name:'Network Administration',          color:'#ff6b6b', weeks:[1] },
-    'network-app':    { name:'Network & App Security',          color:'#ff9f43', weeks:[2,3] },
-    'threats':        { name:'Threats, Attacks & Tools',        color:'#ffd32a', weeks:[3,4] },
-    'forensics':      { name:'Digital Forensics & Malware',     color:'#0be881', weeks:[4,5] },
-    'ethical':        { name:'Ethical Hacking & IR',            color:'#00d2d3', weeks:[5,6] },
-    'secure-design':  { name:'Secure Design',                   color:'#54a0ff', weeks:[7] },
-    'risk':           { name:'Risk Management',                  color:'#5f27cd', weeks:[7] },
-    'threat-intel':   { name:'Threat Intelligence',             color:'#a29bfe', weeks:[8] },
-    'programming':    { name:'Intro to Programming',            color:'#fd79a8', weeks:[8] },
-    'final':          { name:'Final Scenarios & Exam',          color:'#b2bec3', weeks:[9] }
-  };
+  // ── IRON ──
+  const WEEKS_DATA = [
+    {n:1, sub:'Network Administration'},
+    {n:2, sub:'Network & Application Security'},
+    {n:3, sub:'Network & App Sec + Threats'},
+    {n:4, sub:'Threats + Digital Forensics'},
+    {n:5, sub:'Digital Forensics + Ethical Hacking'},
+    {n:6, sub:'Ethical Hacking & Incident Response'},
+    {n:7, sub:'Secure Design + Risk Management'},
+    {n:8, sub:'Threat Intelligence + Intro to Programming'},
+    {n:9, sub:'Final Scenarios + Final Exam'}
+  ];
 
-  const WEEK_SUBS = {
-    1:'Network Administration',
-    2:'Network & Application Security',
-    3:'Network & App Sec + Threats, Attacks & Tools',
-    4:'Threats, Attacks & Tools + Digital Forensics',
-    5:'Digital Forensics & Malware + Ethical Hacking',
-    6:'Ethical Hacking & Incident Response',
-    7:'Secure Design + Risk Management',
-    8:'Threat Intelligence + Intro to Programming',
-    9:'Final Scenarios + Final Exam'
-  };
+  const MODS_DATA = [
+    {id:'network-admin', name:'Network Administration', color:'#ff6b6b', weeks:'W1'},
+    {id:'network-app',   name:'Network & App Security', color:'#ff9f43', weeks:'W2–3'},
+    {id:'threats',       name:'Threats, Attacks & Tools',color:'#ffd32a', weeks:'W3–4'},
+    {id:'forensics',     name:'Digital Forensics & Malware',color:'#0be881',weeks:'W4–5'},
+    {id:'ethical',       name:'Ethical Hacking & IR',   color:'#00d2d3', weeks:'W5–6'},
+    {id:'secure-design', name:'Secure Design',          color:'#54a0ff', weeks:'W7'},
+    {id:'risk',          name:'Risk Management',         color:'#5f27cd', weeks:'W7'},
+    {id:'threat-intel',  name:'Threat Intelligence',    color:'#a29bfe', weeks:'W8'},
+    {id:'programming',   name:'Intro to Programming',   color:'#fd79a8', weeks:'W8'},
+    {id:'final',         name:'Final Scenarios & Exam', color:'#b2bec3', weeks:'W9'}
+  ];
 
   const DAY_NAMES = ['','Lunes','Martes','Miércoles','Jueves','Viernes'];
+  let currentCtx = { type:null, value:null, day:1 };
 
-  let currentIronCtx = { type: null, value: null, day: 1 };
+  function renderWeeksAndMods() {
+    document.getElementById('weeksList').innerHTML = WEEKS_DATA.map(w=>`
+      <div class="iron-week-item" onclick="openIronView('week',${w.n})">
+        <span class="iron-item-num">${String(w.n).padStart(2,'0')}</span>
+        <div class="iron-item-info">
+          <span class="iron-item-title">Semana ${w.n}</span>
+          <span class="iron-item-sub">${w.sub}</span>
+        </div>
+        <span class="iron-item-arrow">→</span>
+      </div>`).join('');
+
+    document.getElementById('modsList').innerHTML = MODS_DATA.map(m=>`
+      <div class="iron-mod-item" style="--mc:${m.color}" onclick="openIronView('mod','${m.id}')">
+        <span class="iron-mod-dot" style="background:${m.color};box-shadow:0 0 6px ${m.color}"></span>
+        <span class="iron-mod-name">${m.name}</span>
+        <span class="iron-mod-weeks">${m.weeks}</span>
+      </div>`).join('');
+  }
 
   function openIronView(type, value) {
-    currentIronCtx = { type, value, day: 1 };
-    // switch to detail section without touching nav active state
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    currentCtx = { type, value, day:1 };
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.getElementById('iron-detail').classList.add('active');
-
-    if (type === 'week') {
-      const w = value;
-      document.getElementById('ironDetailTitle').textContent = `Semana ${String(w).padStart(2,'0')}`;
-      document.getElementById('ironDetailSub').textContent = WEEK_SUBS[w];
+    if(type==='week') {
+      const w = WEEKS_DATA.find(x=>x.n===value);
+      document.getElementById('ironDetailTitle').textContent = `Semana ${String(value).padStart(2,'0')}`;
+      document.getElementById('ironDetailSub').textContent = w.sub;
       document.getElementById('ironDayTabs').classList.remove('hidden');
-      document.querySelectorAll('.iron-day-tab').forEach((t,i) => t.classList.toggle('active', i===0));
-      renderIronDetail();
+      document.querySelectorAll('.iron-day-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
     } else {
-      const m = MOD_META[value];
+      const m = MODS_DATA.find(x=>x.id===value);
       document.getElementById('ironDetailTitle').textContent = m.name;
-      document.getElementById('ironDetailSub').textContent = `Semanas: ${m.weeks.map(w=>'W'+w).join(', ')}`;
+      document.getElementById('ironDetailSub').textContent = `Semanas: ${m.weeks}`;
       document.getElementById('ironDayTabs').classList.add('hidden');
-      renderIronDetail();
     }
+    renderIronDetail();
   }
 
   function switchDay(btn, day) {
-    currentIronCtx.day = day;
-    document.querySelectorAll('.iron-day-tab').forEach(t => t.classList.remove('active'));
+    currentCtx.day = day;
+    document.querySelectorAll('.iron-day-tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     renderIronDetail();
   }
 
   function renderIronDetail() {
     const el = document.getElementById('ironDetailBody');
+    let html = '';
 
-    // Get static content for this week/day
-    if (currentIronCtx.type === 'week') {
-      const staticContent = STATIC_CONTENT[currentIronCtx.value]?.[currentIronCtx.day];
-      const userEntries = ironEntries.filter(e => e.week === currentIronCtx.value && e.day === currentIronCtx.day);
-
-      if (!staticContent && !userEntries.length) {
-        el.innerHTML = '<div class="empty">sin contenido todavía para este día.</div>';
-        return;
-      }
-
-      let html = '';
-
-      // Day summary banner if exists
-      if (staticContent?.summary) {
-        html += `<div class="day-summary">
-          <div class="day-sum-label">// resumen del día</div>
-          <p>${staticContent.summary}</p>
-        </div>`;
-      }
-
-      // Static items (lessons, labs, quizzes)
-      if (staticContent?.items) {
-        staticContent.items.forEach(item => {
-          html += renderStaticItem(item);
-        });
-      }
-
-      // User added entries
-      userEntries.forEach(e => {
-        html += renderUserEntry(e);
-      });
-
-      el.innerHTML = html;
-
+    if(currentCtx.type==='week') {
+      const sc = STATIC_CONTENT[currentCtx.value]?.[currentCtx.day];
+      const notes = ironNotes.filter(n=>n.week===currentCtx.value && n.day===currentCtx.day);
+      if(!sc && !notes.length) { el.innerHTML='<div class="empty">sin contenido todavía para este día.</div>'; return; }
+      if(sc?.summary) html+=`<div class="day-summary"><div class="day-sum-label">// resumen del día</div><p>${sc.summary}</p></div>`;
+      sc?.items?.forEach(item=>{ html+=renderItem(item); });
+      notes.forEach(n=>{ html+=renderNote(n); });
     } else {
-      // Module view — show all static items for this module across all weeks/days
-      const mod = currentIronCtx.value;
-      let html = '';
+      const mod = currentCtx.value;
       let found = false;
-
-      Object.entries(STATIC_CONTENT).forEach(([week, days]) => {
-        Object.entries(days).forEach(([day, dayData]) => {
-          if (!dayData.items) return;
-          const modItems = dayData.items.filter(i => i.mod === mod);
-          if (modItems.length) {
-            found = true;
-            html += `<div class="mod-week-header">// Semana ${week} — ${DAY_NAMES[day]}</div>`;
-            modItems.forEach(item => { html += renderStaticItem(item); });
-          }
+      Object.entries(STATIC_CONTENT).forEach(([w,days])=>{
+        Object.entries(days).forEach(([d,data])=>{
+          const items = data.items?.filter(i=>i.mod===mod)||[];
+          if(items.length){ found=true; html+=`<div class="mod-week-header">// Semana ${w} — ${DAY_NAMES[d]}</div>`; items.forEach(i=>html+=renderItem(i)); }
         });
       });
-
-      if (!found) {
-        el.innerHTML = '<div class="empty">sin contenido todavía para este módulo.</div>';
-        return;
-      }
-
-      el.innerHTML = html;
+      if(!found){ el.innerHTML='<div class="empty">sin contenido para este módulo todavía.</div>'; return; }
     }
 
-    // Re-attach toggle listeners
-    document.querySelectorAll('.si-head').forEach(h => {
-      h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
-    });
+    el.innerHTML = html;
+    el.querySelectorAll('.si-head').forEach(h=>{ h.addEventListener('click',()=>h.closest('.static-item').classList.toggle('open')); });
   }
 
-  function renderStaticItem(item) {
-    const typeColors = {
-      lesson: 'var(--cyan)',
-      lab:    'var(--warn)',
-      quiz:   '#a29bfe',
-      assessment: '#fd79a8',
-      selfguided: 'var(--grey)'
-    };
-    const typeLabels = {
-      lesson: 'LESSON', lab: 'LAB', quiz: 'QUIZ',
-      assessment: 'ASSESSMENT', selfguided: 'SELF-GUIDED'
-    };
-    const color = typeColors[item.type] || 'var(--grey)';
-    const label = typeLabels[item.type] || item.type.toUpperCase();
-    const statusIcon = item.done ? '✓' : '○';
-    const statusColor = item.done ? 'var(--success)' : 'var(--grey)';
-
-    return `<div class="static-item ${item.type}" id="si-${item.id}">
+  function renderItem(item) {
+    const TC = {lesson:'var(--cyan)',lab:'var(--warn)',quiz:'#a29bfe',assessment:'#fd79a8',selfguided:'var(--grey)'};
+    const TL = {lesson:'LESSON',lab:'LAB',quiz:'QUIZ',assessment:'ASSESSMENT',selfguided:'SELF-GUIDED'};
+    const c = TC[item.type]||'var(--grey)';
+    const done = item.done ? `<span style="color:var(--success);font-family:'JetBrains Mono',monospace;font-size:0.75rem">✓</span>` : `<span style="color:var(--grey);font-family:'JetBrains Mono',monospace;font-size:0.75rem">○</span>`;
+    return `<div class="static-item" id="si-${item.id}">
       <div class="si-head">
         <div class="si-left">
-          <span class="si-type" style="color:${color};border-color:${color}40">${label}</span>
-          ${item.mandatory ? '<span class="si-mandatory">OBLIGATORIO</span>' : ''}
+          <span class="si-type" style="color:${c};border-color:${c}40">${TL[item.type]||item.type.toUpperCase()}</span>
+          ${item.mandatory?'<span class="si-mandatory">OBLIGATORIO</span>':''}
           <span class="si-title">${item.title}</span>
         </div>
-        <div class="si-right">
-          <span class="si-status" style="color:${statusColor}">${statusIcon}</span>
-          <span class="si-chev">▾</span>
-        </div>
+        <div class="si-right">${done}<span class="si-chev">▾</span></div>
       </div>
       <div class="si-body">
-        ${item.core ? `<div class="si-core"><span class="si-core-label">// idea central</span><p>${item.core}</p></div>` : ''}
-        ${item.concepts?.length ? `
-          <div class="si-concepts">
-            <div class="si-sec-label">// conceptos clave</div>
-            ${item.concepts.map(c => `
-              <div class="concept-row">
-                <span class="concept-term">${c.term}</span>
-                <span class="concept-def">${c.def}</span>
-              </div>`).join('')}
-          </div>` : ''}
-        ${item.detail ? `<div class="si-detail"><div class="si-sec-label">// detalle</div><p>${item.detail}</p></div>` : ''}
-        ${item.url ? `<a class="si-link" href="${item.url}" target="_blank">→ Abrir en TryHackMe</a>` : ''}
-        ${item.score != null ? `<div class="si-score">Resultado: <span>${item.score}/100</span>${item.scoreNote ? ' — '+item.scoreNote : ''}</div>` : ''}
-        ${item.missed?.length ? `<div class="si-missed"><div class="si-sec-label">// repasar</div>${item.missed.map(m=>`<div class="missed-row">✗ ${m}</div>`).join('')}</div>` : ''}
+        ${item.core?`<div class="si-core"><span class="si-core-label">// idea central</span><p>${item.core}</p></div>`:''}
+        ${item.concepts?.length?`<div class="si-concepts"><div class="si-sec-label">// conceptos clave</div>${item.concepts.map(c=>`<div class="concept-row"><span class="concept-term">${c.term}</span><span class="concept-def">${c.def}</span></div>`).join('')}</div>`:''}
+        ${item.full?`<div class="si-full"><div class="si-sec-label">// contenido completo</div>${item.full}</div>`:''}
+        ${item.url?`<a class="si-link" href="${item.url}" target="_blank">→ Abrir en TryHackMe</a>`:''}
+        ${item.score!=null?`<div class="si-score">Resultado: <span>${item.score}/100</span>${item.scoreNote?' — '+item.scoreNote:''}</div>`:''}
+        ${item.missed?.length?`<div class="si-missed"><div class="si-sec-label">// repasar</div>${item.missed.map(m=>`<div class="missed-row">✗ ${m}</div>`).join('')}</div>`:''}
       </div>
     </div>`;
   }
 
-  function renderUserEntry(e) {
-    return `<div class="entry" id="ue${e.id}">
-      <div class="entry-hd" onclick="tog('ue${e.id}')">
-        <span class="si-type" style="color:var(--cyan-dim);border-color:var(--border);font-size:0.55rem">NOTA</span>
-        <span class="entry-t">${e.title}</span>
-        <span class="entry-chev">▾</span>
+  function renderNote(n) {
+    return `<div class="entry" id="nt${n.id}">
+      <div class="entry-hd" onclick="tog('nt${n.id}')">
+        <span class="si-type" style="color:var(--cyan-dim);border-color:var(--border);font-size:0.55rem;padding:2px 7px;border:1px solid">NOTA</span>
+        <span class="entry-t">${n.title}</span><span class="entry-chev">▾</span>
       </div>
       <div class="entry-body">
-        ${e.raw?`<div class="esec"><div class="esec-label">notas</div><p>${e.raw.replace(/\n/g,'<br>')}</p></div>`:''}
-        ${e.sum?`<div class="esec"><div class="esec-label">resumen</div><p>${e.sum.replace(/\n/g,'<br>')}</p></div>`:''}
-        ${e.tags?.length?`<div class="esec"><div class="esec-label">tags</div><div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
+        ${n.raw?`<div class="esec"><div class="esec-label">contenido</div><p>${n.raw.replace(/\n/g,'<br>')}</p></div>`:''}
+        ${n.tags?.length?`<div class="esec"><div class="esec-label">tags</div><div class="tags">${n.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
       </div>
     </div>`;
+  }
+
+  function openIronEntryModal() {
+    const label = currentCtx.type==='week'
+      ? `// nueva nota — Semana ${currentCtx.value} / ${DAY_NAMES[currentCtx.day]}`
+      : `// nueva nota — ${MODS_DATA.find(m=>m.id===currentCtx.value)?.name||'Iron'}`;
+    document.getElementById('ironModalTitle').textContent = label;
+    openM('iron-entry');
+  }
+
+  function saveIronEntry() {
+    const title=document.getElementById('ie-title').value.trim(); if(!title) return;
+    ironNotes.unshift({ id:Date.now(), title,
+      week:currentCtx.type==='week'?currentCtx.value:null,
+      day:currentCtx.type==='week'?currentCtx.day:null,
+      raw:document.getElementById('ie-raw').value.trim(),
+      tags:document.getElementById('ie-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+    });
+    localStorage.setItem('tbr-iron-notes',JSON.stringify(ironNotes));
+    closeM('iron-entry'); clr(['ie-title','ie-raw','ie-tags']); renderIronDetail();
+  }
+
+  // ── RENDERS ──
+  function renderGrado(){
+    const el=document.getElementById('gradoList');
+    if(!grado.length){el.innerHTML='<div class="empty">sin material del grado todavía.</div>';return;}
+    el.innerHTML=grado.map(g=>`<div class="entry" id="g${g.id}"><div class="entry-hd" onclick="tog('g${g.id}')"><span class="entry-code">${g.mod||'GRADO'} // ${g.date}</span><span class="entry-t">${g.title}</span><span class="entry-chev">▾</span></div><div class="entry-body">${g.notes?`<div class="esec"><div class="esec-label">apuntes</div><p>${g.notes.replace(/\n/g,'<br>')}</p></div>`:''}</div></div>`).join('');
+  }
+
+  function renderTerms(q=''){
+    const el=document.getElementById('dictList');
+    const list=terms.filter(t=>t.term.toLowerCase().includes(q.toLowerCase())||t.def.toLowerCase().includes(q.toLowerCase())).sort((a,b)=>a.term.localeCompare(b.term));
+    if(!list.length){el.innerHTML='<div class="empty">sin resultados.</div>';return;}
+    el.innerHTML=list.map(t=>`<div class="dict-row"><span class="dict-term">${t.term}</span><span class="dict-def">${t.def}</span></div>`).join('');
+  }
+
+  function renderTools(){
+    const el=document.getElementById('toolsList');
+    const levelLabel = {red:'No la domino', orange:'Familiarizada', green:'Soy uno con ella'};
+    el.innerHTML=tools.map(t=>`
+      <div class="tool-card">
+        <div class="tool-card-top">
+          <div><div class="tool-name">${t.name}</div><div class="tool-cat">${t.cat||''}</div></div>
+          <div class="semaforo">
+            <div class="sem-dot red ${t.level==='red'?'active':''}" onclick="setSemaforo('${t.id}','red')" title="No la domino"></div>
+            <div class="sem-dot orange ${t.level==='orange'?'active':''}" onclick="setSemaforo('${t.id}','orange')" title="Familiarizada"></div>
+            <div class="sem-dot green ${t.level==='green'?'active':''}" onclick="setSemaforo('${t.id}','green')" title="La domino"></div>
+          </div>
+        </div>
+        <div class="tool-desc">${t.desc||''}</div>
+        ${t.cmds?`<div class="terminal">${t.cmds.split('\n').map(c=>`<div><span class="p">$ </span>${c}</div>`).join('')}</div>`:''}
+        <div style="margin-top:0.6rem;font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--grey)">${levelLabel[t.level]||''}</div>
+      </div>`).join('');
+    updateStats();
+  }
+
+  function renderResources(){
+    const el=document.getElementById('resourcesList');
+    if(!resources.length){el.innerHTML='<div class="empty">sin recursos todavía.</div>';return;}
+    const cats={};
+    resources.forEach(r=>{ const c=r.cat||'General'; if(!cats[c]) cats[c]=[]; cats[c].push(r); });
+    el.innerHTML=Object.entries(cats).map(([cat,items])=>`
+      <div class="res-cat-label">${cat}</div>
+      <div class="res-list">${items.map(r=>`
+        <div class="res-card">
+          <span class="res-name">${r.name}</span>
+          ${r.notes?`<span class="res-note">${r.notes}</span>`:''}
+          ${r.url?`<a class="res-link" href="${r.url}" target="_blank">${r.url.replace(/^https?:\/\//,'')}</a>`:''}
+        </div>`).join('')}
+      </div>`).join('');
+  }
+
+  function renderRadar(){
+    const el=document.getElementById('radarList');
+    if(!radar.length){el.innerHTML='<div class="empty">radar vacío.</div>';return;}
+    el.innerHTML=radar.map(r=>`
+      <div class="radar-card">
+        <div class="radar-name">${r.name}</div>
+        <div class="radar-why">${r.why}</div>
+        <div class="radar-tags">${(r.tags||[]).map(t=>`<span class="radar-tag">#${t}</span>`).join('')}</div>
+      </div>`).join('');
+  }
+
+  function renderOcio(){
+    const el=document.getElementById('ocioContent');
+    if(!ocio.length){el.innerHTML='<div class="empty">lista de ocio vacía.</div>';return;}
+    const typeColors={serie:'var(--cyan)',pelicula:'#ff9f43',libro:'#0be881',podcast:'#a29bfe',documental:'#fd79a8'};
+    const types=['serie','pelicula','libro','podcast','documental'];
+    const typeLabels={serie:'SERIE',pelicula:'PELÍCULA',libro:'LIBRO',podcast:'PODCAST',documental:'DOCUMENTAL'};
+    const statusClass={pending:'status-pending',progress:'status-progress',done:'status-done'};
+    const statusLabel={pending:'PENDIENTE',progress:'EN PROGRESO',done:'COMPLETADO'};
+    let html='';
+    types.forEach(type=>{
+      const items=ocio.filter(o=>o.type===type);
+      if(!items.length) return;
+      const c=typeColors[type];
+      html+=`<div class="ocio-cat-label" style="color:${c}">${typeLabels[type]}</div><div class="ocio-grid">`;
+      html+=items.map(o=>`
+        <div class="ocio-card" style="border-color:${o.status==='done'?c+'40':'var(--border)'}">
+          <div class="ocio-type-badge" style="color:${c};border-color:${c}40">${typeLabels[o.type]}</div>
+          <div class="ocio-title">${o.title}</div>
+          <div class="ocio-desc">${o.desc||''}</div>
+          <div class="ocio-footer">
+            <span class="ocio-status ${statusClass[o.status]}">${statusLabel[o.status]}</span>
+            ${o.score?`<span class="ocio-score" style="color:${c}">${o.score}/10</span>`:''}
+          </div>
+        </div>`).join('');
+      html+='</div>';
+    });
+    el.innerHTML=html;
+  }
+
+  // ── STATS ──
+  function updateStats(){
+    document.getElementById('sDays').textContent  = daysSince('2025-09-12');
+    document.getElementById('sTools').textContent = tools.length;
+    document.getElementById('sTerms').textContent = terms.length;
   }
 
   // ── STATIC COURSE CONTENT ──
-  // Structure: STATIC_CONTENT[week][day] = { summary, items[] }
-  // item: { id, type, title, mandatory, done, mod, core, concepts[], detail, url, score, scoreNote, missed[] }
-
   const STATIC_CONTENT = {
     1: {
       1: {
-        summary: "Primer día de la bootcamp. Se sientan las bases de qué es la administración de redes, cuáles son las responsabilidades del administrador, qué son las VLANs y cómo se resuelven problemas de red. Todo el día gira en torno al módulo de Network Administration.",
+        summary: "Primer día de la bootcamp. Se sientan las bases de qué es la administración de redes, cuáles son las responsabilidades del administrador, qué son las VLANs y cómo se resuelven problemas de red. Todo el contenido pertenece al módulo de Network Administration.",
         items: [
           {
-            id: 's1d1-l1', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
-            title: 'Introducción a la Administración de Redes',
-            core: 'La administración de redes es el conjunto de tareas de organización, instalación y resolución de problemas de redes informáticas. El administrador de red es el puente entre la infraestructura técnica y la seguridad de la organización.',
-            concepts: [
-              { term: 'Administración de redes', def: 'Organización, instalación y resolución de problemas de redes informáticas de forma eficiente y segura.' },
-              { term: 'LAN', def: 'Red de área local (Local Area Network). Red que conecta dispositivos dentro de un espacio físico limitado.' },
-              { term: 'WAN', def: 'Red de área amplia (Wide Area Network). Conecta redes entre ubicaciones geográficamente distantes.' },
-              { term: 'VLAN', def: 'Red de área local virtual. Permite segmentar una red física en múltiples redes lógicas independientes.' },
-              { term: 'Subred', def: 'Segmento lógico de una red IP. A diferencia de las VLANs, las subredes se diferencian en la capa 3 del modelo OSI.' }
+            id:'s1d1-l1', type:'lesson', mandatory:false, done:true, mod:'network-admin',
+            title:'Introducción a la Administración de Redes',
+            core:'La administración de redes es el conjunto de tareas de organización, instalación y resolución de problemas de redes informáticas. El administrador es el puente entre la infraestructura técnica y la seguridad de la organización.',
+            concepts:[
+              {term:'Administración de redes', def:'Organización, instalación y resolución de problemas de redes informáticas de forma eficiente y segura. Cubre diseño, análisis de sistemas, comunicaciones de datos, recuperación ante desastres y principios de seguridad.'},
+              {term:'LAN', def:'Red de área local (Local Area Network). Conecta dispositivos dentro de un espacio físico limitado como una oficina o edificio.'},
+              {term:'WAN', def:'Red de área amplia (Wide Area Network). Conecta redes entre ubicaciones geográficamente distantes.'},
+              {term:'VLAN', def:'Red de área local virtual. Permite segmentar una red física en múltiples redes lógicas independientes dentro de un mismo switch.'},
+              {term:'Subred', def:'Segmento lógico de una red IP. A diferencia de las VLANs, opera en la capa 3 del modelo OSI usando direcciones IP.'}
             ],
-            detail: 'Las tareas del administrador incluyen: instalar y mantener la red, monitorizar el rendimiento, resolver incidencias de hardware/software, actualizar sistemas y gestionar accesos de usuarios. Su relevancia en ciberseguridad es alta: conocer el diseño de la red es esencial para protegerla y para detectar ataques que explotan procedimientos de red.'
+            full:`<h4>Visión general de la lección</h4>
+<p>En esta lección aprenderás a gestionar tareas como diseñar, instalar, mantener y ampliar redes informáticas. La experiencia del administrador abarca redes locales y de área amplia, resolución de problemas e instalación de hardware. Las tareas diarias incluyen gestionar servicios de red, resolver incidencias y garantizar los controles de seguridad. Para la expansión, los administradores configuran nuevos hosts, crean VLANs y amplían subredes de red, asegurando el buen funcionamiento de las operaciones IT.</p>
+<h4>Objetivos de aprendizaje</h4>
+<ul>
+  <li>Comprender el papel de los administradores de red</li>
+  <li>Reconocer la relación entre la administración de redes y la ciberseguridad</li>
+</ul>
+<h4>¿Qué es la Administración de Redes?</h4>
+<p>La administración de redes implica la organización, instalación y resolución de problemas de redes informáticas de forma eficiente y segura. Los aspectos clave incluyen el diseño de redes, el análisis de sistemas, las comunicaciones de datos, la recuperación ante desastres, la organización informática, la infraestructura de red y los principios fundamentales de la seguridad de la información.</p>
+<h4>Tareas del administrador</h4>
+<ul>
+  <li>Instalar y mantener la red de una organización</li>
+  <li>Monitorizar los sistemas de red para mejorar el rendimiento</li>
+  <li>Resolver incidencias de red, incluyendo hardware, software y sistemas</li>
+  <li>Actualizar redes y sistemas informáticos</li>
+  <li>Gestionar el acceso de usuarios añadiendo o eliminando usuarios y controlando los permisos de acceso</li>
+</ul>
+<h4>Importancia de la Administración de Redes</h4>
+<p>Los administradores de red colaboran estrechamente con analistas y expertos en ciberseguridad. La comprensión es crucial en dos áreas:</p>
+<ul>
+  <li><strong>Proteger la red:</strong> Comprender el diseño, la estructura y los componentes críticos para una defensa eficaz</li>
+  <li><strong>Detectar y prevenir exploits:</strong> Identificar y prevenir que los atacantes exploten los procedimientos de red</li>
+</ul>`
           },
           {
-            id: 's1d1-l2', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
-            title: 'Responsabilidades del Administrador de Redes',
-            core: 'El ciclo de vida de una red tiene cuatro fases: diseño, instalación, mantenimiento y expansión. El administrador es responsable de todas ellas.',
-            concepts: [
-              { term: 'Diseño de red', def: 'Primera fase. Se determina el número de clientes, tipos de servidores, firewalls necesarios y cómo conectarlos al router de la LAN.' },
-              { term: 'Instalación', def: 'Segunda fase. Incluye la instalación física del hardware (routers, switches) y la configuración de bases de datos, hosts y servidores.' },
-              { term: 'Mantenimiento', def: 'Fase continua. Resolución de incidencias, gestión de usuarios, administración de servicios de red (email, impresoras, etc.) y control de accesos de seguridad.' },
-              { term: 'Expansión', def: 'Fase de crecimiento. Configurar nuevos hosts, crear nuevas VLANs y ampliar subredes cuando la organización crece.' }
+            id:'s1d1-l2', type:'lesson', mandatory:false, done:true, mod:'network-admin',
+            title:'Responsabilidades del Administrador de Redes',
+            core:'El ciclo de vida de una red tiene cuatro fases: diseño, instalación, mantenimiento y expansión. El administrador es responsable de todas ellas, aunque en grandes organizaciones algunas se comparten con otros profesionales.',
+            concepts:[
+              {term:'Diseño de red', def:'Primera fase. Se determina el número de clientes, tipos de servidores, firewalls necesarios y cómo conectarlos al router de la LAN.'},
+              {term:'Instalación', def:'Segunda fase. Incluye la instalación física del hardware (routers, switches) y la configuración de bases de datos, hosts y servidores de configuración de red.'},
+              {term:'Mantenimiento', def:'Fase continua. Resolución de incidencias, gestión de hosts, administración de servicios de red (email, impresoras, etc.) e implementación de controles de seguridad.'},
+              {term:'Expansión', def:'Fase de crecimiento. Configurar nuevos hosts conectados a dispositivos de red nuevos o existentes, crear nuevas VLANs y ampliar la subred de red.'},
+              {term:'Router', def:'Dispositivo que conecta la LAN al exterior o conecta distintas redes entre sí. Opera en la capa 3 del modelo OSI.'},
+              {term:'Firewall', def:'Sistema de seguridad que monitoriza y controla el tráfico de red entrante y saliente según reglas de seguridad predefinidas.'}
             ],
-            detail: 'En organizaciones grandes, algunas de estas responsabilidades se reparten entre distintos profesionales (arquitectos de red, administradores de sistemas). En organizaciones pequeñas, el administrador de red asume todas las fases.'
+            full:`<h4>Responsabilidades del Administrador de Redes</h4>
+<p>Los administradores de red ocupan un papel crucial en los departamentos IT, garantizando la funcionalidad continua y la relevancia de las redes. Son expertos en diseñar, gestionar y mantener redes diversas —ya sean locales, de área amplia o segmentos específicos— y son vitales para el buen funcionamiento de las operaciones IT.</p>
+<p>Considera una carrera como administrador de red si tienes un profundo conocimiento de los sistemas informáticos, habilidades rápidas de resolución de problemas y dominio de varios sistemas operativos.</p>
+<h4>Las cuatro responsabilidades principales</h4>
+<ul>
+  <li>Diseñar una red</li>
+  <li>Instalar una red</li>
+  <li>Mantener una red</li>
+  <li>Expandir una red</li>
+</ul>
+<h4>Diseñar una red</h4>
+<p>Iniciar la gestión de red comienza con el diseño de una LAN (red de área local). Esta fase implica determinar el número de clientes, los tipos de servidores, los firewalls apropiados y conectarlos al router de la LAN.</p>
+<h4>Instalar una red</h4>
+<p>Tras diseñar la red, los pasos posteriores implican instalarla y configurarla:</p>
+<ul>
+  <li><strong>Instalación:</strong> Instalación de componentes hardware como routers y switches</li>
+  <li><strong>Configuración:</strong> Configuración de bases de datos para las configuraciones necesarias relacionadas con archivos, hosts y servidores de configuración de red</li>
+</ul>
+<p><em>Nota: Normalmente todas estas son responsabilidades del administrador de red, excepto en organizaciones grandes donde intervienen distintos profesionales como arquitectos.</em></p>
+<h4>Mantener una red</h4>
+<p>Durante esta fase, las tareas continuas incluyen:</p>
+<ul>
+  <li>Resolver incidencias de red</li>
+  <li>Añadir/eliminar hosts de la red</li>
+  <li>Gestionar varios servicios de red como gestión de usuarios, emails, impresoras y administración del sistema</li>
+  <li>Implementar y gestionar controles de acceso de seguridad de red</li>
+</ul>
+<h4>Expandir una red</h4>
+<p>Las organizaciones a menudo buscan expandir sus redes, lo que lleva a los administradores de red a:</p>
+<ul>
+  <li>Configurar nuevos hosts conectados a dispositivos de red nuevos o existentes</li>
+  <li>Crear nuevas VLANs</li>
+  <li>Ampliar la subred de red</li>
+</ul>`
           },
           {
-            id: 's1d1-l3', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
-            title: 'VLAN',
-            core: 'Una VLAN permite dividir un switch físico en múltiples switches virtuales. Cada VLAN es un dominio separado: el tráfico entre VLANs solo puede fluir a través de un router.',
-            concepts: [
-              { term: 'VLAN', def: 'Red de área local virtual (Virtual Local Area Network). Divide un switch físico en mini-switches lógicos independientes.' },
-              { term: 'Segmentación', def: 'Separar el tráfico de red por funciones (ej: RRHH vs Ventas vs IT) para mejorar rendimiento y seguridad.' },
-              { term: 'Restricción', def: 'Limitar el acceso a hosts, infraestructura o servicios sensibles mediante VLANs.' },
-              { term: 'Provisión', def: 'Proporcionar servicios de red a distintos grupos de clientes usando la misma infraestructura de switches y routers.' },
-              { term: 'Aislamiento', def: 'Alojar grupos de hosts lógicamente en la misma subred aunque estén en diferentes ubicaciones físicas.' },
-              { term: 'Subred vs VLAN', def: 'Las subredes operan en capa 3 (IP). Las VLANs operan en capa 2 (switches). Ambas segmentan redes pero a niveles distintos del modelo OSI.' }
+            id:'s1d1-l3', type:'lesson', mandatory:false, done:true, mod:'network-admin',
+            title:'VLAN',
+            core:'Una VLAN permite dividir un switch físico en múltiples switches virtuales independientes. El tráfico entre VLANs distintas solo puede fluir a través de un router — nunca directamente entre VLANs.',
+            concepts:[
+              {term:'VLAN', def:'Red de área local virtual (Virtual Local Area Network). Permite que un único switch físico se divida en múltiples mini-switches. Cada VLAN actúa como un dominio distinto.'},
+              {term:'Segmentación', def:'Separar el tráfico de red de un host informático o servidor. Mejora el rendimiento al reducir colisiones de tráfico.'},
+              {term:'Restricción', def:'Limitar el acceso a hosts, infraestructura o servicios sensibles usando VLANs para aislarlos del resto de la red.'},
+              {term:'Provisión', def:'Proporcionar servicios de red a diferentes clientes en un ISP, centro de datos o instalación física usando la misma infraestructura de switches y routers.'},
+              {term:'Aislamiento', def:'Alojar grupos de hosts lógicamente en la misma subred y recursos, independientemente de su ubicación física.'},
+              {term:'Switch', def:'Dispositivo de red que conecta múltiples dispositivos dentro de una LAN. Opera en capa 2 del modelo OSI usando direcciones MAC.'},
+              {term:'VLAN vs Subred', def:'Las VLANs operan en capa 2 (switches, MAC). Las subredes operan en capa 3 (routers, IP). Ambas segmentan redes pero a niveles distintos del modelo OSI.'}
             ],
-            detail: 'Antes de las VLANs, cada segmento de red necesitaba su propia infraestructura de switches. Las VLANs resolvieron esto permitiendo que un único switch físico gestione múltiples redes virtuales independientes, reduciendo costes y complejidad.'
+            full:`<h4>¿Qué es una VLAN?</h4>
+<p>Una red de área local virtual (VLAN) permite que un único switch físico se divida en múltiples mini-switches. Cada VLAN puede actuar como un dominio distinto. La comunicación entre múltiples VLANs en una LAN solo puede realizarse a través de un router que conecte todas ellas.</p>
+<p>Las VLANs separan subdominios por razones de rendimiento, seguridad o logísticas. Sin VLANs, cada segmento de red necesitaría su propia infraestructura de switches, con múltiples routers gestionando las comunicaciones entre cada segmento de switch.</p>
+<h4>¿Por qué usar una VLAN?</h4>
+<p>En la actualidad, Ethernet tiene un inconveniente: cuando muchos dispositivos se unen a una red, se producen colisiones entre el tráfico de datos, como en una carretera de un solo carril causando caos —las colisiones hacen que los dispositivos se apaguen o colapsen por completo.</p>
+<p>Para solucionar esto, se empezaron a usar dispositivos de Capa 2 como switches para controlar el tráfico dentro de una LAN. Estos ayudaron a los conflictos, pero no solucionaron completamente el problema.</p>
+<p>Entonces llegó la tecnología VLAN para salvar la situación. Es como tener múltiples carriles virtuales en una misma red física. Los dispositivos dentro de la misma red virtual (o VLAN) pueden comunicarse directamente entre sí, permitiendo diferentes grupos de dispositivos en diferentes VLANs, reduciendo el número de colisiones y manteniendo el tráfico fluyendo sin problemas dentro de cada carril.</p>
+<h4>Usos de VLAN</h4>
+<ul>
+  <li><strong>Segmentación:</strong> Separar el tráfico de red de un host informático o servidor de tráfico</li>
+  <li><strong>Restricción:</strong> Restringir el acceso a hosts sensibles, infraestructura o servicios</li>
+  <li><strong>Provisión:</strong> Proporcionar servicios de red a distintos clientes en un ISP, centro de datos o instalación física usando el mismo switch e infraestructura de routers</li>
+  <li><strong>Aislamiento:</strong> Alojar grupos de hosts lógicamente en la misma subred y recursos, independientemente de su ubicación física (por ejemplo, permitir que los empleados de Recursos Humanos compartan el mismo acceso a la subred y recursos, independientemente de su ubicación física)</li>
+</ul>
+<p>La principal ventaja de usar VLANs es que permiten separar el tráfico de distintos usuarios en diferentes segmentos de la misma red física.</p>
+<h4>VLAN vs Subred</h4>
+<ul>
+  <li><strong>VLAN:</strong> Basada en switch. Agrupa dispositivos lógicamente. Trabaja en capa 2. Se usa en diferentes VLANs con diferentes propósitos. Permite que distintos grupos de usuarios compartan la misma VLAN. Las VLANs se pueden configurar en múltiples switches.</li>
+  <li><strong>Subred:</strong> Basada en router. Agrupa dispositivos por rango de IP. Trabaja en capa 3. Se usa en diferentes subredes con diferentes propósitos. El tamaño de la subred se puede configurar para adaptarse a los requisitos de la organización. Las subredes se pueden configurar en múltiples routers.</li>
+</ul>
+<p><em>Nota importante: Una VLAN es simplemente un número asignado a un puerto de switch.</em></p>`
           },
           {
-            id: 's1d1-l4', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
-            title: 'Resolución de Problemas de Red (Networking Troubleshooting)',
-            core: 'El troubleshooting es el proceso sistemático para identificar, diagnosticar y resolver problemas de red. Siempre se sigue el mismo orden: hardware → software → servicios externos.',
-            concepts: [
-              { term: 'Troubleshooting', def: 'Proceso para reconocer, diagnosticar y corregir problemas en una red. En ciberseguridad incluye también detectar actividad maliciosa.' },
-              { term: 'ipconfig / ifconfig', def: 'Comandos para ver la configuración de red de un equipo. ipconfig en Windows, ifconfig en Linux.' },
-              { term: 'ping', def: 'Comando que usa ICMP para verificar si un host está accesible en la red y medir la latencia.' },
-              { term: 'tracert / traceroute', def: 'Traza la ruta que siguen los paquetes desde el origen hasta el destino. Útil para localizar dónde se corta la conexión.' },
-              { term: 'nslookup', def: 'Comprueba si un servidor DNS está respondiendo correctamente a las consultas de nombres de dominio.' },
-              { term: 'DNS', def: 'Sistema de nombres de dominio (Domain Name System). Traduce nombres como google.com a direcciones IP.' },
-              { term: 'ISP', def: 'Proveedor de servicios de internet (Internet Service Provider). Si todo lo local falla, el problema puede estar en el ISP.' }
+            id:'s1d1-l4', type:'lesson', mandatory:false, done:true, mod:'network-admin',
+            title:'Resolución de Problemas de Red',
+            core:'El troubleshooting es el proceso sistemático para identificar, diagnosticar y resolver problemas de red. Siempre empezamos por el hardware físico y vamos subiendo capas. En ciberseguridad, también incluye detectar actividad maliciosa.',
+            concepts:[
+              {term:'Troubleshooting', def:'Proceso sistemático para reconocer, diagnosticar y corregir problemas en una red. Empodera a los profesionales para implementar procesos y medidas para identificar, diagnosticar y corregir incidencias.'},
+              {term:'ipconfig / ifconfig', def:'Comandos para ver la configuración IP de un equipo. ipconfig en Windows, ifconfig en Linux. Permiten ver la IP, gateway por defecto e identificar la conexión de red entre el equipo y el router.'},
+              {term:'ping', def:'Usa el protocolo ICMP para verificar si un host está accesible en la red. Si el router funciona, el problema puede estar entre la fuente y la WAN.'},
+              {term:'tracert / traceroute', def:'Traza la ruta que siguen los paquetes desde el origen hasta el destino. Útil para localizar exactamente dónde se corta la conexión.'},
+              {term:'nslookup', def:'Comprueba si un servidor DNS responde correctamente. Ayuda a identificar problemas como "Timed Out" o "Server Failure".'},
+              {term:'DNS', def:'Sistema de nombres de dominio (Domain Name System). Traduce nombres legibles como google.com a direcciones IP numéricas.'},
+              {term:'ISP', def:'Proveedor de servicios de internet (Internet Service Provider). Si todo lo local funciona bien, el problema puede estar en el ISP.'},
+              {term:'MAC', def:'Dirección de control de acceso al medio (Media Access Control). Identificador físico único de cada tarjeta de red. Se usa para identificar la información de origen y destino de los dispositivos.'}
             ],
-            detail: 'Pasos comunes: 1) Verificar hardware (cables, routers, switches). 2) Usar ipconfig/ifconfig para ver la IP. 3) Usar ping para comprobar conectividad. 4) Hacer DNS check con nslookup. 5) Contactar al ISP si el problema es externo. 6) Verificar antivirus y malware. 7) Revisar logs del sistema (Event Viewer en Windows, logs en Linux).'
+            full:`<h4>¿Qué es el Troubleshooting?</h4>
+<p>El troubleshooting en ciberseguridad implica reconocer y detectar actividades de red sospechosas y maliciosas. Empodera a los profesionales para implementar procesos y medidas eficaces de diagnóstico para identificar, diagnosticar y corregir problemas dentro de una red.</p>
+<h4>El Enfoque de Troubleshooting</h4>
+<p>Cuando se detecta un problema de red, son esenciales enfoques de resolución adaptados. El objetivo es comprender el problema, su origen, la parte afectada y la duración.</p>
+<p><strong>Ejemplo práctico:</strong> Un usuario informa que no puede acceder a internet con Internet Explorer al navegar, recibiendo un error "No se puede mostrar la página — no se puede encontrar el servidor DNS o no existe". Al acceder a Google.com se consideran los siguientes puntos:</p>
+<ul>
+  <li><strong>Problema:</strong> El usuario no puede acceder al sitio web de Google</li>
+  <li><strong>Causa:</strong> Problema con el servidor DNS de Google</li>
+  <li><strong>Afectado:</strong> Clientes y usuarios</li>
+  <li><strong>Duración:</strong> Varias horas</li>
+</ul>
+<h4>Pasos comunes para el troubleshooting</h4>
+<p>Al detectar un problema de red, son esenciales enfoques de resolución adaptados. Los pasos comunes incluyen:</p>
+<h4>1. Inspeccionar la conectividad hardware</h4>
+<p>Al inicio del proceso de troubleshooting, el paso inicial implica verificar la funcionalidad y la conexión correcta de todo el hardware del equipo, incluyendo el ordenador, el router y el panel de conexiones. Es crucial inspeccionar los cables que unen estos dispositivos, ya que pueden ser susceptibles a fallos, cortocircuitos o daños físicos.</p>
+<ul>
+  <li>Verificar la conexión, el estado de alimentación y la funcionalidad del hardware de red</li>
+  <li>Comprobar cables, routers y switches</li>
+  <li>Rebotar el dispositivo para una resolución menor de incidencias</li>
+</ul>
+<h4>2. Utilizar ipconfig/ifconfig</h4>
+<p>Usar el símbolo del sistema en Windows (ipconfig) o la terminal en Linux (ifconfig). Comprobar el gateway por defecto para el router e identificar la conexión de red entre el ordenador y el router es crucial.</p>
+<ul>
+  <li>Identificar el gateway por defecto e identificar la IP</li>
+  <li>Identificar la dirección IP con ipconfig /release e ipconfig /renew</li>
+</ul>
+<h4>3. Utilizar ping y tracert</h4>
+<p>Hacer ping a la dirección IP de un host en una red IP. Si el router funciona, el problema puede estar entre la fuente y la WAN. Usando la interfaz de línea de comandos (CLI), puedes iniciar un ping. Si el ping funciona, proporciona información detallada sobre el problema.</p>
+<ul>
+  <li>Hacer ping a servidores conocidos como Google para comprobar la conectividad</li>
+  <li>Usar tracert para identificar los saltos de red y los posibles problemas</li>
+</ul>
+<h4>4. Realizar una comprobación DNS</h4>
+<p>Usar nslookup te ayudará a determinar si hay un problema con el servidor al que intentas conectarte.</p>
+<ul>
+  <li>Usar nslookup para comprobar el estado del servidor</li>
+  <li>Identificar problemas como "Timed Out" o "Server Failure"</li>
+</ul>
+<h4>5. Contactar con el ISP</h4>
+<p>Si los pasos anteriores fallan, contactar con el ISP para consultar sobre incidencias de red.</p>
+<ul>
+  <li>Si el ISP confirma que no hay incidencias, solicitar información de contacto</li>
+</ul>
+<h4>6. Verificar la protección contra virus y malware</h4>
+<ul>
+  <li>Confirmar que el antivirus y las herramientas anti-malware funcionan</li>
+  <li>Comprobar si hay amenazas marcadas que interrumpan la funcionalidad de la red</li>
+</ul>
+<h4>7. Revisar los logs de la base de datos</h4>
+<p>Examinar los logs relacionados con la actividad de internet y las bases de datos es esencial para identificar posibles problemas. Puedes acceder a estos logs usando el Visor de Eventos en Windows y los logs en Linux.</p>
+<h4>Mejores prácticas</h4>
+<ul>
+  <li>Formar a los usuarios finales</li>
+  <li>Recopilar información completa</li>
+  <li>Colaborar con el soporte del proveedor</li>
+  <li>Personalizar los logs</li>
+  <li>Copias de seguridad y planes de recuperación ante desastres</li>
+  <li>Control de acceso</li>
+  <li>Utilizar diagramas de red y mapas de topología</li>
+  <li>Aprovechar las herramientas de monitorización</li>
+  <li>Establecer un proceso de escalado</li>
+  <li>Actualizar regularmente el firmware</li>
+  <li>Documentar el proceso de troubleshooting</li>
+  <li>Implementar procedimientos de gestión de cambios</li>
+</ul>`
           },
           {
-            id: 's1d1-lab1', type: 'lab', mandatory: true, done: true, mod: 'network-admin',
-            title: 'LAB | ¿Qué es el Networking?',
-            core: 'Introducción práctica a los fundamentos de las redes informáticas: qué es una red, cómo se identifican los dispositivos y cómo funciona el ping.',
-            concepts: [
-              { term: 'Red informática', def: 'Conjunto de dispositivos conectados entre sí para compartir datos y recursos.' },
-              { term: 'Dirección IP', def: 'Identificador numérico único de cada dispositivo en una red. Puede ser pública (visible en internet) o privada (solo dentro de la red local).' },
-              { term: 'Dirección MAC', def: 'Identificador físico único grabado en la tarjeta de red de cada dispositivo. Opera en capa 2 del modelo OSI.' },
-              { term: 'ICMP', def: 'Protocolo de mensajes de control de internet. El comando ping lo utiliza para comprobar conectividad.' }
+            id:'s1d1-lab1', type:'lab', mandatory:true, done:true, mod:'network-admin',
+            title:'LAB | ¿Qué es el Networking?',
+            core:'Introducción práctica a los fundamentos de redes: qué es una red, cómo se identifican los dispositivos (IP y MAC) y cómo funciona el ping (ICMP).',
+            concepts:[
+              {term:'Red informática', def:'Conjunto de dispositivos conectados entre sí para compartir datos y recursos.'},
+              {term:'Dirección IP', def:'Identificador numérico único de cada dispositivo en una red. Puede ser pública (visible en internet) o privada (solo dentro de la red local).'},
+              {term:'Dirección MAC', def:'Identificador físico único grabado en la tarjeta de red de cada dispositivo. Opera en capa 2 del modelo OSI.'},
+              {term:'ICMP', def:'Protocolo de mensajes de control de internet. El comando ping lo utiliza para comprobar la conectividad entre dispositivos.'}
             ],
-            url: 'https://tryhackme.com/room/whatisnetworking'
+            url:'https://tryhackme.com/room/whatisnetworking'
           },
           {
-            id: 's1d1-lab2', type: 'lab', mandatory: true, done: true, mod: 'network-admin',
-            title: 'LAB | Introducción a LAN',
-            core: 'Exploración de las tecnologías y diseños que dan potencia a las redes privadas: topologías de red y el protocolo ARP.',
-            concepts: [
-              { term: 'Topología de red', def: 'Forma en que los dispositivos están conectados entre sí. Las más comunes son estrella, bus y anillo.' },
-              { term: 'Switch', def: 'Dispositivo que conecta múltiples dispositivos dentro de una LAN y dirige el tráfico usando direcciones MAC.' },
-              { term: 'Router', def: 'Dispositivo que conecta redes distintas entre sí. Opera en capa 3 del modelo OSI usando direcciones IP.' },
-              { term: 'ARP', def: 'Protocolo de resolución de direcciones (Address Resolution Protocol). Traduce direcciones IP a direcciones MAC dentro de una red local.' },
-              { term: 'DHCP', def: 'Protocolo que asigna automáticamente direcciones IP a los dispositivos cuando se conectan a una red.' }
+            id:'s1d1-lab2', type:'lab', mandatory:true, done:true, mod:'network-admin',
+            title:'LAB | Introducción a LAN',
+            core:'Exploración de las tecnologías y diseños que dan potencia a las redes privadas: topologías de red, switches, routers y el protocolo ARP.',
+            concepts:[
+              {term:'Topología de red', def:'Forma en que los dispositivos están conectados entre sí. Las más comunes son estrella, bus y anillo.'},
+              {term:'Switch', def:'Dispositivo que conecta múltiples dispositivos dentro de una LAN y dirige el tráfico usando direcciones MAC.'},
+              {term:'Router', def:'Dispositivo que conecta redes distintas entre sí. Opera en capa 3 del modelo OSI usando direcciones IP.'},
+              {term:'ARP', def:'Protocolo de resolución de direcciones (Address Resolution Protocol). Traduce direcciones IP a direcciones MAC dentro de una red local.'},
+              {term:'DHCP', def:'Protocolo que asigna automáticamente direcciones IP a los dispositivos cuando se conectan a una red.'}
             ],
-            url: 'https://tryhackme.com/room/introtolan'
+            url:'https://tryhackme.com/room/introtolan'
           },
           {
-            id: 's1d1-lab3', type: 'lab', mandatory: false, done: true, mod: 'network-admin',
-            title: 'LAB | Paquetes y Tramas (Packets & Frames)',
-            core: 'Comprensión de cómo los datos se dividen en pequeñas piezas (paquetes) y se transmiten a través de una red hasta otro dispositivo.',
-            concepts: [
-              { term: 'Paquete', def: 'Unidad básica de datos en una red. Contiene los datos a transmitir más información de cabecera (IP origen, IP destino, etc.).' },
-              { term: 'Trama (Frame)', def: 'Unidad de datos en la capa 2 del modelo OSI. Encapsula paquetes añadiendo direcciones MAC.' },
-              { term: 'Encapsulación', def: 'Proceso por el que cada capa del modelo OSI añade su propia cabecera a los datos al enviarlos.' },
-              { term: 'TCP', def: 'Protocolo de control de transmisión. Garantiza la entrega ordenada y sin errores de los datos. Más lento pero fiable.' },
-              { term: 'UDP', def: 'Protocolo de datagramas de usuario. Más rápido que TCP pero sin garantía de entrega. Usado en streaming y videojuegos.' }
+            id:'s1d1-lab3', type:'lab', mandatory:false, done:true, mod:'network-admin',
+            title:'LAB | Paquetes y Tramas',
+            core:'Comprensión de cómo los datos se dividen en paquetes y se transmiten a través de una red. Diferencia entre TCP (fiable) y UDP (rápido).',
+            concepts:[
+              {term:'Paquete', def:'Unidad básica de datos en una red. Contiene los datos a transmitir más información de cabecera (IP origen, IP destino, etc.).'},
+              {term:'Trama (Frame)', def:'Unidad de datos en capa 2 del modelo OSI. Encapsula paquetes añadiendo direcciones MAC de origen y destino.'},
+              {term:'Encapsulación', def:'Proceso por el que cada capa del modelo OSI añade su propia cabecera a los datos al enviarlos.'},
+              {term:'TCP', def:'Protocolo de control de transmisión. Garantiza la entrega ordenada y sin errores. Más lento pero fiable. Usado en web, email.'},
+              {term:'UDP', def:'Protocolo de datagramas de usuario. Más rápido que TCP pero sin garantía de entrega. Usado en streaming, videojuegos, DNS.'}
             ],
-            url: 'https://tryhackme.com/room/packetsframes'
+            url:'https://tryhackme.com/room/packetsframes'
           },
           {
-            id: 's1d1-quiz', type: 'quiz', mandatory: false, done: true, mod: 'network-admin',
-            title: 'Quiz Día 1: Administración de Redes',
-            score: 60,
-            scoreNote: 'Completado. Algunas confusiones en conceptos de VLAN y troubleshooting.',
-            missed: [
-              'Confusión entre "instalar, configurar, asegurar y planificar" vs "diseñar, instalar, mantener y expandir" como responsabilidades del admin.',
-              'VLAN: su función principal es dividir un switch físico en mini-switches (no simplemente aislar segmentos de red).',
-              'Troubleshooting: el primer paso siempre es inspeccionar el hardware físico, no hacer un DNS check.'
+            id:'s1d1-quiz', type:'quiz', mandatory:false, done:true, mod:'network-admin',
+            title:'Quiz Día 1 — Administración de Redes',
+            score:60,
+            scoreNote:'Completado. Algunos conceptos de VLAN y troubleshooting a repasar.',
+            missed:[
+              'Confusión entre responsabilidades del admin: la combinación correcta es "diseñar, instalar, mantener y expandir" — no "instalar, configurar, asegurar y planificar".',
+              'Función principal de una VLAN: dividir un switch físico en múltiples mini-switches (no simplemente aislar segmentos de red).',
+              'Primer paso de troubleshooting: siempre inspeccionar el hardware físico primero — no hacer DNS check.'
             ]
           }
         ]
@@ -1940,141 +1191,18 @@
     }
   };
 
+  // ── INIT ──
+  const now2 = new Date();
+  document.getElementById('hdDate').textContent =
+    now2.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'.');
 
-
-  function openIronEntryModal() {
-    document.getElementById('ironModalTitle').textContent =
-      currentIronCtx.type === 'week'
-        ? `// nueva entrada — Semana ${currentIronCtx.value} / ${DAY_NAMES[currentIronCtx.day]}`
-        : `// nueva entrada — ${MOD_META[currentIronCtx.value]?.name || 'Iron'}`;
-    openM('iron-entry');
-  }
-
-  function saveIronEntry() {
-    const title = document.getElementById('ie-title').value.trim(); if(!title) return;
-    const entry = {
-      id: Date.now(),
-      date: new Date().toLocaleDateString('es-ES'),
-      week: currentIronCtx.type === 'week' ? currentIronCtx.value : null,
-      day:  currentIronCtx.type === 'week' ? currentIronCtx.day  : null,
-      mod:  currentIronCtx.type === 'mod'  ? currentIronCtx.value : (WEEK_MODS[currentIronCtx.value]?.[0] || null),
-      title,
-      raw:  document.getElementById('ie-raw').value.trim(),
-      sum:  document.getElementById('ie-sum').value.trim(),
-      tags: document.getElementById('ie-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
-    };
-    ironEntries.unshift(entry);
-    localStorage.setItem('tbr-iron-v2', JSON.stringify(ironEntries));
-    closeM('iron-entry');
-    clr(['ie-title','ie-raw','ie-sum','ie-tags']);
-    renderIronDetail();
-  }
-
-
-
-  // TOGGLE
-  function tog(id){ document.getElementById(id).classList.toggle('open'); }
-
-  // RENDERS
-  function renderEntries(){
-    const el=document.getElementById('entriesList');
-    const m=document.getElementById('dMeta');
-    m.textContent=entries.length+' entradas registradas';
-    if(!entries.length){ el.innerHTML='<div class="empty">aún no hay entradas. empieza hoy.</div>'; return; }
-    el.innerHTML=entries.map(e=>`
-      <div class="entry" id="e${e.id}">
-        <div class="entry-hd" onclick="tog('e${e.id}')">
-          <span class="entry-code">DÍA_${String(e.day).padStart(3,'0')} // ${e.date}</span>
-          <span class="entry-t">${e.title}</span>
-          <span class="entry-chev">▾</span>
-        </div>
-        <div class="entry-body">
-          ${e.raw?`<div class="esec"><div class="esec-label">raw_notes</div><p>${e.raw.replace(/\n/g,'<br>')}</p></div>`:''}
-          ${e.sum?`<div class="esec"><div class="esec-label">resumen</div><p>${e.sum.replace(/\n/g,'<br>')}</p></div>`:''}
-          ${e.tags?.length?`<div class="esec"><div class="esec-label">tags</div><div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
-        </div>
-      </div>`).join('');
-  }
-
-  function renderTools(){
-    const el=document.getElementById('toolsList');
-    if(!tools.length){ el.innerHTML='<div class="empty">sin herramientas.</div>'; return; }
-    el.innerHTML=tools.map(t=>`
-      <div class="tool-card">
-        <div class="tool-name">${t.name}</div>
-        <div class="tool-cat">${t.cat||'sin categoría'}</div>
-        <div class="tool-desc">${t.desc||''}</div>
-        ${t.cmds?`<div class="terminal">${t.cmds.split('\n').map(c=>`<div><span class="p">$ </span>${c}</div>`).join('')}</div>`:''}
-      </div>`).join('');
-  }
-
-  function renderTerms(q=''){
-    const el=document.getElementById('dictList');
-    const list=terms.filter(t=>
-      t.term.toLowerCase().includes(q.toLowerCase())||
-      t.def.toLowerCase().includes(q.toLowerCase())
-    ).sort((a,b)=>a.term.localeCompare(b.term));
-    if(!list.length){ el.innerHTML='<div class="empty">sin resultados.</div>'; return; }
-    el.innerHTML=list.map(t=>`
-      <div class="dict-row">
-        <span class="dict-term">${t.term}</span>
-        <span class="dict-def">${t.def}</span>
-      </div>`).join('');
-  }
-
-  function renderResources(){
-    const el=document.getElementById('resourcesList');
-    if(!resources.length){ el.innerHTML='<div class="empty">sin recursos guardados.</div>'; return; }
-    el.innerHTML=resources.map(r=>`
-      <div class="res-card">
-        <span class="res-name">${r.name}</span>
-        ${r.notes?`<span class="res-note">${r.notes}</span>`:''}
-        ${r.url?`<a class="res-link" href="${r.url}" target="_blank">${r.url.replace(/^https?:\/\//,'')}</a>`:''}
-      </div>`).join('');
-  }
-
-  function renderGrado(){
-    const el=document.getElementById('gradoList');
-    if(!grado.length){ el.innerHTML='<div class="empty">sin material del grado.</div>'; return; }
-    el.innerHTML=grado.map(g=>`
-      <div class="entry" id="g${g.id}">
-        <div class="entry-hd" onclick="tog('g${g.id}')">
-          <span class="entry-code">${g.mod||'GRADO'} // ${g.date}</span>
-          <span class="entry-t">${g.title}</span>
-          <span class="entry-chev">▾</span>
-        </div>
-        <div class="entry-body">
-          ${g.notes?`<div class="esec"><div class="esec-label">apuntes</div><p>${g.notes.replace(/\n/g,'<br>')}</p></div>`:''}
-        </div>
-      </div>`).join('');
-  }
-
-  function renderIron(){
-    const el=document.getElementById('ironList');
-    if(!iron.length){ el.innerHTML='<div class="empty">sin material del bootcamp.</div>'; return; }
-    el.innerHTML=iron.map(i=>`
-      <div class="entry" id="i${i.id}" style="--ec:var(--danger)">
-        <div class="entry-hd" style="border-left:2px solid var(--danger)" onclick="tog('i${i.id}')">
-          <span class="entry-code" style="color:var(--danger)">${i.mod||'IRON'} // ${i.date}</span>
-          <span class="entry-t">${i.title}</span>
-          <span class="entry-chev">▾</span>
-        </div>
-        <div class="entry-body">
-          ${i.notes?`<div class="esec"><div class="esec-label">apuntes</div><p>${i.notes.replace(/\n/g,'<br>')}</p></div>`:''}
-          ${i.tags?.length?`<div class="esec"><div class="esec-label">herramientas</div><div class="tags">${i.tags.map(t=>`<span class="tag tag-r">${t}</span>`).join('')}</div></div>`:''}
-        </div>
-      </div>`).join('');
-  }
-
-  function updateStats(){
-    document.getElementById('sDays').textContent  = daysSince('2025-09-12');
-    document.getElementById('sTools').textContent = tools.length;
-    document.getElementById('sTerms').textContent = terms.length;
-  }
-
-  // INIT
-  renderEntries(); renderTools(); renderTerms();
-  renderResources(); renderGrado();
+  renderWeeksAndMods();
+  renderGrado();
+  renderTerms();
+  renderTools();
+  renderResources();
+  renderRadar();
+  renderOcio();
   updateStats();
 </script>
 </body>
