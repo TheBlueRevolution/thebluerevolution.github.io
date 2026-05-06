@@ -860,6 +860,193 @@
 
     .iron-detail-body { min-height: 200px; }
 
+    /* ── STATIC ITEMS (lessons, labs, quizzes) ── */
+    .day-summary {
+      background: rgba(0,245,255,0.04);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--cyan);
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .day-sum-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; color: var(--cyan-dim);
+      letter-spacing: 0.25em; margin-bottom: 0.6rem;
+    }
+
+    .day-summary p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 300;
+      color: var(--white); line-height: 1.9;
+    }
+
+    .static-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 0.8rem;
+      transition: border-color 0.2s;
+    }
+
+    .static-item:hover { border-color: var(--border2); }
+
+    .si-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 1.2rem;
+      cursor: crosshair; user-select: none;
+      gap: 1rem;
+    }
+
+    .si-left { display: flex; align-items: center; gap: 0.8rem; flex: 1; }
+
+    .si-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 2px 7px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .si-mandatory {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem; color: var(--warn);
+      border: 1px solid rgba(255,170,0,0.4);
+      padding: 1px 6px; letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .si-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size: 0.95rem;
+      letter-spacing: 0.03em;
+    }
+
+    .si-right { display: flex; align-items: center; gap: 0.8rem; }
+
+    .si-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 700;
+    }
+
+    .si-chev {
+      font-size: 0.7rem; color: var(--grey);
+      transition: transform 0.2s;
+    }
+
+    .static-item.open .si-chev { transform: rotate(180deg); }
+
+    .si-body {
+      display: none;
+      padding: 0 1.2rem 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .static-item.open .si-body { display: block; }
+
+    .si-core {
+      background: rgba(0,245,255,0.03);
+      border-left: 2px solid var(--cyan-dim);
+      padding: 0.8rem 1rem;
+      margin: 1rem 0;
+    }
+
+    .si-core-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; color: var(--cyan-dim);
+      letter-spacing: 0.25em; display: block; margin-bottom: 0.4rem;
+    }
+
+    .si-core p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--white); line-height: 1.8;
+    }
+
+    .si-sec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; color: var(--grey);
+      letter-spacing: 0.2em; text-transform: uppercase;
+      margin: 1rem 0 0.6rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+
+    .si-sec-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .concept-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 1rem; align-items: start;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .concept-row:last-child { border-bottom: none; }
+
+    .concept-term {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.62rem; font-weight: 700;
+      color: var(--cyan2);
+    }
+
+    .concept-def {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 300;
+      color: var(--white); line-height: 1.7;
+    }
+
+    .si-detail p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight: 300;
+      color: var(--white); line-height: 1.9;
+    }
+
+    .si-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; color: var(--warn);
+      text-decoration: none; letter-spacing: 0.05em;
+      border: 1px solid rgba(255,170,0,0.3);
+      padding: 0.4rem 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .si-link:hover { background: rgba(255,170,0,0.08); }
+
+    .si-score {
+      margin-top: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; color: var(--grey);
+    }
+
+    .si-score span {
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--warn); font-family: 'Orbitron', monospace;
+    }
+
+    .missed-row {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 300;
+      color: var(--danger); line-height: 1.7;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .missed-row:last-child { border-bottom: none; }
+
+    .mod-week-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; color: var(--cyan-dim);
+      letter-spacing: 0.2em; text-transform: uppercase;
+      margin: 1.5rem 0 0.8rem;
+    }
+
+    @media (max-width:580px) {
+      .concept-row { grid-template-columns: 1fr; gap: 0.3rem; }
+      .si-left { flex-wrap: wrap; }
+    }
+
     /* ── MODAL ── */
     .overlay {
       display:none; position:fixed; inset:0;
@@ -1506,33 +1693,254 @@
 
   function renderIronDetail() {
     const el = document.getElementById('ironDetailBody');
-    let entries;
 
+    // Get static content for this week/day
     if (currentIronCtx.type === 'week') {
-      entries = ironEntries.filter(e => e.week === currentIronCtx.value && e.day === currentIronCtx.day);
+      const staticContent = STATIC_CONTENT[currentIronCtx.value]?.[currentIronCtx.day];
+      const userEntries = ironEntries.filter(e => e.week === currentIronCtx.value && e.day === currentIronCtx.day);
+
+      if (!staticContent && !userEntries.length) {
+        el.innerHTML = '<div class="empty">sin contenido todavía para este día.</div>';
+        return;
+      }
+
+      let html = '';
+
+      // Day summary banner if exists
+      if (staticContent?.summary) {
+        html += `<div class="day-summary">
+          <div class="day-sum-label">// resumen del día</div>
+          <p>${staticContent.summary}</p>
+        </div>`;
+      }
+
+      // Static items (lessons, labs, quizzes)
+      if (staticContent?.items) {
+        staticContent.items.forEach(item => {
+          html += renderStaticItem(item);
+        });
+      }
+
+      // User added entries
+      userEntries.forEach(e => {
+        html += renderUserEntry(e);
+      });
+
+      el.innerHTML = html;
+
     } else {
-      entries = ironEntries.filter(e => e.mod === currentIronCtx.value);
+      // Module view — show all static items for this module across all weeks/days
+      const mod = currentIronCtx.value;
+      let html = '';
+      let found = false;
+
+      Object.entries(STATIC_CONTENT).forEach(([week, days]) => {
+        Object.entries(days).forEach(([day, dayData]) => {
+          if (!dayData.items) return;
+          const modItems = dayData.items.filter(i => i.mod === mod);
+          if (modItems.length) {
+            found = true;
+            html += `<div class="mod-week-header">// Semana ${week} — ${DAY_NAMES[day]}</div>`;
+            modItems.forEach(item => { html += renderStaticItem(item); });
+          }
+        });
+      });
+
+      if (!found) {
+        el.innerHTML = '<div class="empty">sin contenido todavía para este módulo.</div>';
+        return;
+      }
+
+      el.innerHTML = html;
     }
 
-    if (!entries.length) {
-      el.innerHTML = '<div class="empty">sin entradas todavía para esta selección.</div>';
-      return;
-    }
-
-    el.innerHTML = entries.map(e => `
-      <div class="entry" id="ie${e.id}">
-        <div class="entry-hd" onclick="tog('ie${e.id}')">
-          <span class="entry-code">${currentIronCtx.type==='mod' ? 'W'+e.week+' D'+e.day+' //' : '//'} ${e.date||''}</span>
-          <span class="entry-t">${e.title}</span>
-          <span class="entry-chev">▾</span>
-        </div>
-        <div class="entry-body">
-          ${e.raw?`<div class="esec"><div class="esec-label">raw_notes</div><p>${e.raw.replace(/\n/g,'<br>')}</p></div>`:''}
-          ${e.sum?`<div class="esec"><div class="esec-label">resumen</div><p>${e.sum.replace(/\n/g,'<br>')}</p></div>`:''}
-          ${e.tags?.length?`<div class="esec"><div class="esec-label">herramientas</div><div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
-        </div>
-      </div>`).join('');
+    // Re-attach toggle listeners
+    document.querySelectorAll('.si-head').forEach(h => {
+      h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+    });
   }
+
+  function renderStaticItem(item) {
+    const typeColors = {
+      lesson: 'var(--cyan)',
+      lab:    'var(--warn)',
+      quiz:   '#a29bfe',
+      assessment: '#fd79a8',
+      selfguided: 'var(--grey)'
+    };
+    const typeLabels = {
+      lesson: 'LESSON', lab: 'LAB', quiz: 'QUIZ',
+      assessment: 'ASSESSMENT', selfguided: 'SELF-GUIDED'
+    };
+    const color = typeColors[item.type] || 'var(--grey)';
+    const label = typeLabels[item.type] || item.type.toUpperCase();
+    const statusIcon = item.done ? '✓' : '○';
+    const statusColor = item.done ? 'var(--success)' : 'var(--grey)';
+
+    return `<div class="static-item ${item.type}" id="si-${item.id}">
+      <div class="si-head">
+        <div class="si-left">
+          <span class="si-type" style="color:${color};border-color:${color}40">${label}</span>
+          ${item.mandatory ? '<span class="si-mandatory">OBLIGATORIO</span>' : ''}
+          <span class="si-title">${item.title}</span>
+        </div>
+        <div class="si-right">
+          <span class="si-status" style="color:${statusColor}">${statusIcon}</span>
+          <span class="si-chev">▾</span>
+        </div>
+      </div>
+      <div class="si-body">
+        ${item.core ? `<div class="si-core"><span class="si-core-label">// idea central</span><p>${item.core}</p></div>` : ''}
+        ${item.concepts?.length ? `
+          <div class="si-concepts">
+            <div class="si-sec-label">// conceptos clave</div>
+            ${item.concepts.map(c => `
+              <div class="concept-row">
+                <span class="concept-term">${c.term}</span>
+                <span class="concept-def">${c.def}</span>
+              </div>`).join('')}
+          </div>` : ''}
+        ${item.detail ? `<div class="si-detail"><div class="si-sec-label">// detalle</div><p>${item.detail}</p></div>` : ''}
+        ${item.url ? `<a class="si-link" href="${item.url}" target="_blank">→ Abrir en TryHackMe</a>` : ''}
+        ${item.score != null ? `<div class="si-score">Resultado: <span>${item.score}/100</span>${item.scoreNote ? ' — '+item.scoreNote : ''}</div>` : ''}
+        ${item.missed?.length ? `<div class="si-missed"><div class="si-sec-label">// repasar</div>${item.missed.map(m=>`<div class="missed-row">✗ ${m}</div>`).join('')}</div>` : ''}
+      </div>
+    </div>`;
+  }
+
+  function renderUserEntry(e) {
+    return `<div class="entry" id="ue${e.id}">
+      <div class="entry-hd" onclick="tog('ue${e.id}')">
+        <span class="si-type" style="color:var(--cyan-dim);border-color:var(--border);font-size:0.55rem">NOTA</span>
+        <span class="entry-t">${e.title}</span>
+        <span class="entry-chev">▾</span>
+      </div>
+      <div class="entry-body">
+        ${e.raw?`<div class="esec"><div class="esec-label">notas</div><p>${e.raw.replace(/\n/g,'<br>')}</p></div>`:''}
+        ${e.sum?`<div class="esec"><div class="esec-label">resumen</div><p>${e.sum.replace(/\n/g,'<br>')}</p></div>`:''}
+        ${e.tags?.length?`<div class="esec"><div class="esec-label">tags</div><div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}
+      </div>
+    </div>`;
+  }
+
+  // ── STATIC COURSE CONTENT ──
+  // Structure: STATIC_CONTENT[week][day] = { summary, items[] }
+  // item: { id, type, title, mandatory, done, mod, core, concepts[], detail, url, score, scoreNote, missed[] }
+
+  const STATIC_CONTENT = {
+    1: {
+      1: {
+        summary: "Primer día de la bootcamp. Se sientan las bases de qué es la administración de redes, cuáles son las responsabilidades del administrador, qué son las VLANs y cómo se resuelven problemas de red. Todo el día gira en torno al módulo de Network Administration.",
+        items: [
+          {
+            id: 's1d1-l1', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
+            title: 'Introducción a la Administración de Redes',
+            core: 'La administración de redes es el conjunto de tareas de organización, instalación y resolución de problemas de redes informáticas. El administrador de red es el puente entre la infraestructura técnica y la seguridad de la organización.',
+            concepts: [
+              { term: 'Administración de redes', def: 'Organización, instalación y resolución de problemas de redes informáticas de forma eficiente y segura.' },
+              { term: 'LAN', def: 'Red de área local (Local Area Network). Red que conecta dispositivos dentro de un espacio físico limitado.' },
+              { term: 'WAN', def: 'Red de área amplia (Wide Area Network). Conecta redes entre ubicaciones geográficamente distantes.' },
+              { term: 'VLAN', def: 'Red de área local virtual. Permite segmentar una red física en múltiples redes lógicas independientes.' },
+              { term: 'Subred', def: 'Segmento lógico de una red IP. A diferencia de las VLANs, las subredes se diferencian en la capa 3 del modelo OSI.' }
+            ],
+            detail: 'Las tareas del administrador incluyen: instalar y mantener la red, monitorizar el rendimiento, resolver incidencias de hardware/software, actualizar sistemas y gestionar accesos de usuarios. Su relevancia en ciberseguridad es alta: conocer el diseño de la red es esencial para protegerla y para detectar ataques que explotan procedimientos de red.'
+          },
+          {
+            id: 's1d1-l2', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
+            title: 'Responsabilidades del Administrador de Redes',
+            core: 'El ciclo de vida de una red tiene cuatro fases: diseño, instalación, mantenimiento y expansión. El administrador es responsable de todas ellas.',
+            concepts: [
+              { term: 'Diseño de red', def: 'Primera fase. Se determina el número de clientes, tipos de servidores, firewalls necesarios y cómo conectarlos al router de la LAN.' },
+              { term: 'Instalación', def: 'Segunda fase. Incluye la instalación física del hardware (routers, switches) y la configuración de bases de datos, hosts y servidores.' },
+              { term: 'Mantenimiento', def: 'Fase continua. Resolución de incidencias, gestión de usuarios, administración de servicios de red (email, impresoras, etc.) y control de accesos de seguridad.' },
+              { term: 'Expansión', def: 'Fase de crecimiento. Configurar nuevos hosts, crear nuevas VLANs y ampliar subredes cuando la organización crece.' }
+            ],
+            detail: 'En organizaciones grandes, algunas de estas responsabilidades se reparten entre distintos profesionales (arquitectos de red, administradores de sistemas). En organizaciones pequeñas, el administrador de red asume todas las fases.'
+          },
+          {
+            id: 's1d1-l3', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
+            title: 'VLAN',
+            core: 'Una VLAN permite dividir un switch físico en múltiples switches virtuales. Cada VLAN es un dominio separado: el tráfico entre VLANs solo puede fluir a través de un router.',
+            concepts: [
+              { term: 'VLAN', def: 'Red de área local virtual (Virtual Local Area Network). Divide un switch físico en mini-switches lógicos independientes.' },
+              { term: 'Segmentación', def: 'Separar el tráfico de red por funciones (ej: RRHH vs Ventas vs IT) para mejorar rendimiento y seguridad.' },
+              { term: 'Restricción', def: 'Limitar el acceso a hosts, infraestructura o servicios sensibles mediante VLANs.' },
+              { term: 'Provisión', def: 'Proporcionar servicios de red a distintos grupos de clientes usando la misma infraestructura de switches y routers.' },
+              { term: 'Aislamiento', def: 'Alojar grupos de hosts lógicamente en la misma subred aunque estén en diferentes ubicaciones físicas.' },
+              { term: 'Subred vs VLAN', def: 'Las subredes operan en capa 3 (IP). Las VLANs operan en capa 2 (switches). Ambas segmentan redes pero a niveles distintos del modelo OSI.' }
+            ],
+            detail: 'Antes de las VLANs, cada segmento de red necesitaba su propia infraestructura de switches. Las VLANs resolvieron esto permitiendo que un único switch físico gestione múltiples redes virtuales independientes, reduciendo costes y complejidad.'
+          },
+          {
+            id: 's1d1-l4', type: 'lesson', mandatory: false, done: true, mod: 'network-admin',
+            title: 'Resolución de Problemas de Red (Networking Troubleshooting)',
+            core: 'El troubleshooting es el proceso sistemático para identificar, diagnosticar y resolver problemas de red. Siempre se sigue el mismo orden: hardware → software → servicios externos.',
+            concepts: [
+              { term: 'Troubleshooting', def: 'Proceso para reconocer, diagnosticar y corregir problemas en una red. En ciberseguridad incluye también detectar actividad maliciosa.' },
+              { term: 'ipconfig / ifconfig', def: 'Comandos para ver la configuración de red de un equipo. ipconfig en Windows, ifconfig en Linux.' },
+              { term: 'ping', def: 'Comando que usa ICMP para verificar si un host está accesible en la red y medir la latencia.' },
+              { term: 'tracert / traceroute', def: 'Traza la ruta que siguen los paquetes desde el origen hasta el destino. Útil para localizar dónde se corta la conexión.' },
+              { term: 'nslookup', def: 'Comprueba si un servidor DNS está respondiendo correctamente a las consultas de nombres de dominio.' },
+              { term: 'DNS', def: 'Sistema de nombres de dominio (Domain Name System). Traduce nombres como google.com a direcciones IP.' },
+              { term: 'ISP', def: 'Proveedor de servicios de internet (Internet Service Provider). Si todo lo local falla, el problema puede estar en el ISP.' }
+            ],
+            detail: 'Pasos comunes: 1) Verificar hardware (cables, routers, switches). 2) Usar ipconfig/ifconfig para ver la IP. 3) Usar ping para comprobar conectividad. 4) Hacer DNS check con nslookup. 5) Contactar al ISP si el problema es externo. 6) Verificar antivirus y malware. 7) Revisar logs del sistema (Event Viewer en Windows, logs en Linux).'
+          },
+          {
+            id: 's1d1-lab1', type: 'lab', mandatory: true, done: true, mod: 'network-admin',
+            title: 'LAB | ¿Qué es el Networking?',
+            core: 'Introducción práctica a los fundamentos de las redes informáticas: qué es una red, cómo se identifican los dispositivos y cómo funciona el ping.',
+            concepts: [
+              { term: 'Red informática', def: 'Conjunto de dispositivos conectados entre sí para compartir datos y recursos.' },
+              { term: 'Dirección IP', def: 'Identificador numérico único de cada dispositivo en una red. Puede ser pública (visible en internet) o privada (solo dentro de la red local).' },
+              { term: 'Dirección MAC', def: 'Identificador físico único grabado en la tarjeta de red de cada dispositivo. Opera en capa 2 del modelo OSI.' },
+              { term: 'ICMP', def: 'Protocolo de mensajes de control de internet. El comando ping lo utiliza para comprobar conectividad.' }
+            ],
+            url: 'https://tryhackme.com/room/whatisnetworking'
+          },
+          {
+            id: 's1d1-lab2', type: 'lab', mandatory: true, done: true, mod: 'network-admin',
+            title: 'LAB | Introducción a LAN',
+            core: 'Exploración de las tecnologías y diseños que dan potencia a las redes privadas: topologías de red y el protocolo ARP.',
+            concepts: [
+              { term: 'Topología de red', def: 'Forma en que los dispositivos están conectados entre sí. Las más comunes son estrella, bus y anillo.' },
+              { term: 'Switch', def: 'Dispositivo que conecta múltiples dispositivos dentro de una LAN y dirige el tráfico usando direcciones MAC.' },
+              { term: 'Router', def: 'Dispositivo que conecta redes distintas entre sí. Opera en capa 3 del modelo OSI usando direcciones IP.' },
+              { term: 'ARP', def: 'Protocolo de resolución de direcciones (Address Resolution Protocol). Traduce direcciones IP a direcciones MAC dentro de una red local.' },
+              { term: 'DHCP', def: 'Protocolo que asigna automáticamente direcciones IP a los dispositivos cuando se conectan a una red.' }
+            ],
+            url: 'https://tryhackme.com/room/introtolan'
+          },
+          {
+            id: 's1d1-lab3', type: 'lab', mandatory: false, done: true, mod: 'network-admin',
+            title: 'LAB | Paquetes y Tramas (Packets & Frames)',
+            core: 'Comprensión de cómo los datos se dividen en pequeñas piezas (paquetes) y se transmiten a través de una red hasta otro dispositivo.',
+            concepts: [
+              { term: 'Paquete', def: 'Unidad básica de datos en una red. Contiene los datos a transmitir más información de cabecera (IP origen, IP destino, etc.).' },
+              { term: 'Trama (Frame)', def: 'Unidad de datos en la capa 2 del modelo OSI. Encapsula paquetes añadiendo direcciones MAC.' },
+              { term: 'Encapsulación', def: 'Proceso por el que cada capa del modelo OSI añade su propia cabecera a los datos al enviarlos.' },
+              { term: 'TCP', def: 'Protocolo de control de transmisión. Garantiza la entrega ordenada y sin errores de los datos. Más lento pero fiable.' },
+              { term: 'UDP', def: 'Protocolo de datagramas de usuario. Más rápido que TCP pero sin garantía de entrega. Usado en streaming y videojuegos.' }
+            ],
+            url: 'https://tryhackme.com/room/packetsframes'
+          },
+          {
+            id: 's1d1-quiz', type: 'quiz', mandatory: false, done: true, mod: 'network-admin',
+            title: 'Quiz Día 1: Administración de Redes',
+            score: 60,
+            scoreNote: 'Completado. Algunas confusiones en conceptos de VLAN y troubleshooting.',
+            missed: [
+              'Confusión entre "instalar, configurar, asegurar y planificar" vs "diseñar, instalar, mantener y expandir" como responsabilidades del admin.',
+              'VLAN: su función principal es dividir un switch físico en mini-switches (no simplemente aislar segmentos de red).',
+              'Troubleshooting: el primer paso siempre es inspeccionar el hardware físico, no hacer un DNS check.'
+            ]
+          }
+        ]
+      }
+    }
+  };
+
+
 
   function openIronEntryModal() {
     document.getElementById('ironModalTitle').textContent =
