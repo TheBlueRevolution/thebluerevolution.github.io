@@ -1193,226 +1193,273 @@
   const STATIC_CONTENT = {
     1: {
       1: {
-        summary: "Primer día de la bootcamp. Se sientan las bases de qué es la administración de redes, cuáles son las responsabilidades del administrador, qué son las VLANs y cómo se resuelven problemas de red. Todo el contenido pertenece al módulo de Network Administration.",
+        summary: "Primer día de la bootcamp. Se sientan las bases absolutas de qué es una red, cómo se comunican los dispositivos, qué tipos de redes existen según tamaño y cobertura, cómo están organizadas físicamente (topologías) y cómo funciona el direccionamiento IP. La tarde cierra con Modelo OSI, TCP/IP, Router, Switch e IPv4.",
         items: [
           {
             id:'s1d1-l1', type:'lesson', mandatory:false, done:true, mod:'network-admin',
-            title:'Introducción a la Administración de Redes',
-            core:'La administración de redes es el conjunto de tareas de organización, instalación y resolución de problemas de redes informáticas. El administrador es el puente entre la infraestructura técnica y la seguridad de la organización.',
+            title:'Introducción a las Redes de Datos',
+            core:'Una red informática conecta dispositivos para compartir datos y recursos. Siempre hay un cliente que pide y un servidor que responde. Los tres componentes esenciales de cualquier red son: dispositivos terminales, dispositivos intermediarios y medios de red.',
             concepts:[
-              {term:'Administración de redes', def:'Organización, instalación y resolución de problemas de redes informáticas de forma eficiente y segura. Cubre diseño, análisis de sistemas, comunicaciones de datos, recuperación ante desastres y principios de seguridad.'},
-              {term:'LAN', def:'Red de área local (Local Area Network). Conecta dispositivos dentro de un espacio físico limitado como una oficina o edificio.'},
-              {term:'WAN', def:'Red de área amplia (Wide Area Network). Conecta redes entre ubicaciones geográficamente distantes.'},
-              {term:'VLAN', def:'Red de área local virtual. Permite segmentar una red física en múltiples redes lógicas independientes dentro de un mismo switch.'},
-              {term:'Subred', def:'Segmento lógico de una red IP. A diferencia de las VLANs, opera en la capa 3 del modelo OSI usando direcciones IP.'}
+              {term:'Red informática', def:'Conjunto de dispositivos conectados entre sí para compartir datos y recursos. Puede ser doméstica, de oficina, mediana/grande o mundial.'},
+              {term:'Host', def:'Cualquier computadora que interviene en una comunicación de red — puede actuar como cliente, como servidor o como ambos.'},
+              {term:'Nodo / Terminal', def:'Dispositivo encargado de enviar y recibir datos en una red.'},
+              {term:'Servidor', def:'Dispositivo con software especializado para ofrecer servicios: web, email, archivos, etc.'},
+              {term:'Cliente', def:'Computadora con aplicaciones instaladas (navegador, gestor de correo) que solicita servicios al servidor.'},
+              {term:'Dispositivos terminales', def:'Puntos de origen o destino de los datos. Ejemplo: PCs, móviles, impresoras, tablets.'},
+              {term:'Dispositivos intermediarios', def:'No generan ni consumen datos, pero los dirigen, reenvían, filtran o traducen. Ejemplo: routers, switches, firewalls, puntos de acceso.'},
+              {term:'Medios de red', def:'Canales físicos o inalámbricos por donde viajan los datos. Tipos: cable UTP (cobre), fibra óptica, radiofrecuencia (Wi-Fi).'},
+              {term:'BYOD', def:'Bring Your Own Device. Política que permite usar dispositivos personales para acceder a recursos de red corporativos.'}
             ],
-            full:`<h4>Visión general de la lección</h4>
-<p>En esta lección aprenderás a gestionar tareas como diseñar, instalar, mantener y ampliar redes informáticas. La experiencia del administrador abarca redes locales y de área amplia, resolución de problemas e instalación de hardware. Las tareas diarias incluyen gestionar servicios de red, resolver incidencias y garantizar los controles de seguridad. Para la expansión, los administradores configuran nuevos hosts, crean VLANs y amplían subredes de red, asegurando el buen funcionamiento de las operaciones IT.</p>
-<h4>Objetivos de aprendizaje</h4>
+            full:`<p>Una red informática permite compartir recursos como archivos, impresoras, acceso a internet y servicios en línea. Existen cuatro grandes tipos según su tamaño:</p>
 <ul>
-  <li>Comprender el papel de los administradores de red</li>
-  <li>Reconocer la relación entre la administración de redes y la ciberseguridad</li>
+  <li><strong>Red doméstica pequeña</strong> — Unos pocos dispositivos en casa</li>
+  <li><strong>Red pequeña de oficina u oficina en hogar</strong> — SOHO (Small Office/Home Office)</li>
+  <li><strong>Redes medianas a grandes</strong> — Empresas con múltiples edificios</li>
+  <li><strong>Redes mundiales</strong> — Internet</li>
 </ul>
-<h4>¿Qué es la Administración de Redes?</h4>
-<p>La administración de redes implica la organización, instalación y resolución de problemas de redes informáticas de forma eficiente y segura. Los aspectos clave incluyen el diseño de redes, el análisis de sistemas, las comunicaciones de datos, la recuperación ante desastres, la organización informática, la infraestructura de red y los principios fundamentales de la seguridad de la información.</p>
-<h4>Tareas del administrador</h4>
+<p>La comunicación en red sigue el modelo <strong>cliente-servidor</strong>: el cliente solicita, el servidor responde. Los usos más comunes de una red son: trabajo colaborativo en la nube, juegos online, impresión en red, acceso remoto (BYOD), comunicación y transferencia de archivos.</p>
+<p>Los <strong>tres componentes esenciales</strong> de cualquier red:</p>
 <ul>
-  <li>Instalar y mantener la red de una organización</li>
-  <li>Monitorizar los sistemas de red para mejorar el rendimiento</li>
-  <li>Resolver incidencias de red, incluyendo hardware, software y sistemas</li>
-  <li>Actualizar redes y sistemas informáticos</li>
-  <li>Gestionar el acceso de usuarios añadiendo o eliminando usuarios y controlando los permisos de acceso</li>
+  <li><strong>Dispositivos terminales:</strong> Los que originan o reciben los datos — PCs, móviles, impresoras, tablets, teléfonos IP.</li>
+  <li><strong>Dispositivos intermediarios:</strong> Los que dirigen el tráfico — routers, switches, firewalls, puntos de acceso inalámbrico. No generan datos pero son esenciales para que lleguen correctamente a su destino.</li>
+  <li><strong>Medios de red:</strong> El canal físico o inalámbrico — cable de cobre UTP, fibra óptica, señales de radiofrecuencia Wi-Fi.</li>
 </ul>
-<h4>Importancia de la Administración de Redes</h4>
-<p>Los administradores de red colaboran estrechamente con analistas y expertos en ciberseguridad. La comprensión es crucial en dos áreas:</p>
-<ul>
-  <li><strong>Proteger la red:</strong> Comprender el diseño, la estructura y los componentes críticos para una defensa eficaz</li>
-  <li><strong>Detectar y prevenir exploits:</strong> Identificar y prevenir que los atacantes exploten los procedimientos de red</li>
-</ul>`
+<p><strong>Práctica del día:</strong> Comando <code>tracert www.google.com</code> (Windows) / <code>traceroute</code> (Linux/Mac) — traza la ruta real que siguen los paquetes desde tu equipo hasta el destino, mostrando cada salto intermedio.</p>`
           },
           {
             id:'s1d1-l2', type:'lesson', mandatory:false, done:true, mod:'network-admin',
-            title:'Responsabilidades del Administrador de Redes',
-            core:'El ciclo de vida de una red tiene cuatro fases: diseño, instalación, mantenimiento y expansión. El administrador es responsable de todas ellas, aunque en grandes organizaciones algunas se comparten con otros profesionales.',
+            title:'Topologías de Red',
+            core:'La topología define cómo están interconectados los dispositivos. Afecta directamente al rendimiento, la tolerancia a fallos y el coste. También clasifica las redes según su alcance geográfico: PAN, LAN, MAN, WAN.',
             concepts:[
-              {term:'Diseño de red', def:'Primera fase. Se determina el número de clientes, tipos de servidores, firewalls necesarios y cómo conectarlos al router de la LAN.'},
-              {term:'Instalación', def:'Segunda fase. Incluye la instalación física del hardware (routers, switches) y la configuración de bases de datos, hosts y servidores de configuración de red.'},
-              {term:'Mantenimiento', def:'Fase continua. Resolución de incidencias, gestión de hosts, administración de servicios de red (email, impresoras, etc.) e implementación de controles de seguridad.'},
-              {term:'Expansión', def:'Fase de crecimiento. Configurar nuevos hosts conectados a dispositivos de red nuevos o existentes, crear nuevas VLANs y ampliar la subred de red.'},
-              {term:'Router', def:'Dispositivo que conecta la LAN al exterior o conecta distintas redes entre sí. Opera en la capa 3 del modelo OSI.'},
-              {term:'Firewall', def:'Sistema de seguridad que monitoriza y controla el tráfico de red entrante y saliente según reglas de seguridad predefinidas.'}
+              {term:'Topología en Bus', def:'Todos conectados a un único cable principal. Si falla el cable, cae toda la red. Económica pero obsoleta — usada en redes antiguas con cable coaxial en los 90.'},
+              {term:'Topología en Anillo', def:'Dispositivos conectados en círculo cerrado. Cada uno tiene entrada y salida. Ordenada (usa paso de testigo/token) pero compleja. Usada en redes FDDI industriales.'},
+              {term:'Topología en Estrella', def:'Todos conectados a un dispositivo central (switch o hub). La más común hoy. Si falla un dispositivo no afecta a los demás, pero si falla el central cae todo.'},
+              {term:'Topología en Malla', def:'Cada dispositivo conectado con varios o todos los demás. Máxima tolerancia a fallos y redundancia. Muy cara y compleja. Usada en entornos militares y telecomunicaciones críticas.'},
+              {term:'PAN', def:'Personal Area Network. Alcance 1-10 metros. Tecnologías: Bluetooth, USB, NFC. Ejemplo: móvil con auriculares o smartwatch.'},
+              {term:'LAN', def:'Local Area Network. Un edificio o espacio físico. Tecnologías: Ethernet, Wi-Fi. Ejemplo: red de una oficina.'},
+              {term:'MAN', def:'Metropolitan Area Network. Cubre una ciudad o área urbana. Tecnologías: fibra óptica, enlaces dedicados. Ejemplo: varios edificios de una universidad interconectados.'},
+              {term:'WAN', def:'Wide Area Network. Cubre regiones, países o continentes. Tecnologías: MPLS, satélite, ISP. Internet es la WAN más grande del mundo.'}
             ],
-            full:`<h4>Responsabilidades del Administrador de Redes</h4>
-<p>Los administradores de red ocupan un papel crucial en los departamentos IT, garantizando la funcionalidad continua y la relevancia de las redes. Son expertos en diseñar, gestionar y mantener redes diversas —ya sean locales, de área amplia o segmentos específicos— y son vitales para el buen funcionamiento de las operaciones IT.</p>
-<p>Considera una carrera como administrador de red si tienes un profundo conocimiento de los sistemas informáticos, habilidades rápidas de resolución de problemas y dominio de varios sistemas operativos.</p>
-<h4>Las cuatro responsabilidades principales</h4>
+            full:`<p>La topología de red se refiere a la forma en que los dispositivos están interconectados físicamente o lógicamente. Es uno de los aspectos fundamentales del diseño de redes ya que influye directamente en su rendimiento, escalabilidad, tolerancia a fallos y facilidad de mantenimiento.</p>
+
+<h4>Topología en Bus</h4>
+<p>Todos los dispositivos están conectados a un único cable principal (bus). Los datos viajan en ambas direcciones por este medio hasta llegar al destinatario.</p>
 <ul>
-  <li>Diseñar una red</li>
-  <li>Instalar una red</li>
-  <li>Mantener una red</li>
-  <li>Expandir una red</li>
+  <li>✅ Económica en cableado. Fácil de implementar para redes pequeñas.</li>
+  <li>❌ Si el cable principal falla, toda la red queda inactiva. Rendimiento decrece al añadir dispositivos. Difícil aislar fallos.</li>
+  <li>💡 Usada en redes LAN antiguas con cable coaxial en los 90. Hoy obsoleta.</li>
 </ul>
-<h4>Diseñar una red</h4>
-<p>Iniciar la gestión de red comienza con el diseño de una LAN (red de área local). Esta fase implica determinar el número de clientes, los tipos de servidores, los firewalls apropiados y conectarlos al router de la LAN.</p>
-<h4>Instalar una red</h4>
-<p>Tras diseñar la red, los pasos posteriores implican instalarla y configurarla:</p>
+
+<h4>Topología en Anillo</h4>
+<p>Los dispositivos se conectan en círculo cerrado. Cada uno tiene exactamente dos conexiones: una de entrada y otra de salida.</p>
 <ul>
-  <li><strong>Instalación:</strong> Instalación de componentes hardware como routers y switches</li>
-  <li><strong>Configuración:</strong> Configuración de bases de datos para las configuraciones necesarias relacionadas con archivos, hosts y servidores de configuración de red</li>
+  <li>✅ El rendimiento no se degrada fácilmente al añadir dispositivos. Orden en el envío de datos (paso de testigo / token).</li>
+  <li>❌ Si un dispositivo falla puede afectar toda la red (salvo anillo doble). Más compleja de configurar.</li>
+  <li>💡 Redes FDDI (Fiber Distributed Data Interface) y redes industriales con baja latencia.</li>
 </ul>
-<p><em>Nota: Normalmente todas estas son responsabilidades del administrador de red, excepto en organizaciones grandes donde intervienen distintos profesionales como arquitectos.</em></p>
-<h4>Mantener una red</h4>
-<p>Durante esta fase, las tareas continuas incluyen:</p>
+
+<h4>Topología en Estrella</h4>
+<p>Todos los dispositivos conectados a un dispositivo central (switch o hub). La comunicación siempre pasa por ese punto central.</p>
 <ul>
-  <li>Resolver incidencias de red</li>
-  <li>Añadir/eliminar hosts de la red</li>
-  <li>Gestionar varios servicios de red como gestión de usuarios, emails, impresoras y administración del sistema</li>
-  <li>Implementar y gestionar controles de acceso de seguridad de red</li>
+  <li>✅ Fácil de instalar y configurar. Si un dispositivo falla no afecta a los demás. Sencilla de administrar y escalar.</li>
+  <li>❌ Si el dispositivo central falla, toda la red se interrumpe. Requiere más cableado que la topología en bus.</li>
+  <li>💡 La más común hoy: redes domésticas, oficinas, laboratorios escolares.</li>
 </ul>
-<h4>Expandir una red</h4>
-<p>Las organizaciones a menudo buscan expandir sus redes, lo que lleva a los administradores de red a:</p>
+
+<h4>Topología en Malla</h4>
+<p>Cada dispositivo conectado con varios o todos los demás. Puede ser completa (todos con todos) o parcial (algunos con algunos).</p>
 <ul>
-  <li>Configurar nuevos hosts conectados a dispositivos de red nuevos o existentes</li>
-  <li>Crear nuevas VLANs</li>
-  <li>Ampliar la subred de red</li>
+  <li>✅ Alta tolerancia a fallos: si un enlace falla hay otros caminos. Excelente confiabilidad y redundancia.</li>
+  <li>❌ Costosa y compleja. Difícil de escalar y mantener.</li>
+  <li>💡 Entornos militares, sistemas de telecomunicaciones, redes de sensores críticos.</li>
+</ul>
+
+<h4>Tipos de redes según su alcance geográfico</h4>
+<ul>
+  <li><strong>PAN</strong> (Personal Area Network) — 1-10 metros. Bluetooth, USB, NFC.</li>
+  <li><strong>LAN</strong> (Local Area Network) — Un edificio. Ethernet, Wi-Fi.</li>
+  <li><strong>MAN</strong> (Metropolitan Area Network) — Una ciudad. Fibra óptica, enlaces dedicados.</li>
+  <li><strong>WAN</strong> (Wide Area Network) — Países o continentes. MPLS, satélite, ISP. <strong>Internet es el mayor ejemplo de WAN.</strong></li>
 </ul>`
           },
           {
             id:'s1d1-l3', type:'lesson', mandatory:false, done:true, mod:'network-admin',
-            title:'VLAN',
-            core:'Una VLAN permite dividir un switch físico en múltiples switches virtuales independientes. El tráfico entre VLANs distintas solo puede fluir a través de un router — nunca directamente entre VLANs.',
+            title:'Protocolos de Red y Modelo OSI',
+            core:'Los protocolos son las reglas que estandarizan cómo se transmiten los datos. El Modelo OSI divide esa comunicación en 7 capas. Cada capa añade su cabecera al enviar (encapsulación) y la elimina al recibir (desencapsulación).',
             concepts:[
-              {term:'VLAN', def:'Red de área local virtual (Virtual Local Area Network). Permite que un único switch físico se divida en múltiples mini-switches. Cada VLAN actúa como un dominio distinto.'},
-              {term:'Segmentación', def:'Separar el tráfico de red de un host informático o servidor. Mejora el rendimiento al reducir colisiones de tráfico.'},
-              {term:'Restricción', def:'Limitar el acceso a hosts, infraestructura o servicios sensibles usando VLANs para aislarlos del resto de la red.'},
-              {term:'Provisión', def:'Proporcionar servicios de red a diferentes clientes en un ISP, centro de datos o instalación física usando la misma infraestructura de switches y routers.'},
-              {term:'Aislamiento', def:'Alojar grupos de hosts lógicamente en la misma subred y recursos, independientemente de su ubicación física.'},
-              {term:'Switch', def:'Dispositivo de red que conecta múltiples dispositivos dentro de una LAN. Opera en capa 2 del modelo OSI usando direcciones MAC.'},
-              {term:'VLAN vs Subred', def:'Las VLANs operan en capa 2 (switches, MAC). Las subredes operan en capa 3 (routers, IP). Ambas segmentan redes pero a niveles distintos del modelo OSI.'}
+              {term:'Protocolo de red', def:'Conjunto de reglas que define cómo se codifican, estructuran, encapsulan y entregan los mensajes entre dispositivos de una red.'},
+              {term:'Modelo OSI', def:'Open Systems Interconnection. Creado por la ISO. Divide el proceso de comunicación en 7 capas bien definidas para que dispositivos de distintos fabricantes puedan interoperar.'},
+              {term:'Modelo TCP/IP', def:'El modelo práctico sobre el que funciona Internet real. 4 capas. Desarrollado en los años 70 por el Departamento de Defensa de EE.UU. Más práctico que el OSI.'},
+              {term:'Encapsulación', def:'Proceso por el que cada capa añade su propia cabecera a los datos al enviarlos hacia capas inferiores.'},
+              {term:'Desencapsulación', def:'Proceso inverso a la encapsulación. Al recibir datos, cada capa elimina su cabecera y pasa el contenido a la capa superior.'},
+              {term:'Capa Física (1)', def:'Transmisión de bits por el medio físico. Unidad: bit. Cables, conectores, señales eléctricas u ópticas.'},
+              {term:'Capa de Enlace de Datos (2)', def:'Entramado, control de acceso al medio (MAC). Unidad: trama (frame). Protocolos: Ethernet, PPP.'},
+              {term:'Capa de Red (3)', def:'Direccionamiento lógico y enrutamiento. Unidad: paquete. Protocolos: IPv4, IPv6, ICMP.'},
+              {term:'Capa de Transporte (4)', def:'Segmentación, control de flujo y fiabilidad. Unidad: segmento (TCP) o datagrama (UDP). Protocolos: TCP, UDP.'},
+              {term:'Capa de Sesión (5)', def:'Establece, mantiene y termina conexiones entre dispositivos. Unidad: dato.'},
+              {term:'Capa de Presentación (6)', def:'Formato, cifrado y compresión de los datos. Unidad: dato. Protocolos: SSL/TLS.'},
+              {term:'Capa de Aplicación (7)', def:'Interfaz con el usuario y servicios de red. Unidad: dato. Protocolos: HTTP, DNS, DHCP, FTP.'}
             ],
-            full:`<h4>¿Qué es una VLAN?</h4>
-<p>Una red de área local virtual (VLAN) permite que un único switch físico se divida en múltiples mini-switches. Cada VLAN puede actuar como un dominio distinto. La comunicación entre múltiples VLANs en una LAN solo puede realizarse a través de un router que conecte todas ellas.</p>
-<p>Las VLANs separan subdominios por razones de rendimiento, seguridad o logísticas. Sin VLANs, cada segmento de red necesitaría su propia infraestructura de switches, con múltiples routers gestionando las comunicaciones entre cada segmento de switch.</p>
-<h4>¿Por qué usar una VLAN?</h4>
-<p>En la actualidad, Ethernet tiene un inconveniente: cuando muchos dispositivos se unen a una red, se producen colisiones entre el tráfico de datos, como en una carretera de un solo carril causando caos —las colisiones hacen que los dispositivos se apaguen o colapsen por completo.</p>
-<p>Para solucionar esto, se empezaron a usar dispositivos de Capa 2 como switches para controlar el tráfico dentro de una LAN. Estos ayudaron a los conflictos, pero no solucionaron completamente el problema.</p>
-<p>Entonces llegó la tecnología VLAN para salvar la situación. Es como tener múltiples carriles virtuales en una misma red física. Los dispositivos dentro de la misma red virtual (o VLAN) pueden comunicarse directamente entre sí, permitiendo diferentes grupos de dispositivos en diferentes VLANs, reduciendo el número de colisiones y manteniendo el tráfico fluyendo sin problemas dentro de cada carril.</p>
-<h4>Usos de VLAN</h4>
+            full:`<p>Los <strong>protocolos de red</strong> definen cómo se codifican, estructuran y encapsulan los mensajes, establecen su tamaño, cómo distribuirlos y qué opciones existen para su entrega. Son los encargados de estandarizar el proceso completo de comunicación entre computadoras en una red.</p>
+
+<h4>El Modelo OSI — 7 Capas</h4>
+<p>Creado por la ISO (Organización Internacional de Normalización) para estandarizar la comunicación entre sistemas de distintos fabricantes. Cada capa tiene una función específica y se comunica solo con las capas adyacentes.</p>
+
+<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.65rem;margin:0.8rem 0">
+  <tr style="background:rgba(0,245,255,0.1);color:var(--cyan)">
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Capa</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Nombre</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Función</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Unidad</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Protocolos</th>
+  </tr>
+  <tr style="color:var(--white)">
+    <td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">7</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Aplicación</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Interfaz usuario y servicios</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Dato</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">HTTP, DNS, DHCP, FTP</td>
+  </tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)">
+    <td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">6</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Presentación</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Formato, cifrado, compresión</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Dato</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">SSL/TLS</td>
+  </tr>
+  <tr style="color:var(--white)">
+    <td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">5</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Sesión</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Establece/mantiene/termina conexiones</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Dato</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">NetBIOS</td>
+  </tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)">
+    <td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">4</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Transporte</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Segmentación, control de flujo</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Segmento / Datagrama</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">TCP, UDP</td>
+  </tr>
+  <tr style="color:var(--white)">
+    <td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">3</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Red</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Direccionamiento lógico y enrutamiento</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Paquete</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">IPv4, IPv6, ICMP</td>
+  </tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)">
+    <td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">2</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Enlace de datos</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Entramado, control acceso al medio (MAC)</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Trama (Frame)</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Ethernet, PPP, MAC</td>
+  </tr>
+  <tr style="color:var(--white)">
+    <td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">1</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Física</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Transmisión de bits por el medio</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Bit</td>
+    <td style="padding:5px 10px;border:1px solid var(--border)">Cable UTP, fibra, Wi-Fi</td>
+  </tr>
+</table>
+
+<p style="margin-top:0.8rem;font-size:0.68rem;color:var(--grey)">🧠 Mnemotécnico (de abajo arriba): <strong style="color:var(--cyan)">"Físicamente En Red Transportamos Sistemas Para Aplicaciones"</strong></p>
+
+<h4>TCP/IP vs OSI</h4>
+<p>El modelo TCP/IP es el que realmente usa Internet. Agrupa las 7 capas OSI en 4:</p>
 <ul>
-  <li><strong>Segmentación:</strong> Separar el tráfico de red de un host informático o servidor de tráfico</li>
-  <li><strong>Restricción:</strong> Restringir el acceso a hosts sensibles, infraestructura o servicios</li>
-  <li><strong>Provisión:</strong> Proporcionar servicios de red a distintos clientes en un ISP, centro de datos o instalación física usando el mismo switch e infraestructura de routers</li>
-  <li><strong>Aislamiento:</strong> Alojar grupos de hosts lógicamente en la misma subred y recursos, independientemente de su ubicación física (por ejemplo, permitir que los empleados de Recursos Humanos compartan el mismo acceso a la subred y recursos, independientemente de su ubicación física)</li>
+  <li><strong>Aplicación</strong> — Agrupa capas OSI 5, 6 y 7. Protocolos: HTTP, DNS, DHCP, FTP.</li>
+  <li><strong>Transporte</strong> — Capa OSI 4. Protocolos: TCP, UDP.</li>
+  <li><strong>Internet</strong> — Capa OSI 3. Protocolos: IPv4, IPv6, ICMP.</li>
+  <li><strong>Acceso a la red</strong> — Capas OSI 1 y 2. Protocolos: Ethernet, PPP.</li>
 </ul>
-<p>La principal ventaja de usar VLANs es que permiten separar el tráfico de distintos usuarios en diferentes segmentos de la misma red física.</p>
-<h4>VLAN vs Subred</h4>
-<ul>
-  <li><strong>VLAN:</strong> Basada en switch. Agrupa dispositivos lógicamente. Trabaja en capa 2. Se usa en diferentes VLANs con diferentes propósitos. Permite que distintos grupos de usuarios compartan la misma VLAN. Las VLANs se pueden configurar en múltiples switches.</li>
-  <li><strong>Subred:</strong> Basada en router. Agrupa dispositivos por rango de IP. Trabaja en capa 3. Se usa en diferentes subredes con diferentes propósitos. El tamaño de la subred se puede configurar para adaptarse a los requisitos de la organización. Las subredes se pueden configurar en múltiples routers.</li>
-</ul>
-<p><em>Nota importante: Una VLAN es simplemente un número asignado a un puerto de switch.</em></p>`
+<p>OSI es el modelo teórico de referencia. TCP/IP es la implementación práctica sobre la que funciona todo.</p>`
           },
           {
             id:'s1d1-l4', type:'lesson', mandatory:false, done:true, mod:'network-admin',
-            title:'Resolución de Problemas de Red',
-            core:'El troubleshooting es el proceso sistemático para identificar, diagnosticar y resolver problemas de red. Siempre empezamos por el hardware físico y vamos subiendo capas. En ciberseguridad, también incluye detectar actividad maliciosa.',
+            title:'Router, Switch e Internet Protocol (IP)',
+            core:'El router conecta redes distintas usando IPs (capa 3). El switch conecta dispositivos dentro de una misma red usando MACs (capa 2). Las IPs identifican cada dispositivo — existen 5 clases (A-E) y pueden ser públicas o privadas.',
             concepts:[
-              {term:'Troubleshooting', def:'Proceso sistemático para reconocer, diagnosticar y corregir problemas en una red. Empodera a los profesionales para implementar procesos y medidas para identificar, diagnosticar y corregir incidencias.'},
-              {term:'ipconfig / ifconfig', def:'Comandos para ver la configuración IP de un equipo. ipconfig en Windows, ifconfig en Linux. Permiten ver la IP, gateway por defecto e identificar la conexión de red entre el equipo y el router.'},
-              {term:'ping', def:'Usa el protocolo ICMP para verificar si un host está accesible en la red. Si el router funciona, el problema puede estar entre la fuente y la WAN.'},
-              {term:'tracert / traceroute', def:'Traza la ruta que siguen los paquetes desde el origen hasta el destino. Útil para localizar exactamente dónde se corta la conexión.'},
-              {term:'nslookup', def:'Comprueba si un servidor DNS responde correctamente. Ayuda a identificar problemas como "Timed Out" o "Server Failure".'},
-              {term:'DNS', def:'Sistema de nombres de dominio (Domain Name System). Traduce nombres legibles como google.com a direcciones IP numéricas.'},
-              {term:'ISP', def:'Proveedor de servicios de internet (Internet Service Provider). Si todo lo local funciona bien, el problema puede estar en el ISP.'},
-              {term:'MAC', def:'Dirección de control de acceso al medio (Media Access Control). Identificador físico único de cada tarjeta de red. Se usa para identificar la información de origen y destino de los dispositivos.'}
+              {term:'Router', def:'Dispositivo de capa 3. Lee la IP de destino y decide la mejor ruta para enviar los paquetes. Funciona como un GPS para los datos. Conecta redes distintas entre sí.'},
+              {term:'Switch', def:'Dispositivo de capa 2. Conecta dispositivos dentro de una LAN. Aprende qué dirección MAC está en qué puerto y redirige el tráfico solo al puerto correcto — no a todos.'},
+              {term:'Hub', def:'Versión "tonta" del switch. Envía los datos a todos los dispositivos conectados, no solo al destinatario. Hoy obsoleto.'},
+              {term:'NAT', def:'Network Address Translation. Permite que múltiples dispositivos con IP privada compartan una única IP pública para salir a internet. Lo hace el router.'},
+              {term:'IPv4', def:'Protocolo de Internet versión 4. Dirección de 32 bits en formato decimal: cuatro grupos de 0-255 separados por puntos. Ejemplo: 192.168.1.1. Tiene 5 clases (A-E).'},
+              {term:'IPv6', def:'Protocolo de Internet versión 6. Dirección de 128 bits en formato hexadecimal. Creado para solucionar el agotamiento de direcciones IPv4.'},
+              {term:'IP Privada', def:'Dirección usada dentro de la red local. Solo visible internamente. Gratuita, asignada por el router vía DHCP. Reutilizable en diferentes redes.'},
+              {term:'IP Pública', def:'Dirección visible en internet. Única en el mundo. Asignada por el ISP. Generalmente de pago.'},
+              {term:'Dirección Loopback', def:'127.0.0.1 — Siempre apunta al propio dispositivo. Usada para pruebas locales. El rango 127.0.0.0-127.255.255.255 está reservado.'},
+              {term:'Clase A', def:'IPv4 0.0.0.0 – 127.255.255.255. Redes muy grandes. Hasta 16.777.214 hosts por red. Rango privado: 10.0.0.0 – 10.255.255.255'},
+              {term:'Clase B', def:'IPv4 128.0.0.0 – 191.255.255.255. Redes medianas. Hasta 65.534 hosts por red. Rango privado: 172.16.0.0 – 172.31.255.255'},
+              {term:'Clase C', def:'IPv4 192.0.0.0 – 223.255.255.255. Redes pequeñas. Hasta 254 hosts por red. Rango privado: 192.168.0.0 – 192.168.255.255'},
+              {term:'Clase D', def:'IPv4 224.0.0.0 – 239.255.255.255. Uso especial: Multicast. No aplica a redes normales.'},
+              {term:'Clase E', def:'IPv4 240.0.0.0 – 255.255.255.255. Reservada para investigación y uso experimental.'}
             ],
-            full:`<h4>¿Qué es el Troubleshooting?</h4>
-<p>El troubleshooting en ciberseguridad implica reconocer y detectar actividades de red sospechosas y maliciosas. Empodera a los profesionales para implementar procesos y medidas eficaces de diagnóstico para identificar, diagnosticar y corregir problemas dentro de una red.</p>
-<h4>El Enfoque de Troubleshooting</h4>
-<p>Cuando se detecta un problema de red, son esenciales enfoques de resolución adaptados. El objetivo es comprender el problema, su origen, la parte afectada y la duración.</p>
-<p><strong>Ejemplo práctico:</strong> Un usuario informa que no puede acceder a internet con Internet Explorer al navegar, recibiendo un error "No se puede mostrar la página — no se puede encontrar el servidor DNS o no existe". Al acceder a Google.com se consideran los siguientes puntos:</p>
-<ul>
-  <li><strong>Problema:</strong> El usuario no puede acceder al sitio web de Google</li>
-  <li><strong>Causa:</strong> Problema con el servidor DNS de Google</li>
-  <li><strong>Afectado:</strong> Clientes y usuarios</li>
-  <li><strong>Duración:</strong> Varias horas</li>
-</ul>
-<h4>Pasos comunes para el troubleshooting</h4>
-<p>Al detectar un problema de red, son esenciales enfoques de resolución adaptados. Los pasos comunes incluyen:</p>
-<h4>1. Inspeccionar la conectividad hardware</h4>
-<p>Al inicio del proceso de troubleshooting, el paso inicial implica verificar la funcionalidad y la conexión correcta de todo el hardware del equipo, incluyendo el ordenador, el router y el panel de conexiones. Es crucial inspeccionar los cables que unen estos dispositivos, ya que pueden ser susceptibles a fallos, cortocircuitos o daños físicos.</p>
-<ul>
-  <li>Verificar la conexión, el estado de alimentación y la funcionalidad del hardware de red</li>
-  <li>Comprobar cables, routers y switches</li>
-  <li>Rebotar el dispositivo para una resolución menor de incidencias</li>
-</ul>
-<h4>2. Utilizar ipconfig/ifconfig</h4>
-<p>Usar el símbolo del sistema en Windows (ipconfig) o la terminal en Linux (ifconfig). Comprobar el gateway por defecto para el router e identificar la conexión de red entre el ordenador y el router es crucial.</p>
-<ul>
-  <li>Identificar el gateway por defecto e identificar la IP</li>
-  <li>Identificar la dirección IP con ipconfig /release e ipconfig /renew</li>
-</ul>
-<h4>3. Utilizar ping y tracert</h4>
-<p>Hacer ping a la dirección IP de un host en una red IP. Si el router funciona, el problema puede estar entre la fuente y la WAN. Usando la interfaz de línea de comandos (CLI), puedes iniciar un ping. Si el ping funciona, proporciona información detallada sobre el problema.</p>
-<ul>
-  <li>Hacer ping a servidores conocidos como Google para comprobar la conectividad</li>
-  <li>Usar tracert para identificar los saltos de red y los posibles problemas</li>
-</ul>
-<h4>4. Realizar una comprobación DNS</h4>
-<p>Usar nslookup te ayudará a determinar si hay un problema con el servidor al que intentas conectarte.</p>
-<ul>
-  <li>Usar nslookup para comprobar el estado del servidor</li>
-  <li>Identificar problemas como "Timed Out" o "Server Failure"</li>
-</ul>
-<h4>5. Contactar con el ISP</h4>
-<p>Si los pasos anteriores fallan, contactar con el ISP para consultar sobre incidencias de red.</p>
-<ul>
-  <li>Si el ISP confirma que no hay incidencias, solicitar información de contacto</li>
-</ul>
-<h4>6. Verificar la protección contra virus y malware</h4>
-<ul>
-  <li>Confirmar que el antivirus y las herramientas anti-malware funcionan</li>
-  <li>Comprobar si hay amenazas marcadas que interrumpan la funcionalidad de la red</li>
-</ul>
-<h4>7. Revisar los logs de la base de datos</h4>
-<p>Examinar los logs relacionados con la actividad de internet y las bases de datos es esencial para identificar posibles problemas. Puedes acceder a estos logs usando el Visor de Eventos en Windows y los logs en Linux.</p>
-<h4>Mejores prácticas</h4>
-<ul>
-  <li>Formar a los usuarios finales</li>
-  <li>Recopilar información completa</li>
-  <li>Colaborar con el soporte del proveedor</li>
-  <li>Personalizar los logs</li>
-  <li>Copias de seguridad y planes de recuperación ante desastres</li>
-  <li>Control de acceso</li>
-  <li>Utilizar diagramas de red y mapas de topología</li>
-  <li>Aprovechar las herramientas de monitorización</li>
-  <li>Establecer un proceso de escalado</li>
-  <li>Actualizar regularmente el firmware</li>
-  <li>Documentar el proceso de troubleshooting</li>
-  <li>Implementar procedimientos de gestión de cambios</li>
-</ul>`
+            full:`<h4>Router</h4>
+<p>Un router (enrutador) es un dispositivo de red que permite conectar diferentes redes entre sí y dirigir el tráfico de datos de manera eficiente. Es una de las piezas fundamentales para que funcione Internet y para que una red doméstica o empresarial tenga acceso a la red global.</p>
+<p><strong>¿Cómo trabaja un router?</strong></p>
+<ol>
+  <li>Recibe paquetes de datos desde un dispositivo</li>
+  <li>Lee la dirección IP de destino (como un GPS para los datos)</li>
+  <li>Decide la mejor ruta para enviar esos datos</li>
+  <li>Reenvía los datos al siguiente punto del camino hasta que llegan a su destino</li>
+</ol>
+
+<h4>Switch</h4>
+<p>Un switch (conmutador de red) conecta varios equipos dentro de una LAN para que puedan comunicarse entre sí y compartir información. Es un "hub inteligente" que organiza el tráfico de datos dentro de una red.</p>
+<p><strong>¿Cómo funciona un switch?</strong></p>
+<ol>
+  <li>Cada dispositivo conectado tiene una dirección MAC única</li>
+  <li>El switch aprende qué dirección MAC está en qué puerto</li>
+  <li>Cuando recibe un dato, lee la dirección MAC de destino</li>
+  <li>Redirige el dato únicamente al puerto correcto — no a todos</li>
+</ol>
+
+<h4>Internet Protocol (IP)</h4>
+<p>"Una dirección IP es como el domicilio postal de una computadora dentro de una red. Así como necesitamos la dirección de una casa para enviarle una carta, las computadoras necesitan una dirección IP para enviarse datos entre sí."</p>
+
+<h4>Clases de IPv4</h4>
+<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.65rem;margin:0.8rem 0">
+  <tr style="background:rgba(0,245,255,0.1);color:var(--cyan)">
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Clase</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Rango</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Uso</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Hosts/red</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Rango privado</th>
+  </tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">A</td><td style="padding:5px 10px;border:1px solid var(--border)">0.0.0.0 – 127.255.255.255</td><td style="padding:5px 10px;border:1px solid var(--border)">Redes muy grandes</td><td style="padding:5px 10px;border:1px solid var(--border)">16.777.214</td><td style="padding:5px 10px;border:1px solid var(--border)">10.0.0.0 – 10.255.255.255</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">B</td><td style="padding:5px 10px;border:1px solid var(--border)">128.0.0.0 – 191.255.255.255</td><td style="padding:5px 10px;border:1px solid var(--border)">Redes medianas</td><td style="padding:5px 10px;border:1px solid var(--border)">65.534</td><td style="padding:5px 10px;border:1px solid var(--border)">172.16.0.0 – 172.31.255.255</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">C</td><td style="padding:5px 10px;border:1px solid var(--border)">192.0.0.0 – 223.255.255.255</td><td style="padding:5px 10px;border:1px solid var(--border)">Redes pequeñas</td><td style="padding:5px 10px;border:1px solid var(--border)">254</td><td style="padding:5px 10px;border:1px solid var(--border)">192.168.0.0 – 192.168.255.255</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">D</td><td style="padding:5px 10px;border:1px solid var(--border)">224.0.0.0 – 239.255.255.255</td><td style="padding:5px 10px;border:1px solid var(--border)">Multicast</td><td style="padding:5px 10px;border:1px solid var(--border)">—</td><td style="padding:5px 10px;border:1px solid var(--border)">—</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">E</td><td style="padding:5px 10px;border:1px solid var(--border)">240.0.0.0 – 255.255.255.255</td><td style="padding:5px 10px;border:1px solid var(--border)">Investigación</td><td style="padding:5px 10px;border:1px solid var(--border)">—</td><td style="padding:5px 10px;border:1px solid var(--border)">—</td></tr>
+</table>
+<p style="font-size:0.65rem;color:var(--grey)">* El intervalo 127.0.0.0 a 127.255.255.255 está reservado como dirección loopback y no se usa para redes.</p>
+
+<h4>IP Pública vs IP Privada</h4>
+<p>La <strong>IP privada</strong> es la que tiene tu dispositivo dentro de la red local — la asigna el router via DHCP, es gratuita y reutilizable en diferentes redes. Solo visible dentro de la LAN.</p>
+<p>La <strong>IP pública</strong> es la que ve internet — es única en el mundo, la asigna el ISP y generalmente es de pago. El router hace de traductor entre ambas mediante <strong>NAT</strong> (Network Address Translation).</p>`
           },
           {
             id:'s1d1-lab1', type:'lab', mandatory:true, done:true, mod:'network-admin',
             title:'LAB | ¿Qué es el Networking?',
-            core:'Introducción práctica a los fundamentos de redes: qué es una red, cómo se identifican los dispositivos (IP y MAC) y cómo funciona el ping (ICMP).',
+            core:'Introducción práctica a los fundamentos de redes: qué es una red, cómo se identifican los dispositivos (IP y MAC) y cómo funciona el ping usando ICMP.',
             concepts:[
               {term:'Red informática', def:'Conjunto de dispositivos conectados entre sí para compartir datos y recursos.'},
-              {term:'Dirección IP', def:'Identificador numérico único de cada dispositivo en una red. Puede ser pública (visible en internet) o privada (solo dentro de la red local).'},
-              {term:'Dirección MAC', def:'Identificador físico único grabado en la tarjeta de red de cada dispositivo. Opera en capa 2 del modelo OSI.'},
-              {term:'ICMP', def:'Protocolo de mensajes de control de internet. El comando ping lo utiliza para comprobar la conectividad entre dispositivos.'}
+              {term:'Dirección IP', def:'Identificador numérico único de cada dispositivo en una red. Puede ser pública (visible en internet) o privada (solo en la red local).'},
+              {term:'Dirección MAC', def:'Identificador físico único grabado en la tarjeta de red de cada dispositivo. Opera en capa 2 del modelo OSI. No cambia.'},
+              {term:'ICMP', def:'Protocolo de mensajes de control de internet. El comando ping lo utiliza para comprobar conectividad entre dispositivos.'}
             ],
             url:'https://tryhackme.com/room/whatisnetworking'
           },
           {
             id:'s1d1-lab2', type:'lab', mandatory:true, done:true, mod:'network-admin',
             title:'LAB | Introducción a LAN',
-            core:'Exploración de las tecnologías y diseños que dan potencia a las redes privadas: topologías de red, switches, routers y el protocolo ARP.',
+            core:'Exploración de las tecnologías y diseños que dan potencia a las redes privadas: topologías, switches, routers, protocolo ARP y DHCP.',
             concepts:[
-              {term:'Topología de red', def:'Forma en que los dispositivos están conectados entre sí. Las más comunes son estrella, bus y anillo.'},
-              {term:'Switch', def:'Dispositivo que conecta múltiples dispositivos dentro de una LAN y dirige el tráfico usando direcciones MAC.'},
-              {term:'Router', def:'Dispositivo que conecta redes distintas entre sí. Opera en capa 3 del modelo OSI usando direcciones IP.'},
-              {term:'ARP', def:'Protocolo de resolución de direcciones (Address Resolution Protocol). Traduce direcciones IP a direcciones MAC dentro de una red local.'},
+              {term:'Topología de red', def:'Forma en que los dispositivos están conectados entre sí. Las más comunes: estrella, bus, anillo, malla.'},
+              {term:'Switch', def:'Dispositivo que conecta múltiples dispositivos dentro de una LAN. Dirige el tráfico usando direcciones MAC.'},
+              {term:'ARP', def:'Protocolo de resolución de direcciones. Traduce direcciones IP a direcciones MAC dentro de una red local.'},
               {term:'DHCP', def:'Protocolo que asigna automáticamente direcciones IP a los dispositivos cuando se conectan a una red.'}
             ],
             url:'https://tryhackme.com/room/introtolan'
@@ -1420,25 +1467,24 @@
           {
             id:'s1d1-lab3', type:'lab', mandatory:false, done:true, mod:'network-admin',
             title:'LAB | Paquetes y Tramas',
-            core:'Comprensión de cómo los datos se dividen en paquetes y se transmiten a través de una red. Diferencia entre TCP (fiable) y UDP (rápido).',
+            core:'Comprensión de cómo los datos se dividen en paquetes y tramas para transmitirse, y la diferencia fundamental entre TCP (fiable) y UDP (rápido).',
             concepts:[
-              {term:'Paquete', def:'Unidad básica de datos en una red. Contiene los datos a transmitir más información de cabecera (IP origen, IP destino, etc.).'},
-              {term:'Trama (Frame)', def:'Unidad de datos en capa 2 del modelo OSI. Encapsula paquetes añadiendo direcciones MAC de origen y destino.'},
-              {term:'Encapsulación', def:'Proceso por el que cada capa del modelo OSI añade su propia cabecera a los datos al enviarlos.'},
-              {term:'TCP', def:'Protocolo de control de transmisión. Garantiza la entrega ordenada y sin errores. Más lento pero fiable. Usado en web, email.'},
-              {term:'UDP', def:'Protocolo de datagramas de usuario. Más rápido que TCP pero sin garantía de entrega. Usado en streaming, videojuegos, DNS.'}
+              {term:'Paquete', def:'Unidad básica de datos en una red. Contiene los datos más información de cabecera (IP origen, destino, protocolo).'},
+              {term:'Trama (Frame)', def:'Unidad de datos en capa 2 del OSI. Encapsula paquetes añadiendo direcciones MAC de origen y destino.'},
+              {term:'TCP', def:'Garantiza la entrega ordenada y sin errores. Más lento pero fiable. Usado en web y email.'},
+              {term:'UDP', def:'Más rápido que TCP pero sin garantía de entrega. Usado en streaming, videojuegos y DNS.'}
             ],
             url:'https://tryhackme.com/room/packetsframes'
           },
           {
             id:'s1d1-quiz', type:'quiz', mandatory:false, done:true, mod:'network-admin',
-            title:'Quiz Día 1 — Administración de Redes',
+            title:'Quiz Día 1 — Network Administration',
             score:60,
-            scoreNote:'Completado. Algunos conceptos de VLAN y troubleshooting a repasar.',
+            scoreNote:'Keep practicing!',
             missed:[
-              'Confusión entre responsabilidades del admin: la combinación correcta es "diseñar, instalar, mantener y expandir" — no "instalar, configurar, asegurar y planificar".',
-              'Función principal de una VLAN: dividir un switch físico en múltiples mini-switches (no simplemente aislar segmentos de red).',
-              'Primer paso de troubleshooting: siempre inspeccionar el hardware físico primero — no hacer DNS check.'
+              'Responsabilidades del admin: diseñar, instalar, mantener y expandir — no instalar, configurar, asegurar y planificar.',
+              'Función principal de una VLAN: dividir un switch físico en mini-switches virtuales, no simplemente aislar segmentos de red.',
+              'Troubleshooting: el primer paso siempre es inspeccionar el hardware físico (cables, routers, switches) — no el DNS check.'
             ]
           }
         ]
