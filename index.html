@@ -792,6 +792,12 @@
       {id:'res9',name:'Exploit Database',cat:'Herramientas online',url:'https://exploit-db.com',notes:'Base de datos de exploits y vulnerabilidades públicas.'},
       {id:'res10',name:'WolframAlpha',cat:'Herramientas online',url:'https://wolframalpha.com',notes:'Motor de conocimiento computacional. Cálculos, conversiones, consultas técnicas.'},
       {id:'res11',name:'CompTIA Security+ (oficial)',cat:'IronHack Papers',url:'https://www.comptia.org/certifications/security',notes:'Página oficial del examen. Objetivo final del bootcamp.'},
+      {id:'res12',name:'Eric Zimmerman Tools',cat:'DFIR Tools',url:'https://ericzimmerman.github.io/#!index.md',notes:'Suite completa de herramientas forenses para Windows: Registry Explorer, Timeline Explorer, PECmd, LECmd, AmcacheParser, AppCompatCacheParser, SBECmd, JLECmd y más.'},
+      {id:'res13',name:'Registry Explorer',cat:'DFIR Tools',url:'https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip',notes:'Analizador avanzado de hives del registro de Windows. Parte de la suite de Eric Zimmerman.'},
+      {id:'res14',name:'SrumECmd',cat:'DFIR Tools',url:'https://download.ericzimmermanstools.com/SrumECmd.zip',notes:'Parser para SRUM (System Resource Usage Monitor). Extrae estadísticas de red, energía y uso de apps desde SRUDB.dat.'},
+      {id:'res15',name:'Timeline Explorer',cat:'DFIR Tools',url:'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip',notes:'Herramienta para visualizar y filtrar supertimelines en CSV. Imprescindible para correlacionar artefactos forenses por tiempo.'},
+      {id:'res16',name:'KAPE',cat:'DFIR Tools',url:'https://www.kroll.com/en/services/cyber/incident-response-recovery/kroll-artifact-parser-and-extractor-kape',notes:'Kroll Artifact Parser and Extractor. Automatiza la recolección y el parsing de artefactos de Windows. Triage en minutos con Targets + Modules.'},
+      {id:'res17',name:'Blog Forense — Forensafe',cat:'DFIR Tools',url:'https://www.forensafe.com/blog.html',notes:'Blog de referencia sobre análisis forense digital. Artículos prácticos sobre artefactos de Windows, herramientas y técnicas DFIR.'},
     ];
   }
 
@@ -1490,6 +1496,280 @@
         ]
       }
     }
+  };
+
+  // ── W4-D4 ──
+  if (!STATIC_CONTENT[4]) STATIC_CONTENT[4] = {};
+  STATIC_CONTENT[4][4] = {
+    summary: "W4-D4: DFIR y Windows Forensics. Se sientan las bases de la investigación forense digital y la respuesta a incidentes. Se estudian los artefactos más relevantes de Windows — el Registro, sus hives, y todos los rastros que deja el SO de la actividad del usuario — junto con las herramientas profesionales del sector (KAPE, Autopsy, Eric Zimmerman Suite).",
+    items: [
+      {
+        id:'s4d4-l1', type:'lesson', mandatory:false, done:true, mod:'forensics',
+        title:'DFIR — Digital Forensics & Incident Response',
+        core:'DFIR combina dos disciplinas: Digital Forensics (recolectar, analizar y preservar evidencia digital) e Incident Response (detectar, contener y erradicar incidentes). El objetivo común es responder: qué ocurrió, cómo, cuándo y quién. Los cinco pilares son: artefactos, preservación de evidencia, cadena de custodia, orden de volatilidad y creación de línea temporal.',
+        concepts:[
+          {term:'DFIR', def:'Digital Forensics and Incident Response. Disciplina que combina la recolección forense de evidencias y la respuesta operativa a incidentes de seguridad.'},
+          {term:'Digital Forensics', def:'Rama que se enfoca en recolectar, analizar y preservar evidencia digital de forma que sea admisible en un proceso legal o corporativo.'},
+          {term:'Incident Response', def:'Rama que se centra en detectar, contener y erradicar incidentes de seguridad, y en restaurar el entorno afectado.'},
+          {term:'Artifacts (Artefactos)', def:'Rastros o evidencias digitales dejadas por la actividad humana o del sistema. Ejemplos: claves de registro, archivos modificados, logs, archivos LNK, Prefetch.'},
+          {term:'Evidence Preservation', def:'Preservación de la evidencia. Se trabaja siempre sobre una copia protegida del original (write-protected). Nunca sobre el original.'},
+          {term:'Chain of Custody', def:'Cadena de custodia. Registro documentado de quién accedió a la evidencia, cuándo y con qué propósito. Garantiza la integridad del proceso.'},
+          {term:'Order of Volatility', def:'Orden de volatilidad. Principio que obliga a recolectar primero la evidencia más efímera: RAM > conexiones de red activas > archivos temporales > disco duro > backups.'},
+          {term:'Timeline Creation', def:'Reconstrucción cronológica de eventos que permite entender qué ocurrió y en qué orden durante un incidente.'},
+          {term:'IoC', def:'Indicator of Compromise. Indicador técnico que señala que un sistema puede haber sido comprometido. Se comparten entre organizaciones para mejorar la defensa colectiva.'},
+          {term:'Perito Forense Digital', def:'Perfil que busca y preserva evidencias en sistemas, discos, redes o dispositivos móviles.'},
+          {term:'Incident Responder', def:'Perfil que analiza eventos y coordina las acciones técnicas para restaurar el entorno comprometido.'}
+        ],
+        full:`<h4>¿Por qué necesitamos DFIR?</h4>
+<p>Incluso con buenas defensas, los incidentes son inevitables. DFIR permite: identificar evidencias y distinguir falsas alarmas de amenazas reales, eliminar completamente al atacante y su persistencia, determinar el alcance temporal y técnico del ataque, comprender qué falló y cómo prevenirlo, y compartir IoCs con la comunidad.</p>
+
+<h4>Los 5 pilares técnicos de DFIR</h4>
+<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.65rem;margin:0.8rem 0">
+  <tr style="background:rgba(0,245,255,0.1);color:var(--cyan)">
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Concepto</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Descripción</th>
+  </tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">Artifacts</td><td style="padding:5px 10px;border:1px solid var(--border)">Rastros de actividad: claves de registro, archivos modificados, logs del sistema.</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">Evidence Preservation</td><td style="padding:5px 10px;border:1px solid var(--border)">Copia protegida del original. La investigación se realiza siempre sobre la copia.</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">Chain of Custody</td><td style="padding:5px 10px;border:1px solid var(--border)">Documenta quién accedió a la evidencia, cuándo y para qué.</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">Order of Volatility</td><td style="padding:5px 10px;border:1px solid var(--border)">RAM → Conexiones de red → Archivos temporales → Disco → Backups. Se captura primero lo más efímero.</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">Timeline Creation</td><td style="padding:5px 10px;border:1px solid var(--border)">Reconstrucción cronológica de qué pasó y cuándo.</td></tr>
+</table>
+
+<h4>Proceso PICERL (SANS) / NIST SP 800-61</h4>
+<p>Ambas metodologías cubren el mismo ciclo:</p>
+<ul>
+  <li><strong>Preparation:</strong> Políticas, herramientas y roles listos. Simulacros definidos.</li>
+  <li><strong>Identification:</strong> Detectar y confirmar incidentes reales. Evaluar impacto y priorizar.</li>
+  <li><strong>Containment:</strong> Aislar sistemas afectados. Evitar propagación.</li>
+  <li><strong>Eradication:</strong> Eliminar malware, puertas traseras, usuarios falsos. Reforzar vulnerabilidades explotadas.</li>
+  <li><strong>Recovery:</strong> Restaurar servicios y validar su integridad.</li>
+  <li><strong>Lessons Learned:</strong> Documentar el incidente, mejorar y ajustar defensas.</li>
+</ul>
+
+<h4>Ejemplo práctico: empleado abre adjunto sospechoso</h4>
+<ul>
+  <li>SOC detecta el evento → <strong>Identification</strong></li>
+  <li>Se aísla el equipo → <strong>Containment</strong></li>
+  <li>Se extrae imagen del disco → <strong>Forensics</strong></li>
+  <li>Se analizan artefactos con Autopsy y Volatility</li>
+  <li>Se elimina el malware y restaura el sistema → <strong>Eradication + Recovery</strong></li>
+  <li>Se documenta para prevención futura → <strong>Lessons Learned</strong></li>
+</ul>`
+      },
+      {
+        id:'s4d4-l2', type:'lesson', mandatory:false, done:true, mod:'forensics',
+        title:'Herramientas DFIR',
+        core:'El ecosistema DFIR gira en torno a tres pilares: Eric Zimmerman Tools para parsear artefactos de Windows, KAPE para automatizar la recolección (triage), y Autopsy como plataforma de análisis forense completo. Cada una tiene su momento en el flujo de trabajo.',
+        concepts:[
+          {term:'Eric Zimmerman Tools', def:'Suite gratuita de utilidades especializadas para Windows Forensics: RECmd, Registry Explorer, AppCompatCacheParser, AmcacheParser, LECmd (LNK), JLECmd (Jump Lists), SBECmd (ShellBags), PECmd (Prefetch), Timeline Explorer.'},
+          {term:'KAPE', def:'Kroll Artifact Parser and Extractor. Automatiza la recolección y el parsing de artefactos. Usa Targets (qué recolectar) + Modules (cómo parsear). Genera timelines en minutos. Modo CLI y GUI.'},
+          {term:'Autopsy', def:'Plataforma open-source para análisis forense de discos, móviles y memorias USB. Soporta imágenes y live. Plugins para MRU, web history, LNK, etc. Navegación → Extract File(s) para extraer hives.'},
+          {term:'FTK Imager', def:'Herramienta de adquisición forense. Monta imágenes/discos. "Obtain Protected Files" copia hives protegidos en live. Limitación: no extrae Amcache.hve.'},
+          {term:'Volatility', def:'Herramienta para análisis de volcados de memoria RAM. Detecta procesos ocultos, malware y credenciales en memoria.'},
+          {term:'Redline', def:'Desarrollada por FireEye. Recolecta artefactos forenses y analiza incidentes en endpoints. Ideal para detección rápida en entornos corporativos.'},
+          {term:'Velociraptor', def:'Plataforma avanzada open-source de monitoreo, recolección y análisis forense. Diseñada para respuesta rápida y escalable.'},
+          {term:'Timeline Explorer', def:'Herramienta de Zimmerman para visualizar y filtrar timelines unificadas en formato CSV. Imprescindible para correlacionar artefactos por tiempo.'}
+        ],
+        full:`<h4>Cuándo usar cada herramienta</h4>
+<ul>
+  <li><strong>KAPE:</strong> Fase de triage en respuesta a incidentes. Recolecta y parsea los artefactos más valiosos en minutos. "Lo más valioso primero."</li>
+  <li><strong>Autopsy:</strong> Análisis en profundidad de imágenes forenses. Navegación completa del sistema de archivos, metadatos y actividad del usuario.</li>
+  <li><strong>Eric Zimmerman Suite:</strong> Parseo específico de artefactos individuales (Registry, LNK, ShellBags, Prefetch...). Se integra perfectamente con KAPE como módulos.</li>
+  <li><strong>Volatility:</strong> Análisis de memoria RAM. Complementa el análisis de disco para detectar lo que no persiste en el disco.</li>
+  <li><strong>FTK Imager:</strong> Adquisición y montaje de imágenes forenses. No usar para análisis.</li>
+</ul>
+
+<h4>Principios de adquisición sin contaminar</h4>
+<ul>
+  <li><strong>No trabajar sobre el original</strong> — Write-blocker / montaje read-only / imagen forense.</li>
+  <li><strong>Documentar cadena de custodia</strong> — Quién, cuándo, dónde, cómo.</li>
+  <li><strong>Priorizar orden de volatilidad</strong> — En live: memoria/red → disco → backups.</li>
+  <li><strong>Verificación con hashes</strong> — MD5/SHA-256 antes y después de copiar la imagen.</li>
+</ul>
+
+<h4>KAPE en acción</h4>
+<p>KAPE usa <strong>Targets</strong> (qué recolectar) + <strong>Modules</strong> (cómo parsear). Ejemplo típico: Target: Registry → Módulo: EZParser (Eric Zimmerman tools). Salida: carpetas con artefactos procesados + timeline .csv listo para Timeline Explorer.</p>`
+      },
+      {
+        id:'s4d4-l3', type:'lesson', mandatory:false, done:true, mod:'forensics',
+        title:'Windows Forensics — Artefactos y Windows Registry',
+        core:'Windows Forensics es la rama que examina evidencias en PCs Windows para reconstruir actividades. Windows genera una cantidad enorme de artefactos porque guarda preferencias y usos del usuario para mejorar la UX — los analistas aprovechan exactamente esa misma información. El Windows Registry es la base de datos central de configuración: organizado en Hives > Keys > Values.',
+        concepts:[
+          {term:'Windows Forensics', def:'Rama de Digital Forensics centrada en evidencia en PCs Windows. Uso: legal (civil/penal), corporativo (fraude interno), DFIR (intrusiones/incidentes).'},
+          {term:'Artefacto forense', def:'Huella digital de una actividad humana o del sistema. Un solo artefacto no prueba nada — su valor está en correlacionarlos con otros para construir la historia del incidente.'},
+          {term:'MRU', def:'Most Recently Used. Lista de archivos o programas usados recientemente. Windows la mantiene en varias claves del registro para mejorar UX, y es una mina de oro forense.'},
+          {term:'Windows Registry', def:'Base de datos jerárquica que almacena la configuración del hardware, software, usuarios y preferencias del sistema operativo Windows.'},
+          {term:'Hive', def:'Archivo físico que contiene parte del registro. Ejemplos: NTUSER.DAT, SAM, SYSTEM, SOFTWARE, SECURITY, DEFAULT, USRCLASS.DAT, Amcache.hve.'},
+          {term:'Key (clave)', def:'Contenedor dentro del registro, equivalente a una carpeta. Puede contener subclaves y valores.'},
+          {term:'Value (valor)', def:'Dato almacenado dentro de una clave. Tiene nombre, tipo (REG_SZ, REG_DWORD, REG_BINARY...) y datos.'},
+          {term:'HKCU', def:'HKEY_CURRENT_USER. Perfil del usuario logueado: preferencias, MRU, configuración personal.'},
+          {term:'HKLM', def:'HKEY_LOCAL_MACHINE. Configuración de la máquina: hardware, software instalado, servicios. Afecta a todos los usuarios.'},
+          {term:'HKU', def:'HKEY_USERS. Todos los perfiles de usuario cargados. HKCU es una subkey de HKU.'},
+          {term:'HKCR', def:'HKEY_CLASSES_ROOT. Vista combinada de asociaciones de tipos de archivo (HKLM\\Software\\Classes + HKCU\\Software\\Classes).'},
+          {term:'HKCC', def:'HKEY_CURRENT_CONFIG. Perfil de hardware activo en el arranque actual.'},
+          {term:'NTUSER.DAT', def:'Hive del usuario. Se monta como HKCU cuando el usuario inicia sesión. Ruta: C:\\Users\\<usuario>\\NTUSER.DAT. Suele estar oculto.'},
+          {term:'USRCLASS.DAT', def:'Hive secundario del usuario. Ruta: C:\\Users\\<usuario>\\AppData\\Local\\Microsoft\\Windows\\USRCLASS.DAT. Contiene ShellBags y clases COM del usuario.'},
+          {term:'SAM', def:'Security Account Manager. Hive que almacena información de cuentas locales: RID, recuento de logons, Last Logon, Last Failed, Password Last Set, grupos.'},
+          {term:'Transaction Logs', def:'Archivos .LOG, .LOG1, .LOG2 junto al hive. Pueden contener cambios más recientes no volcados aún al hive (journal). Siempre revisar junto al hive.'},
+          {term:'RegBack', def:'C:\\Windows\\System32\\Config\\RegBack\\. Copias históricas de hives. En versiones modernas de Windows suele estar vacío por defecto.'}
+        ],
+        full:`<h4>¿Por qué Windows es el objetivo principal?</h4>
+<ul>
+  <li>~80% del mercado desktop → alta probabilidad de hallarlo en incidentes.</li>
+  <li>Amplia telemetría local: preferencias, MRU, dispositivos, apps = muchos artefactos.</li>
+  <li>Entorno mixto: endpoints y servidores (AD, Exchange, file servers).</li>
+</ul>
+
+<h4>¿Dónde viven los artefactos en Windows?</h4>
+<ul>
+  <li><strong>File System:</strong> C:\\Windows\\, C:\\ProgramData\\, C:\\Users\\&lt;user&gt;\\...</li>
+  <li><strong>Registry:</strong> HKLM/HKCU (configuración sistema/usuario)</li>
+  <li><strong>Perfiles de usuario:</strong> AppData\\Roaming / Local / LocalLow</li>
+  <li><strong>Archivos específicos de apps:</strong> Navegadores, mensajería, ofimática.</li>
+  <li><strong>Red/Memoria:</strong> Eventos, conexiones, volatile data.</li>
+</ul>
+
+<h4>Estructura del Windows Registry</h4>
+<p>Keys (carpetas) → Values (datos) → agrupados en Hives (archivos físicos).</p>
+<p>Se visualiza con <code>regedit.exe</code>. <strong>Regla de oro forense: solo lectura — nunca editar la evidencia original.</strong></p>
+
+<h4>Hives del sistema (offline, en imagen/disco)</h4>
+<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.65rem;margin:0.8rem 0">
+  <tr style="background:rgba(0,245,255,0.1);color:var(--cyan)">
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Archivo</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Ruta</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Monta en</th>
+  </tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">SYSTEM</td><td style="padding:5px 10px;border:1px solid var(--border)">C:\\Windows\\System32\\Config\\SYSTEM</td><td style="padding:5px 10px;border:1px solid var(--border)">HKLM\\SYSTEM</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">SOFTWARE</td><td style="padding:5px 10px;border:1px solid var(--border)">C:\\Windows\\System32\\Config\\SOFTWARE</td><td style="padding:5px 10px;border:1px solid var(--border)">HKLM\\SOFTWARE</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">SAM</td><td style="padding:5px 10px;border:1px solid var(--border)">C:\\Windows\\System32\\Config\\SAM</td><td style="padding:5px 10px;border:1px solid var(--border)">HKLM\\SAM</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">SECURITY</td><td style="padding:5px 10px;border:1px solid var(--border)">C:\\Windows\\System32\\Config\\SECURITY</td><td style="padding:5px 10px;border:1px solid var(--border)">HKLM\\SECURITY</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">NTUSER.DAT</td><td style="padding:5px 10px;border:1px solid var(--border)">C:\\Users\\&lt;usuario&gt;\\NTUSER.DAT</td><td style="padding:5px 10px;border:1px solid var(--border)">HKCU (al iniciar sesión)</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">USRCLASS.DAT</td><td style="padding:5px 10px;border:1px solid var(--border)">C:\\Users\\&lt;usuario&gt;\\AppData\\Local\\Microsoft\\Windows\\USRCLASS.DAT</td><td style="padding:5px 10px;border:1px solid var(--border)">HKCU\\Software\\Classes</td></tr>
+</table>
+
+<h4>Control Sets</h4>
+<p>En SYSTEM existen ControlSet001, ControlSet002, etc. Windows crea <code>HKLM\\SYSTEM\\CurrentControlSet</code> como vista "actual" en vivo.</p>
+<ul>
+  <li><code>HKLM\\SYSTEM\\Select\\Current</code> → índice del ControlSet activo.</li>
+  <li><code>HKLM\\SYSTEM\\Select\\LastKnownGood</code> → último "bueno".</li>
+</ul>
+<p><strong>Recomendación:</strong> consultar siempre CurrentControlSet para información vigente.</p>`
+      },
+      {
+        id:'s4d4-l4', type:'lesson', mandatory:false, done:true, mod:'forensics',
+        title:'Artefactos del Registro — Contexto del Sistema y Actividad del Usuario',
+        core:'Antes de buscar rastros del atacante hay que establecer el contexto del sistema: versión de SO, nombre de equipo, zona horaria e interfaces de red. Después se analizan los artefactos de actividad del usuario: RecentDocs, UserAssist, ShimCache, AmCache, BAM/DAM, Prefetch, LNK Files, Jump Lists y ShellBags. La clave está en correlacionarlos.',
+        concepts:[
+          {term:'OS Version (clave)', def:'HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion — ProductName, ReleaseId/DisplayVersion, CurrentBuild. Útil para compatibilidad de herramientas e interpretación de artefactos.'},
+          {term:'ComputerName (clave)', def:'HKLM\\SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName — Hostname del equipo. Confirma que trabajas sobre el host correcto.'},
+          {term:'TimeZoneInformation (clave)', def:'HKLM\\SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation — Crítico para timelines: algunos artefactos están en UTC, otros en hora local.'},
+          {term:'Interfaces de red (clave)', def:'HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces — IPs actuales. NetworkList\\Signatures para redes pasadas; el Last Write del key es la última conexión.'},
+          {term:'Autoruns / Run keys', def:'Claves que arrancan programas al inicio del sistema o del usuario. Hotspot de persistencia de malware. Ubicaciones: NTUSER.DAT y HKLM\\SOFTWARE\\...\\Run y RunOnce.'},
+          {term:'SAM (cuentas)', def:'SAM\\Domains\\Account\\Users — RID, recuento de logons, Last Logon, Last Failed, Password Last Set, grupos. Correlacionar con ProfileList para mapear SID a ruta de perfil.'},
+          {term:'RecentDocs', def:'HKCU\\...\\Explorer\\RecentDocs — Documentos abiertos recientemente. MRU global y por extensión. Permite localizar archivos consultados aunque ya no existan.'},
+          {term:'UserAssist', def:'HKCU\\...\\Explorer\\UserAssist\\{GUID}\\Count — Apps lanzadas vía Explorer (NO desde CMD/PowerShell). Datos en ROT13. Campos: nombre/ruta, Run Count, Last Execution.'},
+          {term:'ShimCache / AppCompatCache', def:'HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\AppCompatCache — Pista de ejecutables vistos por el sistema (compatibilidad). Nombre, tamaño, Last Modified. Parser: AppCompatCacheParser.'},
+          {term:'AmCache', def:'C:\\Windows\\AppCompat\\Programs\\Amcache.hve — Programas ejecutados recientemente: nombre, ruta, SHA-1, timestamps. Excelente para detectar LOLBins y ejecutables fuera de ruta habitual.'},
+          {term:'BAM/DAM', def:'Background/Disk Activity Moderator. HKLM\\SYSTEM\\CurrentControlSet\\Services\\bam\\UserSettings\\{SID} — Última hora de ejecución por usuario y ruta del binario. Funciona incluso si se limpian los logs.'},
+          {term:'LOLBins', def:'Living Off the Land Binaries. Binarios legítimos del sistema operativo usados por atacantes para ejecutar código malicioso sin necesidad de instalar herramientas externas.'},
+          {term:'Open/Save MRU', def:'HKCU\\...\\ComDlg32\\OpenSavePIDlMRU y LastVisitedPidlMRU — Rutas usadas en diálogos Abrir/Guardar. Revelan el flujo de trabajo del usuario.'},
+          {term:'TypedPaths', def:'HKCU\\...\\Explorer\\TypedPaths — URLs/rutas tecleadas manualmente en la barra de direcciones del Explorador.'},
+          {term:'WordWheelQuery', def:'HKCU\\...\\Explorer\\WordWheelQuery — Búsquedas realizadas en el Explorador de Windows. Aportan la intención del usuario.'},
+          {term:'Prefetch', def:'C:\\Windows\\Prefetch\\*.pf — Archivos creados por Windows para acelerar la carga de programas. Contienen: nombre del ejecutable, fecha/hora de última ejecución, número de veces ejecutado, DLLs cargadas. Puede estar deshabilitado en servidores o SSD modernos.'},
+          {term:'LNK Files', def:'C:\\Users\\<usuario>\\AppData\\Roaming\\Microsoft\\Windows\\Recent\\ — Accesos directos creados al abrir un archivo. Contienen ruta original, ID del volumen, MAC times. Útiles cuando el archivo original fue movido o eliminado.'},
+          {term:'Jump Lists', def:'C:\\Users\\<user>\\AppData\\Roaming\\Microsoft\\Windows\\Recent\\AutomaticDestinations\\ — Archivos recientes agrupados por aplicación. Permiten saber con qué app se abrió un archivo y cuántas veces.'},
+          {term:'ShellBags', def:'USRCLASS.DAT\\...\\Shell\\Bags y NTUSER.DAT\\...\\Shell\\Bags — Preferencias de visualización de carpetas. Permiten detectar carpetas accedidas aunque ya no existan. Parser: ShellBag Explorer (Zimmerman).'},
+          {term:'SRUM', def:'System Resource Usage Monitor. C:\\Windows\\System32\\sru\\SRUDB.dat — Base de datos ESE con estadísticas de red, energía y uso de apps. Identifica si un programa tuvo tráfico o actividad incluso si se limpió el log.'},
+          {term:'USBSTOR (clave)', def:'HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR — Dispositivos USB conectados: VendorID, ProductID, número de serie. Primera conexión, última conexión, última extracción en subkeys Properties.'},
+          {term:'MAC times', def:'Modified, Accessed, Created (y Born en NTFS). Timestamps de los archivos. Fundamentales para construir la línea temporal del incidente.'},
+          {term:'ROT13', def:'Cifrado de sustitución que desplaza cada letra 13 posiciones. Usado por Windows en UserAssist para ofuscar datos — las herramientas forenses lo decodifican automáticamente.'}
+        ],
+        full:`<h4>Orden de trabajo en el Registro</h4>
+<p>Primero asegurar el contexto del sistema para evitar falsas interpretaciones:</p>
+<ol>
+  <li>Versión de Windows → <code>HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion</code></li>
+  <li>Nombre del equipo → <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName</code></li>
+  <li>Zona horaria → <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation</code></li>
+  <li>Interfaces de red → <code>HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces</code></li>
+  <li>Redes pasadas → <code>HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\NetworkList\\Signatures\\</code></li>
+</ol>
+
+<h4>Artefactos de ejecución — comparativa</h4>
+<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.65rem;margin:0.8rem 0">
+  <tr style="background:rgba(0,245,255,0.1);color:var(--cyan)">
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Artefacto</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">¿Qué confirma?</th>
+    <th style="padding:6px 10px;text-align:left;border:1px solid var(--border)">Limitación</th>
+  </tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">UserAssist</td><td style="padding:5px 10px;border:1px solid var(--border)">Ejecución vía Explorer, Run Count, Last Execution</td><td style="padding:5px 10px;border:1px solid var(--border)">Solo apps lanzadas desde Explorer</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">ShimCache</td><td style="padding:5px 10px;border:1px solid var(--border)">Ejecutable visto por el sistema, Last Modified</td><td style="padding:5px 10px;border:1px solid var(--border)">No confirma ejecución directa, solo que fue visto</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">AmCache</td><td style="padding:5px 10px;border:1px solid var(--border)">Ruta, SHA-1, instalación/ejecución/eliminación</td><td style="padding:5px 10px;border:1px solid var(--border)">FTK Imager no lo extrae — usar KAPE u otro método</td></tr>
+  <tr style="color:var(--white);background:rgba(0,0,0,0.2)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">Prefetch</td><td style="padding:5px 10px;border:1px solid var(--border)">Nombre, fecha última ejecución, veces ejecutado, DLLs</td><td style="padding:5px 10px;border:1px solid var(--border)">Puede estar deshabilitado en SSD o servidores</td></tr>
+  <tr style="color:var(--white)"><td style="padding:5px 10px;border:1px solid var(--border);color:var(--cyan)">BAM/DAM</td><td style="padding:5px 10px;border:1px solid var(--border)">Última hora de ejecución por usuario y ruta</td><td style="padding:5px 10px;border:1px solid var(--border)">Se resetea en algunos eventos del sistema</td></tr>
+</table>
+
+<h4>Autoruns y persistencia de malware</h4>
+<p>Los Run Keys son el mecanismo más básico de persistencia. Un atacante que quiere que su malware sobreviva al reinicio lo registra aquí:</p>
+<ul>
+  <li><code>NTUSER.DAT\\Software\\Microsoft\\Windows\\CurrentVersion\\Run</code></li>
+  <li><code>NTUSER.DAT\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce</code></li>
+  <li><code>HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</code></li>
+  <li><code>HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce</code></li>
+  <li><code>HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run</code></li>
+</ul>
+
+<h4>USB Forensics — reconstrucción completa</h4>
+<p>Con las claves de USBSTOR se puede construir la historia completa de un USB: qué dispositivo era (VendorID/ProductID/número de serie), cuándo se conectó por primera vez (0064), cuándo fue su última conexión (0066), cuándo fue extraído (0067), y cómo se llamaba el volumen (correlacionando con <code>HKLM\\SOFTWARE\\Microsoft\\Windows Portable Devices\\Devices</code>).</p>
+
+<h4>Correlación de artefactos — el arte de la forensia</h4>
+<p>Un solo artefacto no prueba nada. Pero combinados crean una historia sólida:</p>
+<ul>
+  <li><strong>Prefetch</strong> → confirma que el ejecutable se lanzó</li>
+  <li><strong>LNK Files</strong> → muestra el archivo que fue abierto</li>
+  <li><strong>RecentDocs</strong> → prueba acceso reciente a un documento</li>
+  <li><strong>UserAssist</strong> → indica quién lo abrió y cuántas veces</li>
+  <li><strong>SRUM</strong> → confirma si ese proceso tuvo tráfico de red</li>
+  <li><strong>BAM/DAM</strong> → verifica la hora exacta incluso si se limpió el log</li>
+</ul>`
+      },
+      {
+        id:'s4d4-l5', type:'lesson', mandatory:false, done:true, mod:'forensics',
+        title:'Timeline Analysis y Correlación Final',
+        core:'El objetivo final del análisis forense es reconstruir una línea temporal unificada que permita entender la secuencia de acciones previas y posteriores al incidente. Se combinan fuentes heterogéneas: NTFS MACB times, Prefetch, AmCache, SRUM, LNK y Event Logs. La herramienta de referencia es Timeline Explorer de Zimmerman.',
+        concepts:[
+          {term:'Timeline Analysis', def:'Proceso de ordenar todos los eventos forenses por tiempo para reconstruir la secuencia de acciones del atacante y del usuario en torno al incidente.'},
+          {term:'NTFS MACB times', def:'Modified, Accessed, Created, Born (MFT entry change). Los cuatro timestamps que NTFS registra para cada archivo. Son la base de cualquier timeline.'},
+          {term:'Timeline Explorer', def:'Herramienta de Eric Zimmerman para visualizar y filtrar timelines unificadas en CSV. Permite correlacionar artefactos de múltiples fuentes por timestamp.'},
+          {term:'Supertimeline', def:'Timeline unificada que combina múltiples fuentes de artefactos (NTFS, Prefetch, Registry, Event Logs, LNK, SRUM) en una sola vista cronológica. KAPE + Timeline Explorer la generan automáticamente.'}
+        ],
+        full:`<h4>Fuentes para la Timeline</h4>
+<ul>
+  <li><strong>NTFS:</strong> MACB times de todos los archivos del sistema.</li>
+  <li><strong>Prefetch:</strong> Timestamps de ejecución de programas.</li>
+  <li><strong>AmCache:</strong> Instalación, ejecución y eliminación de software.</li>
+  <li><strong>SRUM:</strong> Actividad de red y uso de apps con timestamps.</li>
+  <li><strong>LNK Files:</strong> MAC times del archivo de acceso directo + timestamps del archivo original.</li>
+  <li><strong>Event Logs:</strong> Eventos del sistema, logons, creación de procesos, cambios en servicios.</li>
+  <li><strong>Registry Last Write:</strong> Última modificación de cada clave del registro.</li>
+</ul>
+
+<h4>Flujo de trabajo con KAPE + Timeline Explorer</h4>
+<ol>
+  <li>KAPE recolecta todos los artefactos relevantes (Target: All).</li>
+  <li>KAPE parsea con módulos EZTools (Module: EZParser).</li>
+  <li>Salida: carpetas con CSVs procesados de cada artefacto.</li>
+  <li>Timeline Explorer abre todos los CSVs y los unifica.</li>
+  <li>Se filtra por rango de tiempo en torno al incidente.</li>
+  <li>Se identifica la secuencia de acciones del atacante.</li>
+</ol>
+
+<h4>Conclusión — lo que importa</h4>
+<p>Las herramientas son importantes, pero el proceso y el método son lo esencial. Un buen analista DFIR aprende tanto del incidente como del atacante. Cada incidente es una oportunidad de aprendizaje para fortalecer la defensa.</p>
+<p><em>"Cada acción deja una huella; cada huella cuenta una historia."</em></p>`
+      }
+    ]
   };
 
   // ── INIT ──
