@@ -35,6 +35,19 @@
     --cat-troubleshooting-bg: rgba(74,222,128,0.10);
     --cat-seguridad: #f87171;
     --cat-seguridad-bg: rgba(248,113,113,0.10);
+
+    --tool-consola: #00b4ff;
+    --tool-consola-bg: rgba(0,180,255,0.10);
+    --tool-analisis: #7c6af5;
+    --tool-analisis-bg: rgba(124,106,245,0.12);
+    --tool-so: #22d3a0;
+    --tool-so-bg: rgba(34,211,160,0.10);
+    --tool-remoto: #f59e0b;
+    --tool-remoto-bg: rgba(245,158,11,0.10);
+    --tool-aprendizaje: #f87171;
+    --tool-aprendizaje-bg: rgba(248,113,113,0.10);
+    --tool-gestion: #4ade80;
+    --tool-gestion-bg: rgba(74,222,128,0.10);
   }
 
   html { scroll-behavior: smooth; }
@@ -48,7 +61,6 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
   header {
     position: relative;
     padding: 3rem 2rem 2.5rem;
@@ -67,18 +79,14 @@
   }
 
   .header-inner {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 1.5rem;
   }
 
-  .logo {
-    font-size: 2rem;
-    line-height: 1;
-    filter: drop-shadow(0 0 8px var(--neon-glow));
-  }
+  .logo { font-size: 2rem; line-height: 1; filter: drop-shadow(0 0 8px var(--neon-glow)); }
 
   .header-text h1 {
     font-family: 'JetBrains Mono', monospace;
@@ -96,19 +104,49 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
-  .header-text p span {
-    color: var(--neon);
-    opacity: 0.7;
-  }
+  .header-text p span { color: var(--neon); opacity: 0.7; }
 
-  /* MAIN */
   main {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 2rem;
   }
 
-  /* SEARCH */
+  /* MODE TOGGLE */
+  .mode-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content;
+  }
+
+  .mode-btn {
+    padding: 8px 24px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-right: 0.5px solid var(--border);
+  }
+
+  .mode-btn:last-child { border-right: none; }
+
+  .mode-btn.active {
+    background: var(--neon-dim);
+    color: var(--neon);
+  }
+
+  .mode-btn:hover:not(.active) {
+    background: var(--bg3);
+    color: var(--text);
+  }
+
   .search-wrap {
     position: relative;
     margin-bottom: 1.5rem;
@@ -137,13 +175,8 @@
   }
 
   #search::placeholder { color: var(--text-dim); }
+  #search:focus { border-color: var(--neon); box-shadow: 0 0 0 3px var(--neon-dim); }
 
-  #search:focus {
-    border-color: var(--neon);
-    box-shadow: 0 0 0 3px var(--neon-dim);
-  }
-
-  /* FILTERS */
   .filters {
     display: flex;
     flex-wrap: wrap;
@@ -165,18 +198,10 @@
     letter-spacing: 0.02em;
   }
 
-  .filter-btn:hover {
-    border-color: var(--border-hover);
-    color: var(--text);
-  }
+  .filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .filter-btn.active-all { background: var(--neon-dim); border-color: var(--neon); color: var(--neon); box-shadow: 0 0 8px var(--neon-dim); }
 
-  .filter-btn.active-all {
-    background: var(--neon-dim);
-    border-color: var(--neon);
-    color: var(--neon);
-    box-shadow: 0 0 8px var(--neon-dim);
-  }
-
+  /* vocab filters */
   .filter-btn[data-cat="arquitectura"].active { background: var(--cat-arquitectura-bg); border-color: var(--cat-arquitectura); color: var(--cat-arquitectura); }
   .filter-btn[data-cat="infraestructura"].active { background: var(--cat-infraestructura-bg); border-color: var(--cat-infraestructura); color: var(--cat-infraestructura); }
   .filter-btn[data-cat="direccionamiento"].active { background: var(--cat-direccionamiento-bg); border-color: var(--cat-direccionamiento); color: var(--cat-direccionamiento); }
@@ -184,7 +209,14 @@
   .filter-btn[data-cat="troubleshooting"].active { background: var(--cat-troubleshooting-bg); border-color: var(--cat-troubleshooting); color: var(--cat-troubleshooting); }
   .filter-btn[data-cat="seguridad"].active { background: var(--cat-seguridad-bg); border-color: var(--cat-seguridad); color: var(--cat-seguridad); }
 
-  /* COUNT */
+  /* tool filters */
+  .filter-btn[data-cat="consola"].active { background: var(--tool-consola-bg); border-color: var(--tool-consola); color: var(--tool-consola); }
+  .filter-btn[data-cat="analisis"].active { background: var(--tool-analisis-bg); border-color: var(--tool-analisis); color: var(--tool-analisis); }
+  .filter-btn[data-cat="so"].active { background: var(--tool-so-bg); border-color: var(--tool-so); color: var(--tool-so); }
+  .filter-btn[data-cat="remoto"].active { background: var(--tool-remoto-bg); border-color: var(--tool-remoto); color: var(--tool-remoto); }
+  .filter-btn[data-cat="aprendizaje"].active { background: var(--tool-aprendizaje-bg); border-color: var(--tool-aprendizaje); color: var(--tool-aprendizaje); }
+  .filter-btn[data-cat="gestion"].active { background: var(--tool-gestion-bg); border-color: var(--tool-gestion); color: var(--tool-gestion); }
+
   .meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
@@ -194,21 +226,18 @@
 
   .meta span { color: var(--neon); }
 
-  /* GRID */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 12px;
   }
 
-  /* CARD */
   .card {
     background: var(--card);
     border: 0.5px solid var(--border);
     border-radius: 10px;
     padding: 1.1rem 1.25rem;
     transition: border-color 0.2s, background 0.2s, transform 0.15s;
-    cursor: default;
   }
 
   .card:hover {
@@ -222,8 +251,15 @@
     font-size: 14px;
     font-weight: 600;
     color: var(--neon);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     text-shadow: 0 0 10px rgba(0,180,255,0.3);
+  }
+
+  .card-so {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
   }
 
   .card-def {
@@ -233,11 +269,7 @@
     margin-bottom: 12px;
   }
 
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 
   .pill {
     font-size: 10px;
@@ -255,8 +287,13 @@
   .pill-segmentacion { background: var(--cat-segmentacion-bg); border-color: var(--cat-segmentacion); color: var(--cat-segmentacion); }
   .pill-troubleshooting { background: var(--cat-troubleshooting-bg); border-color: var(--cat-troubleshooting); color: var(--cat-troubleshooting); }
   .pill-seguridad { background: var(--cat-seguridad-bg); border-color: var(--cat-seguridad); color: var(--cat-seguridad); }
+  .pill-consola { background: var(--tool-consola-bg); border-color: var(--tool-consola); color: var(--tool-consola); }
+  .pill-analisis { background: var(--tool-analisis-bg); border-color: var(--tool-analisis); color: var(--tool-analisis); }
+  .pill-so { background: var(--tool-so-bg); border-color: var(--tool-so); color: var(--tool-so); }
+  .pill-remoto { background: var(--tool-remoto-bg); border-color: var(--tool-remoto); color: var(--tool-remoto); }
+  .pill-aprendizaje { background: var(--tool-aprendizaje-bg); border-color: var(--tool-aprendizaje); color: var(--tool-aprendizaje); }
+  .pill-gestion { background: var(--tool-gestion-bg); border-color: var(--tool-gestion); color: var(--tool-gestion); }
 
-  /* EMPTY */
   .empty {
     grid-column: 1 / -1;
     text-align: center;
@@ -268,7 +305,6 @@
 
   .empty span { color: var(--neon); opacity: 0.5; display: block; font-size: 2rem; margin-bottom: 1rem; }
 
-  /* FOOTER */
   footer {
     text-align: center;
     padding: 2.5rem;
@@ -302,21 +338,17 @@
 
 <main>
 
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="vocab">📖 Vocabulario</button>
+    <button class="mode-btn" data-mode="tools">🛠️ Herramientas</button>
+  </div>
+
   <div class="search-wrap">
     <span class="search-icon">⌕</span>
-    <input type="text" id="search" placeholder="buscar término..." autocomplete="off" spellcheck="false" />
+    <input type="text" id="search" placeholder="buscar..." autocomplete="off" spellcheck="false" />
   </div>
 
-  <div class="filters">
-    <button class="filter-btn active-all" data-cat="all">Todos</button>
-    <button class="filter-btn" data-cat="arquitectura">Arquitectura</button>
-    <button class="filter-btn" data-cat="infraestructura">Infraestructura</button>
-    <button class="filter-btn" data-cat="direccionamiento">Direccionamiento</button>
-    <button class="filter-btn" data-cat="segmentacion">Segmentación</button>
-    <button class="filter-btn" data-cat="troubleshooting">Troubleshooting</button>
-    <button class="filter-btn" data-cat="seguridad">Seguridad</button>
-  </div>
-
+  <div class="filters" id="filters"></div>
   <div class="meta" id="meta"></div>
   <div class="grid" id="grid"></div>
 
@@ -328,7 +360,7 @@
 </footer>
 
 <script>
-const terms = [
+const vocab = [
   { name: "Modelo OSI", def: "Modelo teórico de 7 capas que estandariza la comunicación entre dispositivos de distintos fabricantes.", tags: ["arquitectura"] },
   { name: "Modelo TCP/IP", def: "Conjunto de protocolos prácticos en los que se basa Internet — 4 capas: Acceso a Red, Internet, Transporte, Aplicación.", tags: ["arquitectura"] },
   { name: "Encapsulación", def: "Proceso por el que los datos atraviesan las capas OSI añadiendo cabeceras en cada nivel hasta convertirse en bits.", tags: ["arquitectura"] },
@@ -364,7 +396,39 @@ const terms = [
   { name: "Control de acceso", def: "Gestión de permisos por usuario/departamento para prevenir cambios no autorizados en la red.", tags: ["seguridad"] },
 ];
 
-const catLabels = {
+const tools = [
+  { name: "ipconfig", so: "Windows", def: "Muestra configuración de red: IP, máscara de subred y gateway.", tags: ["consola"] },
+  { name: "ifconfig", so: "Linux/Mac", def: "Equivalente a ipconfig en sistemas Unix.", tags: ["consola"] },
+  { name: "ip a", so: "Linux moderno", def: "Versión moderna de ifconfig — verifica IPs y estado de interfaces.", tags: ["consola"] },
+  { name: "ipconfig /release", so: "Windows", def: "Libera la IP asignada por DHCP.", tags: ["consola"] },
+  { name: "ipconfig /renew", so: "Windows", def: "Solicita una nueva IP al servidor DHCP.", tags: ["consola"] },
+  { name: "ping", so: "Ambos", def: "Comprueba la conectividad básica con un host o servidor.", tags: ["consola"] },
+  { name: "tracert", so: "Windows", def: "Traza la ruta de paquetes y mide la latencia en cada salto.", tags: ["consola"] },
+  { name: "traceroute", so: "Linux/Mac", def: "Equivalente a tracert en sistemas Unix.", tags: ["consola"] },
+  { name: "nslookup", so: "Ambos", def: "Consulta DNS y diagnostica la resolución de nombres.", tags: ["consola"] },
+  { name: "dig", so: "Linux/Mac", def: "Equivalente avanzado de nslookup para consultas DNS detalladas.", tags: ["consola"] },
+  { name: "whois", so: "Ambos", def: "Obtiene información sobre registro de dominios y bloques de IPs.", tags: ["consola"] },
+  { name: "CMD", so: "Windows", def: "Consola de comandos de Windows para administración del sistema.", tags: ["consola", "so"] },
+  { name: "PowerShell", so: "Windows", def: "Consola avanzada de Windows para administración y scripting.", tags: ["consola", "so"] },
+  { name: "Cisco Packet Tracer", so: "Multiplataforma", def: "Simulador de redes — diseña y prueba topologías virtualmente antes de implementarlas.", tags: ["analisis"] },
+  { name: "Wireshark", so: "Multiplataforma", def: "Analizador de paquetes (sniffer) — inspecciona tráfico de red en tiempo real. Fundamental para investigación de incidentes.", tags: ["analisis"] },
+  { name: "pfSense", so: "Basado en FreeBSD", def: "SO open source que convierte un equipo en router o firewall avanzado.", tags: ["analisis"] },
+  { name: "Ubiquity (UI)", so: "Web", def: "Interfaz de gestión centralizada para dispositivos de red de grado profesional.", tags: ["analisis"] },
+  { name: "Parrot OS", so: "Linux", def: "Distribución Linux orientada a seguridad informática y pentesting.", tags: ["so"] },
+  { name: "Visor de eventos", so: "Windows", def: "Herramienta interna para revisar logs de sucesos y errores del sistema.", tags: ["so"] },
+  { name: "Cloudflare Tunnels", so: "Web", def: "Crea túneles seguros y actúa como proxy inverso — acceso a equipos internos sin abrir puertos.", tags: ["remoto"] },
+  { name: "Tailscale", so: "Multiplataforma", def: "VPN basada en WireGuard para crear redes privadas entre dispositivos.", tags: ["remoto"] },
+  { name: "Guacamole Tomcat", so: "Web", def: "Acceso remoto a equipos desde el navegador web.", tags: ["remoto"] },
+  { name: "Google DNS (8.8.8.8)", so: "—", def: "Servidor DNS de referencia para pruebas de conectividad y resolución de nombres.", tags: ["consola", "remoto"] },
+  { name: "TryHackMe", so: "Web", def: "Plataforma de laboratorios prácticos para el aprendizaje de ciberseguridad.", tags: ["aprendizaje"] },
+  { name: "Submarine Cable Map", so: "Web", def: "Recurso web para visualizar la infraestructura global de cables submarinos de fibra óptica.", tags: ["aprendizaje"] },
+  { name: "Notion", so: "Web/App", def: "Toma de apuntes técnicos y organización de conocimientos.", tags: ["gestion"] },
+  { name: "Obsidian", so: "App", def: "Herramienta de notas orientada a conocimiento enlazado — alternativa a Notion.", tags: ["gestion"] },
+  { name: "Slack", so: "Web/App", def: "Plataforma de comunicación principal del bootcamp.", tags: ["gestion"] },
+  { name: "Campus (Ironhack)", so: "Web", def: "Plataforma con grabaciones y materiales permanentes del curso.", tags: ["gestion", "aprendizaje"] },
+];
+
+const vocabCats = {
   arquitectura: "Arquitectura",
   infraestructura: "Infraestructura",
   direccionamiento: "Direccionamiento",
@@ -373,48 +437,80 @@ const catLabels = {
   seguridad: "Seguridad"
 };
 
+const toolCats = {
+  consola: "Consola",
+  analisis: "Análisis y Sim.",
+  so: "Sistemas Op.",
+  remoto: "Acceso Remoto",
+  aprendizaje: "Aprendizaje",
+  gestion: "Gestión"
+};
+
+let mode = "vocab";
 let activeCat = "all";
 let searchVal = "";
+
+function getCats() { return mode === "vocab" ? vocabCats : toolCats; }
+function getData() { return mode === "vocab" ? vocab : tools; }
+
+function renderFilters() {
+  const cats = getCats();
+  const container = document.getElementById("filters");
+  container.innerHTML = `<button class="filter-btn active-all" data-cat="all">Todos</button>` +
+    Object.entries(cats).map(([k, v]) =>
+      `<button class="filter-btn" data-cat="${k}">${v}</button>`
+    ).join("");
+
+  container.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      container.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active-all", "active"));
+      activeCat = btn.dataset.cat;
+      if (activeCat === "all") btn.classList.add("active-all");
+      else btn.classList.add("active");
+      render();
+    });
+  });
+}
 
 function render() {
   const grid = document.getElementById("grid");
   const meta = document.getElementById("meta");
+  const cats = getCats();
 
-  const filtered = terms.filter(t => {
+  const filtered = getData().filter(t => {
     const matchCat = activeCat === "all" || t.tags.includes(activeCat);
     const matchSearch = t.name.toLowerCase().includes(searchVal) || t.def.toLowerCase().includes(searchVal);
     return matchCat && matchSearch;
   });
 
-  meta.innerHTML = `<span>${filtered.length}</span> término${filtered.length !== 1 ? "s" : ""}`;
+  meta.innerHTML = `<span>${filtered.length}</span> ${mode === "vocab" ? "término" : "herramienta"}${filtered.length !== 1 ? "s" : ""}`;
 
   if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty"><span>⌀</span>ningún término encontrado</div>';
+    grid.innerHTML = '<div class="empty"><span>⌀</span>ningún resultado encontrado</div>';
     return;
   }
 
   grid.innerHTML = filtered.map(t => `
     <div class="card">
       <div class="card-name">${t.name}</div>
+      ${t.so ? `<div class="card-so">${t.so}</div>` : ""}
       <div class="card-def">${t.def}</div>
       <div class="card-tags">
-        ${t.tags.map(tag => `<span class="pill pill-${tag}">${catLabels[tag]}</span>`).join("")}
+        ${t.tags.map(tag => `<span class="pill pill-${tag}">${cats[tag] || tag}</span>`).join("")}
       </div>
     </div>
   `).join("");
 }
 
-document.querySelectorAll(".filter-btn").forEach(btn => {
+document.querySelectorAll(".mode-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(b => {
-      b.classList.remove("active-all", "active");
-    });
-    activeCat = btn.dataset.cat;
-    if (activeCat === "all") {
-      btn.classList.add("active-all");
-    } else {
-      btn.classList.add("active");
-    }
+    document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    mode = btn.dataset.mode;
+    activeCat = "all";
+    searchVal = "";
+    document.getElementById("search").value = "";
+    renderFilters();
     render();
   });
 });
@@ -424,6 +520,7 @@ document.getElementById("search").addEventListener("input", e => {
   render();
 });
 
+renderFilters();
 render();
 </script>
 </body>
