@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bluetterfly — Diccionario de Ciberseguridad</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080c12;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --card: #0f1520;
+    --card-hover: #141d2b;
+    --border: rgba(0,180,255,0.12);
+    --border-hover: rgba(0,180,255,0.35);
+    --neon: #00b4ff;
+    --neon-dim: rgba(0,180,255,0.15);
+    --neon-glow: rgba(0,180,255,0.4);
+    --text: #e2e8f0;
+    --text-muted: #7a8fa8;
+    --text-dim: #3d5068;
+
+    --cat-arquitectura: #7c6af5;
+    --cat-arquitectura-bg: rgba(124,106,245,0.12);
+    --cat-infraestructura: #22d3a0;
+    --cat-infraestructura-bg: rgba(34,211,160,0.10);
+    --cat-direccionamiento: #00b4ff;
+    --cat-direccionamiento-bg: rgba(0,180,255,0.10);
+    --cat-segmentacion: #f59e0b;
+    --cat-segmentacion-bg: rgba(245,158,11,0.10);
+    --cat-troubleshooting: #4ade80;
+    --cat-troubleshooting-bg: rgba(74,222,128,0.10);
+    --cat-seguridad: #f87171;
+    --cat-seguridad-bg: rgba(248,113,113,0.10);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    padding: 3rem 2rem 2.5rem;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg2);
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 200px;
+    background: radial-gradient(ellipse, rgba(0,180,255,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .logo {
+    font-size: 2rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px var(--neon-glow));
+  }
+
+  .header-text h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--neon);
+    text-shadow: 0 0 20px var(--neon-glow);
+    letter-spacing: -0.02em;
+  }
+
+  .header-text p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .header-text p span {
+    color: var(--neon);
+    opacity: 0.7;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  #search::placeholder { color: var(--text-dim); }
+
+  #search:focus {
+    border-color: var(--neon);
+    box-shadow: 0 0 0 3px var(--neon-dim);
+  }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-btn {
+    padding: 5px 14px;
+    border-radius: 999px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+  }
+
+  .filter-btn.active-all {
+    background: var(--neon-dim);
+    border-color: var(--neon);
+    color: var(--neon);
+    box-shadow: 0 0 8px var(--neon-dim);
+  }
+
+  .filter-btn[data-cat="arquitectura"].active { background: var(--cat-arquitectura-bg); border-color: var(--cat-arquitectura); color: var(--cat-arquitectura); }
+  .filter-btn[data-cat="infraestructura"].active { background: var(--cat-infraestructura-bg); border-color: var(--cat-infraestructura); color: var(--cat-infraestructura); }
+  .filter-btn[data-cat="direccionamiento"].active { background: var(--cat-direccionamiento-bg); border-color: var(--cat-direccionamiento); color: var(--cat-direccionamiento); }
+  .filter-btn[data-cat="segmentacion"].active { background: var(--cat-segmentacion-bg); border-color: var(--cat-segmentacion); color: var(--cat-segmentacion); }
+  .filter-btn[data-cat="troubleshooting"].active { background: var(--cat-troubleshooting-bg); border-color: var(--cat-troubleshooting); color: var(--cat-troubleshooting); }
+  .filter-btn[data-cat="seguridad"].active { background: var(--cat-seguridad-bg); border-color: var(--cat-seguridad); color: var(--cat-seguridad); }
+
+  /* COUNT */
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 1.25rem;
+  }
+
+  .meta span { color: var(--neon); }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    cursor: default;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    background: var(--card-hover);
+    transform: translateY(-1px);
+  }
+
+  .card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--neon);
+    margin-bottom: 6px;
+    text-shadow: 0 0 10px rgba(0,180,255,0.3);
+  }
+
+  .card-def {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .pill {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 0.5px solid;
+  }
+
+  .pill-arquitectura { background: var(--cat-arquitectura-bg); border-color: var(--cat-arquitectura); color: var(--cat-arquitectura); }
+  .pill-infraestructura { background: var(--cat-infraestructura-bg); border-color: var(--cat-infraestructura); color: var(--cat-infraestructura); }
+  .pill-direccionamiento { background: var(--cat-direccionamiento-bg); border-color: var(--cat-direccionamiento); color: var(--cat-direccionamiento); }
+  .pill-segmentacion { background: var(--cat-segmentacion-bg); border-color: var(--cat-segmentacion); color: var(--cat-segmentacion); }
+  .pill-troubleshooting { background: var(--cat-troubleshooting-bg); border-color: var(--cat-troubleshooting); color: var(--cat-troubleshooting); }
+  .pill-seguridad { background: var(--cat-seguridad-bg); border-color: var(--cat-seguridad); color: var(--cat-seguridad); }
+
+  /* EMPTY */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  .empty span { color: var(--neon); opacity: 0.5; display: block; font-size: 2rem; margin-bottom: 1rem; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    border-top: 0.5px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  footer strong { color: var(--neon); opacity: 0.6; }
+
+  @media (max-width: 600px) {
+    main { padding: 1.25rem; }
+    .grid { grid-template-columns: 1fr; }
+    .header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">🦋</div>
+    <div class="header-text">
+      <h1>Bluetterfly // Diccionario</h1>
+      <p><span>~/</span>ciberseguridad <span>&gt;</span> vocabulario técnico</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="search" placeholder="buscar término..." autocomplete="off" spellcheck="false" />
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active-all" data-cat="all">Todos</button>
+    <button class="filter-btn" data-cat="arquitectura">Arquitectura</button>
+    <button class="filter-btn" data-cat="infraestructura">Infraestructura</button>
+    <button class="filter-btn" data-cat="direccionamiento">Direccionamiento</button>
+    <button class="filter-btn" data-cat="segmentacion">Segmentación</button>
+    <button class="filter-btn" data-cat="troubleshooting">Troubleshooting</button>
+    <button class="filter-btn" data-cat="seguridad">Seguridad</button>
+  </div>
+
+  <div class="meta" id="meta"></div>
+  <div class="grid" id="grid"></div>
+
+</main>
+
+<footer>
+  <strong>Bluetterfly Effect</strong> — Blue Team · DFIR · Threat Intelligence<br/>
+  construido semana a semana durante el bootcamp 🦋
+</footer>
+
+<script>
+const terms = [
+  { name: "Modelo OSI", def: "Modelo teórico de 7 capas que estandariza la comunicación entre dispositivos de distintos fabricantes.", tags: ["arquitectura"] },
+  { name: "Modelo TCP/IP", def: "Conjunto de protocolos prácticos en los que se basa Internet — 4 capas: Acceso a Red, Internet, Transporte, Aplicación.", tags: ["arquitectura"] },
+  { name: "Encapsulación", def: "Proceso por el que los datos atraviesan las capas OSI añadiendo cabeceras en cada nivel hasta convertirse en bits.", tags: ["arquitectura"] },
+  { name: "Topología en estrella", def: "Todos los nodos conectados a un switch central — la más común en LANs actuales.", tags: ["arquitectura"] },
+  { name: "Topología en malla", def: "Cada dispositivo tiene múltiples conexiones con otros — alta redundancia y tolerancia a fallos.", tags: ["arquitectura"] },
+  { name: "LAN", def: "Red de área local — red privada dentro de un espacio físico limitado.", tags: ["arquitectura", "direccionamiento"] },
+  { name: "WAN", def: "Red de área amplia — conecta múltiples LANs entre sí.", tags: ["arquitectura", "direccionamiento"] },
+  { name: "Host / Nodo", def: "Dispositivo final (PC, impresora, móvil) que actúa como origen o destino de datos.", tags: ["infraestructura"] },
+  { name: "Servidor", def: "Equipo diseñado para ofrecer servicios a clientes (web, archivos, email...).", tags: ["infraestructura"] },
+  { name: "Switch", def: "Dispositivo capa 2 que conecta dispositivos dentro de una LAN dirigiendo tráfico por MAC.", tags: ["infraestructura", "segmentacion"] },
+  { name: "Router", def: "Dispositivo capa 3 que interconecta redes distintas y enruta paquetes por IP.", tags: ["infraestructura", "segmentacion"] },
+  { name: "Access Point", def: "Dispositivo que permite conexión inalámbrica a la red.", tags: ["infraestructura"] },
+  { name: "Firewall", def: "Sistema que filtra tráfico de red según reglas definidas — primera línea de defensa.", tags: ["infraestructura", "segmentacion", "seguridad"] },
+  { name: "UTP", def: "Cable de par trenzado sin blindaje — medio de cobre más común en redes LAN.", tags: ["infraestructura"] },
+  { name: "Dirección IP", def: "Identificador lógico de un dispositivo en la red — opera en capa 3.", tags: ["direccionamiento"] },
+  { name: "IP Privada", def: "IP de uso interno en LAN — no visible desde internet (ej: 192.168.0.1).", tags: ["direccionamiento"] },
+  { name: "IP Pública", def: "IP visible en internet — asignada por el ISP.", tags: ["direccionamiento"] },
+  { name: "Dirección MAC", def: "Identificador físico único grabado por el fabricante en cada tarjeta de red — opera en capa 2.", tags: ["direccionamiento"] },
+  { name: "Máscara de subred", def: "Valor que determina qué parte de la IP identifica la red y qué parte identifica al host.", tags: ["direccionamiento", "segmentacion"] },
+  { name: "Default Gateway", def: "Dirección del router que actúa como puerta de salida de la LAN hacia otras redes.", tags: ["direccionamiento", "troubleshooting"] },
+  { name: "DNS", def: "Sistema que traduce nombres de dominio a direcciones IP.", tags: ["direccionamiento", "troubleshooting"] },
+  { name: "DHCP", def: "Protocolo que asigna IPs automáticamente a los dispositivos de la red.", tags: ["direccionamiento", "troubleshooting"] },
+  { name: "NAT", def: "Permite que múltiples IPs privadas salgan a internet bajo una única IP pública.", tags: ["direccionamiento", "seguridad"] },
+  { name: "VLAN", def: "Segmentación lógica de un switch físico en redes virtuales independientes — opera en capa 2.", tags: ["segmentacion", "seguridad"] },
+  { name: "Subred / Subnetting", def: "División de una red IP grande en segmentos más pequeños — opera en capa 3.", tags: ["segmentacion"] },
+  { name: "Dominio de broadcast", def: "Conjunto de dispositivos que reciben el mismo tráfico de broadcast.", tags: ["segmentacion"] },
+  { name: "Latencia", def: "Tiempo de respuesta entre dos dispositivos en la red.", tags: ["troubleshooting"] },
+  { name: "Syslog", def: "Sistema de registro de eventos en Linux — fuente clave para diagnóstico y detección.", tags: ["troubleshooting", "seguridad"] },
+  { name: "Event Viewer", def: "Visor de eventos de Windows — fuente clave para diagnóstico y detección.", tags: ["troubleshooting", "seguridad"] },
+  { name: "Troubleshooting", def: "Metodología de resolución de problemas — en redes sigue el modelo OSI de abajo hacia arriba.", tags: ["troubleshooting"] },
+  { name: "VLAN Hopping", def: "Ataque que explota configuraciones VLAN incorrectas para acceder a segmentos no autorizados.", tags: ["seguridad"] },
+  { name: "Movimiento lateral", def: "Técnica de ataque para moverse entre sistemas dentro de una red ya comprometida.", tags: ["seguridad"] },
+  { name: "Control de acceso", def: "Gestión de permisos por usuario/departamento para prevenir cambios no autorizados en la red.", tags: ["seguridad"] },
+];
+
+const catLabels = {
+  arquitectura: "Arquitectura",
+  infraestructura: "Infraestructura",
+  direccionamiento: "Direccionamiento",
+  segmentacion: "Segmentación",
+  troubleshooting: "Troubleshooting",
+  seguridad: "Seguridad"
+};
+
+let activeCat = "all";
+let searchVal = "";
+
+function render() {
+  const grid = document.getElementById("grid");
+  const meta = document.getElementById("meta");
+
+  const filtered = terms.filter(t => {
+    const matchCat = activeCat === "all" || t.tags.includes(activeCat);
+    const matchSearch = t.name.toLowerCase().includes(searchVal) || t.def.toLowerCase().includes(searchVal);
+    return matchCat && matchSearch;
+  });
+
+  meta.innerHTML = `<span>${filtered.length}</span> término${filtered.length !== 1 ? "s" : ""}`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty"><span>⌀</span>ningún término encontrado</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t => `
+    <div class="card">
+      <div class="card-name">${t.name}</div>
+      <div class="card-def">${t.def}</div>
+      <div class="card-tags">
+        ${t.tags.map(tag => `<span class="pill pill-${tag}">${catLabels[tag]}</span>`).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => {
+      b.classList.remove("active-all", "active");
+    });
+    activeCat = btn.dataset.cat;
+    if (activeCat === "all") {
+      btn.classList.add("active-all");
+    } else {
+      btn.classList.add("active");
+    }
+    render();
+  });
+});
+
+document.getElementById("search").addEventListener("input", e => {
+  searchVal = e.target.value.toLowerCase();
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
