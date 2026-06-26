@@ -7,280 +7,71 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #080c12;
-    --bg2: #0d1117;
-    --bg3: #111820;
-    --card: #0f1520;
-    --card-hover: #141d2b;
-    --border: rgba(0,180,255,0.12);
-    --border-hover: rgba(0,180,255,0.35);
-    --neon: #00b4ff;
-    --neon-dim: rgba(0,180,255,0.15);
-    --neon-glow: rgba(0,180,255,0.4);
-    --text: #e2e8f0;
-    --text-muted: #7a8fa8;
-    --text-dim: #3d5068;
-
-    --cat-arquitectura: #7c6af5;
-    --cat-arquitectura-bg: rgba(124,106,245,0.12);
-    --cat-infraestructura: #22d3a0;
-    --cat-infraestructura-bg: rgba(34,211,160,0.10);
-    --cat-direccionamiento: #00b4ff;
-    --cat-direccionamiento-bg: rgba(0,180,255,0.10);
-    --cat-segmentacion: #f59e0b;
-    --cat-segmentacion-bg: rgba(245,158,11,0.10);
-    --cat-troubleshooting: #4ade80;
-    --cat-troubleshooting-bg: rgba(74,222,128,0.10);
-    --cat-seguridad: #f87171;
-    --cat-seguridad-bg: rgba(248,113,113,0.10);
-
-    --tool-consola: #00b4ff;
-    --tool-consola-bg: rgba(0,180,255,0.10);
-    --tool-analisis: #7c6af5;
-    --tool-analisis-bg: rgba(124,106,245,0.12);
-    --tool-so: #22d3a0;
-    --tool-so-bg: rgba(34,211,160,0.10);
-    --tool-remoto: #f59e0b;
-    --tool-remoto-bg: rgba(245,158,11,0.10);
-    --tool-aprendizaje: #f87171;
-    --tool-aprendizaje-bg: rgba(248,113,113,0.10);
-    --tool-gestion: #4ade80;
-    --tool-gestion-bg: rgba(74,222,128,0.10);
+    --bg: #080c12; --bg2: #0d1117; --bg3: #111820;
+    --card: #0f1520; --card-hover: #141d2b;
+    --border: rgba(0,180,255,0.12); --border-hover: rgba(0,180,255,0.35);
+    --neon: #00b4ff; --neon-dim: rgba(0,180,255,0.15); --neon-glow: rgba(0,180,255,0.4);
+    --text: #e2e8f0; --text-muted: #7a8fa8; --text-dim: #3d5068;
+    --cat-arquitectura: #7c6af5; --cat-arquitectura-bg: rgba(124,106,245,0.12);
+    --cat-infraestructura: #22d3a0; --cat-infraestructura-bg: rgba(34,211,160,0.10);
+    --cat-direccionamiento: #00b4ff; --cat-direccionamiento-bg: rgba(0,180,255,0.10);
+    --cat-segmentacion: #f59e0b; --cat-segmentacion-bg: rgba(245,158,11,0.10);
+    --cat-troubleshooting: #4ade80; --cat-troubleshooting-bg: rgba(74,222,128,0.10);
+    --cat-seguridad: #f87171; --cat-seguridad-bg: rgba(248,113,113,0.10);
+    --tool-consola: #00b4ff; --tool-consola-bg: rgba(0,180,255,0.10);
+    --tool-analisis: #7c6af5; --tool-analisis-bg: rgba(124,106,245,0.12);
+    --tool-so: #22d3a0; --tool-so-bg: rgba(34,211,160,0.10);
+    --tool-remoto: #f59e0b; --tool-remoto-bg: rgba(245,158,11,0.10);
+    --tool-aprendizaje: #f87171; --tool-aprendizaje-bg: rgba(248,113,113,0.10);
+    --tool-gestion: #4ade80; --tool-gestion-bg: rgba(74,222,128,0.10);
   }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  header {
-    position: relative;
-    padding: 3rem 2rem 2.5rem;
-    border-bottom: 0.5px solid var(--border);
-    background: var(--bg2);
-    overflow: hidden;
-  }
-
-  header::before {
-    content: '';
-    position: absolute;
-    top: -60px; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 200px;
-    background: radial-gradient(ellipse, rgba(0,180,255,0.10) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .header-inner {
-    max-width: 960px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
+  header { position: relative; padding: 3rem 2rem 2.5rem; border-bottom: 0.5px solid var(--border); background: var(--bg2); overflow: hidden; }
+  header::before { content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 600px; height: 200px; background: radial-gradient(ellipse, rgba(0,180,255,0.10) 0%, transparent 70%); pointer-events: none; }
+  .header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 1.5rem; }
   .logo { font-size: 2rem; line-height: 1; filter: drop-shadow(0 0 8px var(--neon-glow)); }
-
-  .header-text h1 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--neon);
-    text-shadow: 0 0 20px var(--neon-glow);
-    letter-spacing: -0.02em;
-  }
-
-  .header-text p {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
+  .header-text h1 { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 600; color: var(--neon); text-shadow: 0 0 20px var(--neon-glow); letter-spacing: -0.02em; }
+  .header-text p { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
   .header-text p span { color: var(--neon); opacity: 0.7; }
-
-  main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  /* MODE TOGGLE */
-  .mode-toggle {
-    display: flex;
-    gap: 0;
-    margin-bottom: 2rem;
-    border: 0.5px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    width: fit-content;
-  }
-
-  .mode-btn {
-    padding: 8px 24px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
-    border-right: 0.5px solid var(--border);
-  }
-
+  main { max-width: 960px; margin: 0 auto; padding: 2rem; }
+  .mode-toggle { display: flex; gap: 0; margin-bottom: 2rem; border: 0.5px solid var(--border); border-radius: 8px; overflow: hidden; width: fit-content; }
+  .mode-btn { padding: 8px 24px; background: transparent; border: none; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; cursor: pointer; transition: all 0.15s; border-right: 0.5px solid var(--border); }
   .mode-btn:last-child { border-right: none; }
-
-  .mode-btn.active {
-    background: var(--neon-dim);
-    color: var(--neon);
-  }
-
-  .mode-btn:hover:not(.active) {
-    background: var(--bg3);
-    color: var(--text);
-  }
-
-  .search-wrap {
-    position: relative;
-    margin-bottom: 1.5rem;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 14px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-dim);
-    font-size: 15px;
-    pointer-events: none;
-  }
-
-  #search {
-    width: 100%;
-    padding: 10px 16px 10px 40px;
-    background: var(--bg3);
-    border: 0.5px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
+  .mode-btn.active { background: var(--neon-dim); color: var(--neon); }
+  .mode-btn:hover:not(.active) { background: var(--bg3); color: var(--text); }
+  .search-wrap { position: relative; margin-bottom: 1.5rem; }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 15px; pointer-events: none; }
+  #search { width: 100%; padding: 10px 16px 10px 40px; background: var(--bg3); border: 0.5px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
   #search::placeholder { color: var(--text-dim); }
   #search:focus { border-color: var(--neon); box-shadow: 0 0 0 3px var(--neon-dim); }
-
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1.5rem;
-  }
-
-  .filter-btn {
-    padding: 5px 14px;
-    border-radius: 999px;
-    border: 0.5px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.02em;
-  }
-
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+  .filter-btn { padding: 5px 14px; border-radius: 999px; border: 0.5px solid var(--border); background: transparent; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; letter-spacing: 0.02em; }
   .filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
   .filter-btn.active-all { background: var(--neon-dim); border-color: var(--neon); color: var(--neon); box-shadow: 0 0 8px var(--neon-dim); }
-
-  /* vocab filters */
   .filter-btn[data-cat="arquitectura"].active { background: var(--cat-arquitectura-bg); border-color: var(--cat-arquitectura); color: var(--cat-arquitectura); }
   .filter-btn[data-cat="infraestructura"].active { background: var(--cat-infraestructura-bg); border-color: var(--cat-infraestructura); color: var(--cat-infraestructura); }
   .filter-btn[data-cat="direccionamiento"].active { background: var(--cat-direccionamiento-bg); border-color: var(--cat-direccionamiento); color: var(--cat-direccionamiento); }
   .filter-btn[data-cat="segmentacion"].active { background: var(--cat-segmentacion-bg); border-color: var(--cat-segmentacion); color: var(--cat-segmentacion); }
   .filter-btn[data-cat="troubleshooting"].active { background: var(--cat-troubleshooting-bg); border-color: var(--cat-troubleshooting); color: var(--cat-troubleshooting); }
   .filter-btn[data-cat="seguridad"].active { background: var(--cat-seguridad-bg); border-color: var(--cat-seguridad); color: var(--cat-seguridad); }
-
-  /* tool filters */
   .filter-btn[data-cat="consola"].active { background: var(--tool-consola-bg); border-color: var(--tool-consola); color: var(--tool-consola); }
   .filter-btn[data-cat="analisis"].active { background: var(--tool-analisis-bg); border-color: var(--tool-analisis); color: var(--tool-analisis); }
   .filter-btn[data-cat="so"].active { background: var(--tool-so-bg); border-color: var(--tool-so); color: var(--tool-so); }
   .filter-btn[data-cat="remoto"].active { background: var(--tool-remoto-bg); border-color: var(--tool-remoto); color: var(--tool-remoto); }
   .filter-btn[data-cat="aprendizaje"].active { background: var(--tool-aprendizaje-bg); border-color: var(--tool-aprendizaje); color: var(--tool-aprendizaje); }
   .filter-btn[data-cat="gestion"].active { background: var(--tool-gestion-bg); border-color: var(--tool-gestion); color: var(--tool-gestion); }
-
-  .meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 1.25rem;
-  }
-
+  .meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim); margin-bottom: 1.25rem; }
   .meta span { color: var(--neon); }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
-  }
-
-  .card {
-    background: var(--card);
-    border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 1.1rem 1.25rem;
-    transition: border-color 0.2s, background 0.2s, transform 0.15s;
-  }
-
-  .card:hover {
-    border-color: var(--border-hover);
-    background: var(--card-hover);
-    transform: translateY(-1px);
-  }
-
-  .card-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--neon);
-    margin-bottom: 4px;
-    text-shadow: 0 0 10px rgba(0,180,255,0.3);
-  }
-
-  .card-so {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-bottom: 6px;
-  }
-
-  .card-def {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.65;
-    margin-bottom: 12px;
-  }
-
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .card { background: var(--card); border: 0.5px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; transition: border-color 0.2s, background 0.2s, transform 0.15s; }
+  .card:hover { border-color: var(--border-hover); background: var(--card-hover); transform: translateY(-1px); }
+  .card-name { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: var(--neon); margin-bottom: 4px; text-shadow: 0 0 10px rgba(0,180,255,0.3); }
+  .card-so { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+  .card-def { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin-bottom: 12px; }
   .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-
-  .pill {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 999px;
-    border: 0.5px solid;
-  }
-
+  .pill { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 0.5px solid; }
   .pill-arquitectura { background: var(--cat-arquitectura-bg); border-color: var(--cat-arquitectura); color: var(--cat-arquitectura); }
   .pill-infraestructura { background: var(--cat-infraestructura-bg); border-color: var(--cat-infraestructura); color: var(--cat-infraestructura); }
   .pill-direccionamiento { background: var(--cat-direccionamiento-bg); border-color: var(--cat-direccionamiento); color: var(--cat-direccionamiento); }
@@ -293,39 +84,14 @@
   .pill-remoto { background: var(--tool-remoto-bg); border-color: var(--tool-remoto); color: var(--tool-remoto); }
   .pill-aprendizaje { background: var(--tool-aprendizaje-bg); border-color: var(--tool-aprendizaje); color: var(--tool-aprendizaje); }
   .pill-gestion { background: var(--tool-gestion-bg); border-color: var(--tool-gestion); color: var(--tool-gestion); }
-
-  .empty {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 4rem 0;
-    color: var(--text-dim);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-  }
-
+  .empty { grid-column: 1 / -1; text-align: center; padding: 4rem 0; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
   .empty span { color: var(--neon); opacity: 0.5; display: block; font-size: 2rem; margin-bottom: 1rem; }
-
-  footer {
-    text-align: center;
-    padding: 2.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    border-top: 0.5px solid var(--border);
-    margin-top: 3rem;
-  }
-
+  footer { text-align: center; padding: 2.5rem; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); border-top: 0.5px solid var(--border); margin-top: 3rem; }
   footer strong { color: var(--neon); opacity: 0.6; }
-
-  @media (max-width: 600px) {
-    main { padding: 1.25rem; }
-    .grid { grid-template-columns: 1fr; }
-    .header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
-  }
+  @media (max-width: 600px) { main { padding: 1.25rem; } .grid { grid-template-columns: 1fr; } .header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; } }
 </style>
 </head>
 <body>
-
 <header>
   <div class="header-inner">
     <div class="logo">🦋</div>
@@ -335,39 +101,52 @@
     </div>
   </div>
 </header>
-
 <main>
-
   <div class="mode-toggle">
     <button class="mode-btn active" data-mode="vocab">📖 Vocabulario</button>
     <button class="mode-btn" data-mode="tools">🛠️ Herramientas</button>
   </div>
-
   <div class="search-wrap">
     <span class="search-icon">⌕</span>
     <input type="text" id="search" placeholder="buscar..." autocomplete="off" spellcheck="false" />
   </div>
-
   <div class="filters" id="filters"></div>
   <div class="meta" id="meta"></div>
   <div class="grid" id="grid"></div>
-
 </main>
-
 <footer>
   <strong>Bluetterfly Effect</strong> — Blue Team · DFIR · Threat Intelligence<br/>
   construido semana a semana durante el bootcamp 🦋
 </footer>
-
 <script>
 const vocab = [
+  { name: "Administración de Redes", def: "Organización, instalación y resolución de problemas en infraestructuras de red de forma segura y eficiente.", tags: ["arquitectura"] },
   { name: "Modelo OSI", def: "Modelo teórico de 7 capas que estandariza la comunicación entre dispositivos de distintos fabricantes.", tags: ["arquitectura"] },
   { name: "Modelo TCP/IP", def: "Conjunto de protocolos prácticos en los que se basa Internet — 4 capas: Acceso a Red, Internet, Transporte, Aplicación.", tags: ["arquitectura"] },
   { name: "Encapsulación", def: "Proceso por el que los datos atraviesan las capas OSI añadiendo cabeceras en cada nivel hasta convertirse en bits.", tags: ["arquitectura"] },
   { name: "Topología en estrella", def: "Todos los nodos conectados a un switch central — la más común en LANs actuales.", tags: ["arquitectura"] },
   { name: "Topología en malla", def: "Cada dispositivo tiene múltiples conexiones con otros — alta redundancia y tolerancia a fallos.", tags: ["arquitectura"] },
+  { name: "Topología en bus", def: "Red con un único cable troncal — barata pero con un solo punto de fallo.", tags: ["arquitectura"] },
+  { name: "Topología en anillo", def: "Dispositivos conectados en bucle — poco cableado pero ineficiente y frágil.", tags: ["arquitectura"] },
   { name: "LAN", def: "Red de área local — red privada dentro de un espacio físico limitado.", tags: ["arquitectura", "direccionamiento"] },
   { name: "WAN", def: "Red de área amplia — conecta múltiples LANs entre sí.", tags: ["arquitectura", "direccionamiento"] },
+  { name: "ARPANET", def: "Primera red documentada, financiada por el Departamento de Defensa de EEUU en los años 60.", tags: ["arquitectura"] },
+  { name: "World Wide Web (WWW)", def: "Sistema de información creado por Tim Berners-Lee en 1989 que permitió usar Internet como repositorio de información.", tags: ["arquitectura"] },
+  { name: "Routing", def: "Proceso de crear rutas entre redes para que los datos lleguen a su destino.", tags: ["arquitectura"] },
+  { name: "Packet", def: "Trozo de datos con información IP — opera en capa 3.", tags: ["arquitectura"] },
+  { name: "Frame", def: "Trozo de datos sin IP, con MACs — opera en capa 2, encapsula el packet.", tags: ["arquitectura"] },
+  { name: "TCP", def: "Transmission Control Protocol — protocolo orientado a conexión, fiable pero más lento que UDP.", tags: ["arquitectura"] },
+  { name: "Three-way Handshake", def: "Proceso de establecimiento de conexión TCP: SYN → SYN/ACK → ACK.", tags: ["arquitectura"] },
+  { name: "SYN", def: "Paquete TCP que inicia una conexión.", tags: ["arquitectura"] },
+  { name: "SYN/ACK", def: "Paquete TCP que confirma y sincroniza la conexión desde el servidor.", tags: ["arquitectura"] },
+  { name: "ACK", def: "Paquete TCP que confirma recepción de datos.", tags: ["arquitectura"] },
+  { name: "FIN", def: "Paquete TCP para cerrar una conexión limpiamente.", tags: ["arquitectura"] },
+  { name: "RST", def: "Paquete TCP que cierra una conexión abruptamente por error.", tags: ["arquitectura", "seguridad"] },
+  { name: "Sequence Number", def: "Número que ordena correctamente los paquetes TCP durante la transmisión.", tags: ["arquitectura"] },
+  { name: "UDP", def: "User Datagram Protocol — protocolo stateless, rápido pero sin garantías de entrega.", tags: ["arquitectura"] },
+  { name: "Stateless", def: "Sin conexión persistente — no hay handshake ni verificación de entrega.", tags: ["arquitectura"] },
+  { name: "Puerto", def: "Valor numérico (0-65535) que determina qué aplicación gestiona el tráfico.", tags: ["arquitectura"] },
+  { name: "Well-known ports", def: "Puertos del 0 al 1024 reservados para protocolos estándar.", tags: ["arquitectura"] },
   { name: "Host / Nodo", def: "Dispositivo final (PC, impresora, móvil) que actúa como origen o destino de datos.", tags: ["infraestructura"] },
   { name: "Servidor", def: "Equipo diseñado para ofrecer servicios a clientes (web, archivos, email...).", tags: ["infraestructura"] },
   { name: "Switch", def: "Dispositivo capa 2 que conecta dispositivos dentro de una LAN dirigiendo tráfico por MAC.", tags: ["infraestructura", "segmentacion"] },
@@ -375,25 +154,53 @@ const vocab = [
   { name: "Access Point", def: "Dispositivo que permite conexión inalámbrica a la red.", tags: ["infraestructura"] },
   { name: "Firewall", def: "Sistema que filtra tráfico de red según reglas definidas — primera línea de defensa.", tags: ["infraestructura", "segmentacion", "seguridad"] },
   { name: "UTP", def: "Cable de par trenzado sin blindaje — medio de cobre más común en redes LAN.", tags: ["infraestructura"] },
+  { name: "Hub", def: "Dispositivo que reenvía paquetes a TODOS los puertos — menos eficiente que un switch.", tags: ["infraestructura"] },
+  { name: "Backbone cable", def: "Cable troncal único de una topología en bus.", tags: ["infraestructura"] },
+  { name: "FTP", def: "File Transfer Protocol — transferencia de archivos, puerto 21.", tags: ["infraestructura"] },
+  { name: "SSH", def: "Secure Shell — acceso remoto seguro por CLI, puerto 22.", tags: ["infraestructura", "seguridad"] },
+  { name: "HTTP", def: "HyperText Transfer Protocol — navegación web sin cifrar, puerto 80.", tags: ["infraestructura"] },
+  { name: "HTTPS", def: "HTTP cifrado — navegación web segura, puerto 443.", tags: ["infraestructura", "seguridad"] },
+  { name: "SMB", def: "Server Message Block — compartir archivos e impresoras en red, puerto 445.", tags: ["infraestructura"] },
+  { name: "RDP", def: "Remote Desktop Protocol — escritorio remoto visual, puerto 3389.", tags: ["infraestructura", "seguridad"] },
   { name: "Dirección IP", def: "Identificador lógico de un dispositivo en la red — opera en capa 3.", tags: ["direccionamiento"] },
   { name: "IP Privada", def: "IP de uso interno en LAN — no visible desde internet (ej: 192.168.0.1).", tags: ["direccionamiento"] },
   { name: "IP Pública", def: "IP visible en internet — asignada por el ISP.", tags: ["direccionamiento"] },
+  { name: "IPv4", def: "Versión 4 del protocolo IP — usa 2³² direcciones (4.290 millones). Actualmente en agotamiento.", tags: ["direccionamiento"] },
+  { name: "IPv6", def: "Versión 6 del protocolo IP — usa 2¹²⁸ direcciones. Soluciona el agotamiento de IPv4.", tags: ["direccionamiento"] },
+  { name: "Octeto", def: "Cada una de las 4 secciones de una dirección IPv4 — 8 bits cada una.", tags: ["direccionamiento"] },
   { name: "Dirección MAC", def: "Identificador físico único grabado por el fabricante en cada tarjeta de red — opera en capa 2.", tags: ["direccionamiento"] },
   { name: "Máscara de subred", def: "Valor que determina qué parte de la IP identifica la red y qué parte identifica al host.", tags: ["direccionamiento", "segmentacion"] },
   { name: "Default Gateway", def: "Dirección del router que actúa como puerta de salida de la LAN hacia otras redes.", tags: ["direccionamiento", "troubleshooting"] },
   { name: "DNS", def: "Sistema que traduce nombres de dominio a direcciones IP.", tags: ["direccionamiento", "troubleshooting"] },
-  { name: "DHCP", def: "Protocolo que asigna IPs automáticamente a los dispositivos de la red.", tags: ["direccionamiento", "troubleshooting"] },
+  { name: "DHCP", def: "Dynamic Host Configuration Protocol — asigna IPs automáticamente a los dispositivos de la red.", tags: ["direccionamiento", "troubleshooting"] },
+  { name: "DHCP Discover", def: "Primer paquete DHCP — el dispositivo busca un servidor DHCP en la red.", tags: ["direccionamiento"] },
+  { name: "DHCP Offer", def: "El servidor DHCP ofrece una IP disponible al dispositivo.", tags: ["direccionamiento"] },
+  { name: "DHCP Request", def: "El dispositivo confirma que acepta la IP ofrecida.", tags: ["direccionamiento"] },
+  { name: "DHCP ACK", def: "El servidor confirma la asignación — el dispositivo ya puede usar la IP.", tags: ["direccionamiento"] },
   { name: "NAT", def: "Permite que múltiples IPs privadas salgan a internet bajo una única IP pública.", tags: ["direccionamiento", "seguridad"] },
+  { name: "ISP", def: "Proveedor de servicios de internet — asigna la IP pública a los dispositivos.", tags: ["direccionamiento"] },
+  { name: "ARP", def: "Address Resolution Protocol — asocia IPs con MACs mediante request y reply.", tags: ["direccionamiento"] },
+  { name: "ARP Request", def: "Broadcast que pregunta '¿quién tiene esta IP? Dame tu MAC'.", tags: ["direccionamiento"] },
+  { name: "ARP Reply", def: "Respuesta al ARP Request con la MAC del dispositivo que tiene esa IP.", tags: ["direccionamiento"] },
+  { name: "ARP Cache", def: "Registro local donde cada dispositivo guarda las asociaciones IP↔MAC conocidas.", tags: ["direccionamiento"] },
+  { name: "Network Address", def: "Dirección que identifica el inicio de una red (ej: 192.168.1.0).", tags: ["direccionamiento"] },
+  { name: "Host Address", def: "Dirección que identifica un dispositivo concreto dentro de una subred.", tags: ["direccionamiento"] },
   { name: "VLAN", def: "Segmentación lógica de un switch físico en redes virtuales independientes — opera en capa 2.", tags: ["segmentacion", "seguridad"] },
   { name: "Subred / Subnetting", def: "División de una red IP grande en segmentos más pequeños — opera en capa 3.", tags: ["segmentacion"] },
   { name: "Dominio de broadcast", def: "Conjunto de dispositivos que reciben el mismo tráfico de broadcast.", tags: ["segmentacion"] },
+  { name: "Troubleshooting", def: "Metodología de resolución de problemas — en redes sigue el modelo OSI de abajo hacia arriba.", tags: ["troubleshooting"] },
   { name: "Latencia", def: "Tiempo de respuesta entre dos dispositivos en la red.", tags: ["troubleshooting"] },
+  { name: "ICMP", def: "Internet Control Message Protocol — protocolo usado por ping para comprobar conectividad y medir latencia.", tags: ["troubleshooting"] },
+  { name: "Echo request / Echo reply", def: "Par de paquetes ICMP usados por ping — el request sale del origen, el reply responde el destino.", tags: ["troubleshooting"] },
+  { name: "TTL (Time to Live)", def: "Temporizador de expiración de un paquete — evita que paquetes perdidos colapsen la red.", tags: ["troubleshooting"] },
+  { name: "Checksum", def: "Valor de verificación matemática que garantiza la integridad de los datos — si cambia algo, el checksum no coincide.", tags: ["troubleshooting", "seguridad"] },
   { name: "Syslog", def: "Sistema de registro de eventos en Linux — fuente clave para diagnóstico y detección.", tags: ["troubleshooting", "seguridad"] },
   { name: "Event Viewer", def: "Visor de eventos de Windows — fuente clave para diagnóstico y detección.", tags: ["troubleshooting", "seguridad"] },
-  { name: "Troubleshooting", def: "Metodología de resolución de problemas — en redes sigue el modelo OSI de abajo hacia arriba.", tags: ["troubleshooting"] },
   { name: "VLAN Hopping", def: "Ataque que explota configuraciones VLAN incorrectas para acceder a segmentos no autorizados.", tags: ["seguridad"] },
   { name: "Movimiento lateral", def: "Técnica de ataque para moverse entre sistemas dentro de una red ya comprometida.", tags: ["seguridad"] },
+  { name: "MAC Spoofing", def: "Falsificación de una dirección MAC para suplantar la identidad de otro dispositivo en la red.", tags: ["seguridad"] },
   { name: "Control de acceso", def: "Gestión de permisos por usuario/departamento para prevenir cambios no autorizados en la red.", tags: ["seguridad"] },
+  { name: "Redundancia", def: "Múltiples rutas o conexiones para garantizar disponibilidad si una falla.", tags: ["seguridad"] },
 ];
 
 const tools = [
@@ -402,7 +209,7 @@ const tools = [
   { name: "ip a", so: "Linux moderno", def: "Versión moderna de ifconfig — verifica IPs y estado de interfaces.", tags: ["consola"] },
   { name: "ipconfig /release", so: "Windows", def: "Libera la IP asignada por DHCP.", tags: ["consola"] },
   { name: "ipconfig /renew", so: "Windows", def: "Solicita una nueva IP al servidor DHCP.", tags: ["consola"] },
-  { name: "ping", so: "Ambos", def: "Comprueba la conectividad básica con un host o servidor.", tags: ["consola"] },
+  { name: "ping", so: "Ambos", def: "Comprueba conectividad básica con un host — usa ICMP echo request/reply.", tags: ["consola"] },
   { name: "tracert", so: "Windows", def: "Traza la ruta de paquetes y mide la latencia en cada salto.", tags: ["consola"] },
   { name: "traceroute", so: "Linux/Mac", def: "Equivalente a tracert en sistemas Unix.", tags: ["consola"] },
   { name: "nslookup", so: "Ambos", def: "Consulta DNS y diagnostica la resolución de nombres.", tags: ["consola"] },
@@ -428,27 +235,10 @@ const tools = [
   { name: "Campus (Ironhack)", so: "Web", def: "Plataforma con grabaciones y materiales permanentes del curso.", tags: ["gestion", "aprendizaje"] },
 ];
 
-const vocabCats = {
-  arquitectura: "Arquitectura",
-  infraestructura: "Infraestructura",
-  direccionamiento: "Direccionamiento",
-  segmentacion: "Segmentación",
-  troubleshooting: "Troubleshooting",
-  seguridad: "Seguridad"
-};
+const vocabCats = { arquitectura: "Arquitectura", infraestructura: "Infraestructura", direccionamiento: "Direccionamiento", segmentacion: "Segmentación", troubleshooting: "Troubleshooting", seguridad: "Seguridad" };
+const toolCats = { consola: "Consola", analisis: "Análisis y Sim.", so: "Sistemas Op.", remoto: "Acceso Remoto", aprendizaje: "Aprendizaje", gestion: "Gestión" };
 
-const toolCats = {
-  consola: "Consola",
-  analisis: "Análisis y Sim.",
-  so: "Sistemas Op.",
-  remoto: "Acceso Remoto",
-  aprendizaje: "Aprendizaje",
-  gestion: "Gestión"
-};
-
-let mode = "vocab";
-let activeCat = "all";
-let searchVal = "";
+let mode = "vocab", activeCat = "all", searchVal = "";
 
 function getCats() { return mode === "vocab" ? vocabCats : toolCats; }
 function getData() { return mode === "vocab" ? vocab : tools; }
@@ -457,13 +247,10 @@ function renderFilters() {
   const cats = getCats();
   const container = document.getElementById("filters");
   container.innerHTML = `<button class="filter-btn active-all" data-cat="all">Todos</button>` +
-    Object.entries(cats).map(([k, v]) =>
-      `<button class="filter-btn" data-cat="${k}">${v}</button>`
-    ).join("");
-
+    Object.entries(cats).map(([k,v]) => `<button class="filter-btn" data-cat="${k}">${v}</button>`).join("");
   container.querySelectorAll(".filter-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      container.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active-all", "active"));
+      container.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active-all","active"));
       activeCat = btn.dataset.cat;
       if (activeCat === "all") btn.classList.add("active-all");
       else btn.classList.add("active");
@@ -476,52 +263,34 @@ function render() {
   const grid = document.getElementById("grid");
   const meta = document.getElementById("meta");
   const cats = getCats();
-
   const filtered = getData().filter(t => {
     const matchCat = activeCat === "all" || t.tags.includes(activeCat);
     const matchSearch = t.name.toLowerCase().includes(searchVal) || t.def.toLowerCase().includes(searchVal);
     return matchCat && matchSearch;
   });
-
   meta.innerHTML = `<span>${filtered.length}</span> ${mode === "vocab" ? "término" : "herramienta"}${filtered.length !== 1 ? "s" : ""}`;
-
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty"><span>⌀</span>ningún resultado encontrado</div>';
-    return;
-  }
-
+  if (filtered.length === 0) { grid.innerHTML = '<div class="empty"><span>⌀</span>ningún resultado encontrado</div>'; return; }
   grid.innerHTML = filtered.map(t => `
     <div class="card">
       <div class="card-name">${t.name}</div>
       ${t.so ? `<div class="card-so">${t.so}</div>` : ""}
       <div class="card-def">${t.def}</div>
-      <div class="card-tags">
-        ${t.tags.map(tag => `<span class="pill pill-${tag}">${cats[tag] || tag}</span>`).join("")}
-      </div>
-    </div>
-  `).join("");
+      <div class="card-tags">${t.tags.map(tag => `<span class="pill pill-${tag}">${cats[tag]||tag}</span>`).join("")}</div>
+    </div>`).join("");
 }
 
 document.querySelectorAll(".mode-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    mode = btn.dataset.mode;
-    activeCat = "all";
-    searchVal = "";
+    mode = btn.dataset.mode; activeCat = "all"; searchVal = "";
     document.getElementById("search").value = "";
-    renderFilters();
-    render();
+    renderFilters(); render();
   });
 });
 
-document.getElementById("search").addEventListener("input", e => {
-  searchVal = e.target.value.toLowerCase();
-  render();
-});
-
-renderFilters();
-render();
+document.getElementById("search").addEventListener("input", e => { searchVal = e.target.value.toLowerCase(); render(); });
+renderFilters(); render();
 </script>
 </body>
 </html>
